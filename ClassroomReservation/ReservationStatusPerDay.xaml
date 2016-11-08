@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="ClassroomReservation.ReservationStatusPerDay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ClassroomReservation"
+             mc:Ignorable="d" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+    <UserControl.Resources>
+        <!--<Style TargetType="Rectangle">
+            <Setter Property="StrokeThickness" Value="1"/>
+            <Setter Property="Stroke" Value="Black"/>
+            <Setter Property="Width" Value="75"/>
+            <Setter Property="Height" Value="75"/>
+            <Setter Property="Fill" Value="#ABCDEF"/>
+        </Style>-->
+    </UserControl.Resources>
+    <Grid Name="wrapPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBox Text="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10"/>
+        <TextBox Text="1교시" Grid.Row="1" Grid.Column="0"/>
+        <TextBox Text="2교시" Grid.Row="1" Grid.Column="1"/>
+        <TextBox Text="3교시" Grid.Row="1" Grid.Column="2"/>
+        <TextBox Text="4교시" Grid.Row="1" Grid.Column="3"/>
+        <TextBox Text="5교시" Grid.Row="1" Grid.Column="4"/>
+        <TextBox Text="6교시" Grid.Row="1" Grid.Column="5"/>
+        <TextBox Text="7교시" Grid.Row="1" Grid.Column="6"/>
+        <TextBox Text="8교시" Grid.Row="1" Grid.Column="7"/>
+        <TextBox Text="9교시" Grid.Row="1" Grid.Column="8"/>
+        <TextBox Text="10교시" Grid.Row="1" Grid.Column="9"/>
+    </Grid>
+</UserControl>
