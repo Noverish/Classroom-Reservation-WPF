@@ -13,47 +13,53 @@
             <Setter Property="Height" Value="75"/>
             <Setter Property="Fill" Value="#ABCDEF"/>
         </Style>-->
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="center"></Setter>
+            <Setter Property="VerticalAlignment" Value="center"></Setter>
+        </Style>
     </UserControl.Resources>
-    <Grid Name="wrapPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <Border BorderThickness="2" BorderBrush="Black">
+        <Grid Name="wrapPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="450">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <TextBox Text="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10"/>
-        <TextBox Text="1교시" Grid.Row="1" Grid.Column="0"/>
-        <TextBox Text="2교시" Grid.Row="1" Grid.Column="1"/>
-        <TextBox Text="3교시" Grid.Row="1" Grid.Column="2"/>
-        <TextBox Text="4교시" Grid.Row="1" Grid.Column="3"/>
-        <TextBox Text="5교시" Grid.Row="1" Grid.Column="4"/>
-        <TextBox Text="6교시" Grid.Row="1" Grid.Column="5"/>
-        <TextBox Text="7교시" Grid.Row="1" Grid.Column="6"/>
-        <TextBox Text="8교시" Grid.Row="1" Grid.Column="7"/>
-        <TextBox Text="9교시" Grid.Row="1" Grid.Column="8"/>
-        <TextBox Text="10교시" Grid.Row="1" Grid.Column="9"/>
-    </Grid>
+            <TextBlock Name="DateTextBlock" Text="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10"/>
+            <TextBlock Text="1교시" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="2교시" Grid.Row="1" Grid.Column="1"/>
+            <TextBlock Text="3교시" Grid.Row="1" Grid.Column="2"/>
+            <TextBlock Text="4교시" Grid.Row="1" Grid.Column="3"/>
+            <TextBlock Text="5교시" Grid.Row="1" Grid.Column="4"/>
+            <TextBlock Text="6교시" Grid.Row="1" Grid.Column="5"/>
+            <TextBlock Text="7교시" Grid.Row="1" Grid.Column="6"/>
+            <TextBlock Text="8교시" Grid.Row="1" Grid.Column="7"/>
+            <TextBlock Text="9교시" Grid.Row="1" Grid.Column="8"/>
+            <TextBlock Text="10교시" Grid.Row="1" Grid.Column="9"/>
+        </Grid>
+    </Border>
 </UserControl>

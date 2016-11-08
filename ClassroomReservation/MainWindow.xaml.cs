@@ -24,12 +24,14 @@ namespace ClassroomReservation
         {
             InitializeComponent();
 
-            ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay();
-            ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay();
-            ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay();
-            ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay();
-            ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay();
-            ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay();
+            DateTime today = DateTime.Now;
+
+            ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
+            ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
+            ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
+            ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
+            ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
+            ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
 
             Content.Children.Add(fileInputBox1);
             Content.Children.Add(fileInputBox2);
@@ -37,6 +39,15 @@ namespace ClassroomReservation
             Content.Children.Add(fileInputBox4);
             Content.Children.Add(fileInputBox5);
             Content.Children.Add(fileInputBox6);
+
+            ScrollViewer.PreviewMouseWheel += new MouseWheelEventHandler(ListViewScrollViewer_PreviewMouseWheel);
+        }
+
+        private void ListViewScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
+            e.Handled = true;
         }
     }
 }

@@ -6,6 +6,12 @@
         xmlns:local="clr-namespace:ClassroomReservation"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1800">
+    <Window.Resources>
+        <Style x:Key="HorizontalScrollViewerStyle" TargetType="ScrollViewer">
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Disabled"/>
+        </Style>
+    </Window.Resources>
     <DockPanel Name="dockpanel1">
         <Border DockPanel.Dock="Bottom" Height="300" BorderThickness="1" BorderBrush="Black">
             <Grid>
@@ -128,7 +134,7 @@
             <TextBlock Text="Dock=Top"/>
         </Border>
         <Border BorderThickness="1">
-            <ScrollViewer ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Visible">
+            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
                 <StackPanel Orientation="Horizontal" Name="Content">
 
                 </StackPanel>
