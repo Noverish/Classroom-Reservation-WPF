@@ -20,7 +20,7 @@
                     <ColumnDefinition Width="35*"/>
                     <ColumnDefinition Width="30*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel Name="dockpanel2" Grid.Column="0" Margin="90,0,30,0">
+                <DockPanel Name="AdminButtonPanel" Grid.Column="0" Margin="90,0,30,0">
                     <Border DockPanel.Dock="Bottom" Height="100">
                         <Button Name="button1" Content="선택 기간 DB 삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
 
@@ -125,7 +125,9 @@
         </Border>
 
         <Border DockPanel.Dock="Top" Height="43" BorderThickness="1" BorderBrush="Black">
-            <TextBlock Text="Dock=Top"/>
+            <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="24">
+                관리자 모드로 변경
+            </Button>
         </Border>
         <Border BorderThickness="1">
             <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >

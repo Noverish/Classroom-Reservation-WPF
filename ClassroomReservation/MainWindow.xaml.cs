@@ -20,6 +20,8 @@ namespace ClassroomReservation
     /// </summary>
     public partial class MainWindow : Window
     {
+        private bool isUserMode = true;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -39,6 +41,22 @@ namespace ClassroomReservation
             Content.Children.Add(fileInputBox4);
             Content.Children.Add(fileInputBox5);
             Content.Children.Add(fileInputBox6);
+
+            ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+            AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+        }
+
+        public void changeMode(object sender, RoutedEventArgs e)
+        {
+            isUserMode = !isUserMode;
+
+            if(isUserMode)
+            {
+                AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+            } else
+            {
+                AdminButtonPanel.Visibility = System.Windows.Visibility.Visible;
+            }
         }
     }
 }
