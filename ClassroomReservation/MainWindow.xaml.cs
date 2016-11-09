@@ -39,15 +39,6 @@ namespace ClassroomReservation
             Content.Children.Add(fileInputBox4);
             Content.Children.Add(fileInputBox5);
             Content.Children.Add(fileInputBox6);
-
-            ScrollViewer.PreviewMouseWheel += new MouseWheelEventHandler(ListViewScrollViewer_PreviewMouseWheel);
-        }
-
-        private void ListViewScrollViewer_PreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
-        {
-            ScrollViewer scv = (ScrollViewer)sender;
-            scv.ScrollToVerticalOffset(scv.VerticalOffset - e.Delta);
-            e.Handled = true;
         }
     }
 }
