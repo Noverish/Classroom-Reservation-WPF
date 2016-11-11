@@ -135,10 +135,9 @@
             </DockPanel>
         </Border>
         <Border BorderThickness="1">
-            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
-                <StackPanel Orientation="Horizontal" Name="Content">
-                    
-                </StackPanel>
+            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" CanContentScroll="True">
+                <StackPanel Orientation="Horizontal" Name="Content"/>
             </ScrollViewer>
         </Border>
     </DockPanel>
