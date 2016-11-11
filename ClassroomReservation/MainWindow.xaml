@@ -136,8 +136,8 @@
         </Border>
         <Border BorderThickness="1">
             <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel" CanContentScroll="True">
-                <StackPanel Orientation="Horizontal" Name="Content"/>
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <StackPanel Orientation="Horizontal" Name="scrollViewContentPanel"/>
             </ScrollViewer>
         </Border>
     </DockPanel>

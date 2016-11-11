@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Data;
 using System.IO;
+using System.Windows.Media.Animation;
 
 namespace ClassroomReservation
 {
@@ -38,12 +39,12 @@ namespace ClassroomReservation
             ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
             ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
 
-            Content.Children.Add(fileInputBox1);
-            Content.Children.Add(fileInputBox2);
-            Content.Children.Add(fileInputBox3);
-            Content.Children.Add(fileInputBox4);
-            Content.Children.Add(fileInputBox5);
-            Content.Children.Add(fileInputBox6);
+            scrollViewContentPanel.Children.Add(fileInputBox1);
+            scrollViewContentPanel.Children.Add(fileInputBox2);
+            scrollViewContentPanel.Children.Add(fileInputBox3);
+            scrollViewContentPanel.Children.Add(fileInputBox4);
+            scrollViewContentPanel.Children.Add(fileInputBox5);
+            scrollViewContentPanel.Children.Add(fileInputBox6);
 
             ChangeModeButton.Click += new RoutedEventHandler(changeMode);
             readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
@@ -64,13 +65,49 @@ namespace ClassroomReservation
             }
         }
 
+        public static DependencyProperty HorizontalOffsetProperty =
+            DependencyProperty.RegisterAttached("HorizontalOffset",
+                                                typeof(double),
+                                                typeof(MainWindow),
+                                                new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
+
+        private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
+        {
+            ScrollViewer scrollViewer = target as ScrollViewer;
+
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+            }
+        }
+
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer scrollviewer = sender as ScrollViewer;
+            ScrollViewer scrollViewer = sender as ScrollViewer;
+
+            ReservationStatusPerDay view = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
+
+            double ToValue;
+
             if (e.Delta > 0)
-                scrollviewer.LineLeft();
+                ToValue = scrollViewer.HorizontalOffset - view.ActualWidth;
             else
-                scrollviewer.LineRight();
+                ToValue = scrollViewer.HorizontalOffset + view.ActualWidth;
+
+            DoubleAnimation horizontalAnimation = new DoubleAnimation();
+
+            horizontalAnimation.From = scrollViewer.VerticalOffset;
+            horizontalAnimation.To = ToValue;
+            horizontalAnimation.Duration = new Duration(TimeSpan.Parse("0:0:0.20"));
+
+            Storyboard storyboard = new Storyboard();
+
+            storyboard.Children.Add(horizontalAnimation);
+            Storyboard.SetTarget(horizontalAnimation, scrollViewer);
+            Storyboard.SetTargetProperty(horizontalAnimation, new PropertyPath(MainWindow.HorizontalOffsetProperty));
+            storyboard.Begin();
+
+
             e.Handled = true;
         }
 
