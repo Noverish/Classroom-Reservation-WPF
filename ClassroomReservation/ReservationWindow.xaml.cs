@@ -17,9 +17,9 @@ namespace ClassroomReservation
     /// <summary>
     /// WpfApplication3.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class WpfApplication3 : Window
+    public partial class ReservationWindow : Window
     {
-        public WpfApplication3()
+        public ReservationWindow()
         {
             InitializeComponent();
         }
