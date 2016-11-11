@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.OleDb;
+using System.Data;
+using System.IO;
 
 namespace ClassroomReservation
 {
@@ -43,6 +46,8 @@ namespace ClassroomReservation
             Content.Children.Add(fileInputBox6);
 
             ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+            readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
+
             AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
         }
 
@@ -58,9 +63,35 @@ namespace ClassroomReservation
                 AdminButtonPanel.Visibility = System.Windows.Visibility.Visible;
             }
         }
+
+        public void readExcelFile(object sender, RoutedEventArgs e)
+        {
+            //var fileName = string.Format("{0}\\fileNameHere", Directory.GetCurrentDirectory());
+            //var connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", fileName);
+
+            //var adapter = new OleDbDataAdapter("SELECT * FROM [workSheetNameHere$]", connectionString);
+            //var ds = new DataSet();
+
+            //adapter.Fill(ds, "anyNameHere");
+
+            //DataTable data = ds.Tables["anyNameHere"];
+
+            // Create OpenFileDialog 
+            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
+
+            // Set filter for file extension and default file extension 
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
+
+            // Display OpenFileDialog by calling ShowDialog method 
+            Nullable<bool> result = dlg.ShowDialog();
+
+            // Get the selected file name and display in a TextBox 
+            if (result == true)
+            {
+                // Open document 
+                //fileOpenTextBox.Text = dlg.FileName;
+            }
+        }
     }
 }
-
-//comment  1
-//rebeca
-//asdfasdf

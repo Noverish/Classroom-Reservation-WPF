@@ -29,7 +29,7 @@
                         <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
                     </Border>
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="button3" Content="강의 시간표 불러오기" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
+                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
                     </Border>
                 </DockPanel>
 
