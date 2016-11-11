@@ -39,19 +39,16 @@ namespace ClassroomReservation
 
 			DateTime today = DateTime.Now;
 
-			ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
-			ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
-			ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
-			ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
-			ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
-			ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
-
-			scrollViewContentPanel.Children.Add(fileInputBox1);
-			scrollViewContentPanel.Children.Add(fileInputBox2);
-			scrollViewContentPanel.Children.Add(fileInputBox3);
-			scrollViewContentPanel.Children.Add(fileInputBox4);
-			scrollViewContentPanel.Children.Add(fileInputBox5);
-			scrollViewContentPanel.Children.Add(fileInputBox6);
+			for (int i = 0; i < 7; i++)
+			{
+				if (today.AddDays(i).DayOfWeek != 0)
+				{
+					ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today.AddDays(i));
+					scrollViewContentPanel.Children.Add(fileInputBox1);
+				}
+			}
+			
+			MainWindow_DatePicker.SelectedDate = today;
 
 			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
 			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
