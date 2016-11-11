@@ -34,33 +34,34 @@ namespace ClassroomReservation
 		double startPos;
 
 		public MainWindow()
-        {
-            InitializeComponent();
+		{
+			InitializeComponent();
 
-            DateTime today = DateTime.Now;
+			DateTime today = DateTime.Now;
 
-            ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
-            ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
-            ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
-            ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
-            ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
-            ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
+			ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
+			ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
+			ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
+			ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
+			ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
+			ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
 
-            scrollViewContentPanel.Children.Add(fileInputBox1);
-            scrollViewContentPanel.Children.Add(fileInputBox2);
-            scrollViewContentPanel.Children.Add(fileInputBox3);
-            scrollViewContentPanel.Children.Add(fileInputBox4);
-            scrollViewContentPanel.Children.Add(fileInputBox5);
-            scrollViewContentPanel.Children.Add(fileInputBox6);
+			scrollViewContentPanel.Children.Add(fileInputBox1);
+			scrollViewContentPanel.Children.Add(fileInputBox2);
+			scrollViewContentPanel.Children.Add(fileInputBox3);
+			scrollViewContentPanel.Children.Add(fileInputBox4);
+			scrollViewContentPanel.Children.Add(fileInputBox5);
+			scrollViewContentPanel.Children.Add(fileInputBox6);
 
-            ChangeModeButton.Click += new RoutedEventHandler(changeMode);
-            readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
+			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
-            AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+			AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
 
 			animationTimer.Interval = new TimeSpan(30);
 			animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
+			button4.Click += new RoutedEventHandler(Button_Click);
 		}
 
         public void changeMode(object sender, RoutedEventArgs e)
@@ -146,6 +147,12 @@ namespace ClassroomReservation
                 // Open document 
                 //fileOpenTextBox.Text = dlg.FileName;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ReservationWindow win2 = new ReservationWindow();
+            win2.Show();
         }
     }
 }

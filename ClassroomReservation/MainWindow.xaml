@@ -22,14 +22,14 @@
                 </Grid.ColumnDefinitions>
                 <DockPanel Name="AdminButtonPanel" Grid.Column="0" Margin="90,0,30,0">
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="button1" Content="선택 기간 DB 삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
+                        <Button Name="button1" Content="선택 기간 DB 삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
 
                     </Border>
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
+                        <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
                     </Border>
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="LightCoral" Foreground="White" Margin="0,10,0,10"/>
+                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
                     </Border>
                 </DockPanel>
 
@@ -40,18 +40,20 @@
                                 <RowDefinition Height="50*"/>
                                 <RowDefinition Height="50*"/>
                             </Grid.RowDefinitions>
-                            <Button Name="button5" Content="정보 수정" Grid.Row="0" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White"/>
-                            <Button Name="button6" Content="예약 삭제" Grid.Row="1" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White"/>
+                            <Button Name="button5" Content="정보 수정" Grid.Row="0" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White" FontSize="20"/>
+                            <Button Name="button6" Content="예약 삭제" Grid.Row="1" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White" FontSize="20"/>
                         </Grid>
                     </Border>
                     <Border DockPanel.Dock="Right" Width="350" BorderThickness="1" BorderBrush="Black">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="50*"/>
-                                <RowDefinition Height="50*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="2*"/>
                             </Grid.RowDefinitions>
-                            <TextBox Name="textblock1" Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
-                            <TextBox Name="textblock2" Grid.Row="1" BorderThickness="1" BorderBrush="Black"/>
+                            <TextBox Name="TextBox1" Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
+                            <TextBox Name="TextBox2" Grid.Row="1" BorderThickness="1" BorderBrush="Black"/>
+                            <TextBox Name="TextBox3" Grid.Row="2" BorderThickness="1" BorderBrush="Black"/>
                         </Grid>
                     </Border>
 
@@ -70,7 +72,7 @@
 
                 </DockPanel>
 
-                <Button Grid.Column="2" Name="button4" Content="예약하러 가기" Background="LightCoral" Foreground="White" Margin="30,10,50,10"/>
+                <Button Grid.Column="2" Name="button4" Content="예약하러 가기" Background="LightCoral" Foreground="White" Margin="30,10,50,10" FontSize="20"/>
 
             </Grid>
         </Border>

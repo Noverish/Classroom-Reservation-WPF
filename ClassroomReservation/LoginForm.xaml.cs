@@ -15,20 +15,13 @@ using System.Windows.Shapes;
 namespace ClassroomReservation
 {
     /// <summary>
-    /// WpfApplication3.xaml에 대한 상호 작용 논리
+    /// Window1.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class ReservationWindow : Window
+    public partial class LoginForm : Window
     {
-        public ReservationWindow()
+        public LoginForm()
         {
             InitializeComponent();
-
-            Cancel_Button.Click += new RoutedEventHandler(Button_Click_Close);
-        }
-
-        private void Button_Click_Close(object sender, RoutedEventArgs e)
-        {
-            this.Close();
         }
     }
 }
