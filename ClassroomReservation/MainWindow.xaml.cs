@@ -16,6 +16,7 @@ using System.Data.OleDb;
 using System.Data;
 using System.IO;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace ClassroomReservation
 {
@@ -26,7 +27,13 @@ namespace ClassroomReservation
     {
         private bool isUserMode = true;
 
-        public MainWindow()
+		DispatcherTimer animationTimer = new DispatcherTimer();
+		private double reservationStatusPerDayWidth;
+		double delta = 0;
+		int deltaDirection = 1;
+		double startPos;
+
+		public MainWindow()
         {
             InitializeComponent();
 
@@ -50,7 +57,11 @@ namespace ClassroomReservation
             readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
             AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
-        }
+
+			animationTimer.Interval = new TimeSpan(30);
+			animationTimer.Tick += new EventHandler(MyTimer_Tick);
+
+		}
 
         public void changeMode(object sender, RoutedEventArgs e)
         {
@@ -81,34 +92,30 @@ namespace ClassroomReservation
             }
         }
 
-        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+		void MyTimer_Tick(object sender, EventArgs e)
+		{
+			if(Math.Abs(delta) > reservationStatusPerDayWidth)
+			{
+				animationTimer.Stop();
+			}
+			else
+			{
+				delta += deltaDirection;
+				ScrollViewer.ScrollToHorizontalOffset(startPos + delta);
+			}
+		}
+
+		private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            ScrollViewer scrollViewer = sender as ScrollViewer;
+			ReservationStatusPerDay child = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
+			reservationStatusPerDayWidth = child.ActualWidth;
 
-            ReservationStatusPerDay view = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
+			animationTimer.Start();
+			deltaDirection = (e.Delta < 0) ? 1 : -1;
+			delta = 0;
+			startPos = ScrollViewer.HorizontalOffset;
 
-            double ToValue;
-
-            if (e.Delta > 0)
-                ToValue = scrollViewer.HorizontalOffset - view.ActualWidth;
-            else
-                ToValue = scrollViewer.HorizontalOffset + view.ActualWidth;
-
-            DoubleAnimation horizontalAnimation = new DoubleAnimation();
-
-            horizontalAnimation.From = scrollViewer.VerticalOffset;
-            horizontalAnimation.To = ToValue;
-            horizontalAnimation.Duration = new Duration(TimeSpan.Parse("0:0:0.20"));
-
-            Storyboard storyboard = new Storyboard();
-
-            storyboard.Children.Add(horizontalAnimation);
-            Storyboard.SetTarget(horizontalAnimation, scrollViewer);
-            Storyboard.SetTargetProperty(horizontalAnimation, new PropertyPath(MainWindow.HorizontalOffsetProperty));
-            storyboard.Begin();
-
-
-            e.Handled = true;
+			e.Handled = true;
         }
 
         public void readExcelFile(object sender, RoutedEventArgs e)
