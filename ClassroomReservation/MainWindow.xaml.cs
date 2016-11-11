@@ -49,6 +49,8 @@ namespace ClassroomReservation
             readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
             AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+
+            button4.Click += new RoutedEventHandler(Button_Click);
         }
 
         public void changeMode(object sender, RoutedEventArgs e)
@@ -92,6 +94,12 @@ namespace ClassroomReservation
                 // Open document 
                 //fileOpenTextBox.Text = dlg.FileName;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ReservationWindow win2 = new ReservationWindow();
+            win2.Show();
         }
     }
 }

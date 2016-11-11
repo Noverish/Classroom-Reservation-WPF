@@ -22,6 +22,13 @@ namespace ClassroomReservation
         public ReservationWindow()
         {
             InitializeComponent();
+
+            Cancel_Button.Click += new RoutedEventHandler(Button_Click_Close);
+        }
+
+        private void Button_Click_Close(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
