@@ -127,15 +127,19 @@
         </Border>
 
         <Border DockPanel.Dock="Top" Height="43" BorderThickness="1" BorderBrush="Black">
-            <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="24">
-                관리자 모드로 변경
-            </Button>
+            <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
+                <Button Name="ChangeModeButton" DockPanel.Dock="Right"  VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="24">
+                    관리자 모드로 변경
+                </Button>
+                <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">
+                    <DatePicker Name="MainWindow_DatePicker" SelectedDateFormat="Long"/>
+                </Viewbox>
+            </DockPanel>
         </Border>
         <Border BorderThickness="1">
-            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled" >
-                <StackPanel Orientation="Horizontal" Name="Content">
-                    
-                </StackPanel>
+            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
+                <StackPanel Orientation="Horizontal" Name="scrollViewContentPanel"/>
             </ScrollViewer>
         </Border>
     </DockPanel>

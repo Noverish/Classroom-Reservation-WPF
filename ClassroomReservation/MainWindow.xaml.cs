@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Data;
 using System.IO;
+using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace ClassroomReservation
 {
@@ -25,33 +27,42 @@ namespace ClassroomReservation
     {
         private bool isUserMode = true;
 
-        public MainWindow()
-        {
-            InitializeComponent();
+		DispatcherTimer animationTimer = new DispatcherTimer();
+		private double reservationStatusPerDayWidth;
+		double delta = 0;
+		int deltaDirection = 1;
+		double startPos;
 
-            DateTime today = DateTime.Now;
+		public MainWindow()
+		{
+			InitializeComponent();
 
-            ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
-            ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
-            ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
-            ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
-            ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
-            ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
+			DateTime today = DateTime.Now;
 
-            Content.Children.Add(fileInputBox1);
-            Content.Children.Add(fileInputBox2);
-            Content.Children.Add(fileInputBox3);
-            Content.Children.Add(fileInputBox4);
-            Content.Children.Add(fileInputBox5);
-            Content.Children.Add(fileInputBox6);
+			ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today);
+			ReservationStatusPerDay fileInputBox2 = new ReservationStatusPerDay(today.AddDays(1));
+			ReservationStatusPerDay fileInputBox3 = new ReservationStatusPerDay(today.AddDays(2));
+			ReservationStatusPerDay fileInputBox4 = new ReservationStatusPerDay(today.AddDays(3));
+			ReservationStatusPerDay fileInputBox5 = new ReservationStatusPerDay(today.AddDays(4));
+			ReservationStatusPerDay fileInputBox6 = new ReservationStatusPerDay(today.AddDays(5));
 
-            ChangeModeButton.Click += new RoutedEventHandler(changeMode);
-            readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
+			scrollViewContentPanel.Children.Add(fileInputBox1);
+			scrollViewContentPanel.Children.Add(fileInputBox2);
+			scrollViewContentPanel.Children.Add(fileInputBox3);
+			scrollViewContentPanel.Children.Add(fileInputBox4);
+			scrollViewContentPanel.Children.Add(fileInputBox5);
+			scrollViewContentPanel.Children.Add(fileInputBox6);
 
-            AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
-            button4.Click += new RoutedEventHandler(Button_Click);
-        }
+			AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+
+			animationTimer.Interval = new TimeSpan(30);
+			animationTimer.Tick += new EventHandler(MyTimer_Tick);
+
+			button4.Click += new RoutedEventHandler(Button_Click);
+		}
 
         public void changeMode(object sender, RoutedEventArgs e)
         {
@@ -64,6 +75,48 @@ namespace ClassroomReservation
             {
                 AdminButtonPanel.Visibility = System.Windows.Visibility.Visible;
             }
+        }
+
+        public static DependencyProperty HorizontalOffsetProperty =
+            DependencyProperty.RegisterAttached("HorizontalOffset",
+                                                typeof(double),
+                                                typeof(MainWindow),
+                                                new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
+
+        private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
+        {
+            ScrollViewer scrollViewer = target as ScrollViewer;
+
+            if (scrollViewer != null)
+            {
+                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+            }
+        }
+
+		void MyTimer_Tick(object sender, EventArgs e)
+		{
+			if(Math.Abs(delta) > reservationStatusPerDayWidth)
+			{
+				animationTimer.Stop();
+			}
+			else
+			{
+				delta += deltaDirection;
+				ScrollViewer.ScrollToHorizontalOffset(startPos + delta);
+			}
+		}
+
+		private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+			ReservationStatusPerDay child = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
+			reservationStatusPerDayWidth = child.ActualWidth;
+
+			animationTimer.Start();
+			deltaDirection = (e.Delta < 0) ? 1 : -1;
+			delta = 0;
+			startPos = ScrollViewer.HorizontalOffset;
+
+			e.Handled = true;
         }
 
         public void readExcelFile(object sender, RoutedEventArgs e)
