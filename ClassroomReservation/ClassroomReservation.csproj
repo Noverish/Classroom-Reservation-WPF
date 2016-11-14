@@ -55,22 +55,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="ReservationStatusPerDay.xaml.cs">
+    <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ReservationWindow.xaml.cs">
+    <Compile Include="Reservation\ReservationWindow.xaml.cs">
       <DependentUpon>ReservationWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginForm.xaml.cs">
+    <Compile Include="Main\LoginForm.xaml.cs">
       <DependentUpon>LoginForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TimeSelectControl.xaml.cs">
+    <Compile Include="Reservation\TimeSelectControl.xaml.cs">
       <DependentUpon>TimeSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AlertWindow.xaml.cs">
+    <Compile Include="Other\AlertWindow.xaml.cs">
       <DependentUpon>AlertWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -78,27 +78,27 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Main\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ReservationStatusPerDay.xaml">
+    <Page Include="Main\ReservationStatusPerDay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ReservationWindow.xaml">
+    <Page Include="Reservation\ReservationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginForm.xaml">
+    <Page Include="Main\LoginForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TimeSelectControl.xaml">
+    <Page Include="Reservation\TimeSelectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AlertWindow.xaml">
+    <Page Include="Other\AlertWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

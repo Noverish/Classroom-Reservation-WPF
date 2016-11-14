@@ -1,9 +1,9 @@
-﻿<Window x:Class="ClassroomReservation.ReservationWindow"
+﻿<Window x:Class="ClassroomReservation.Reservation.ReservationWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ClassroomReservation"
+        xmlns:reservation="clr-namespace:ClassroomReservation.Reservation"
         mc:Ignorable="d"
         Height="768" Width="1366"
         WindowState="Normal" ResizeMode="CanMinimize"
@@ -60,7 +60,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <local:TimeSelectControl x:Name="TimeSelectControl" Grid.Row="0" Grid.RowSpan="10" Grid.Column="0" />
+                <reservation:TimeSelectControl x:Name="TimeSelectControl" Grid.Row="0" Grid.RowSpan="10" Grid.Column="0" />
 
                 <Label Name="room_name1" Content="이학별관" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Name="room_name2" Content="정보관" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>

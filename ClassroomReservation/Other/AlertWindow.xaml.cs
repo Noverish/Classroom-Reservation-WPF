@@ -12,16 +12,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ClassroomReservation
+namespace ClassroomReservation.Other
 {
     /// <summary>
     /// Window1.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class LoginForm : Window
+    public partial class AlertWindow : Window
     {
-        public LoginForm()
+        public AlertWindow(string content)
         {
             InitializeComponent();
+
+            contentLabel.Content = content;
         }
     }
 }
