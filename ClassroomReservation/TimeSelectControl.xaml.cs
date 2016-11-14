@@ -22,22 +22,28 @@ namespace ClassroomReservation
     {
         private IEnumerable<Label> buttons;
         private int[] nowSelectedTime = new int[2];
+        private bool mouseLeftButtonDown = false;
+        private SolidColorBrush selectedColor, hoverColor;
 
         public TimeSelectControl()
         {
             InitializeComponent();
             nowSelectedTime[0] = nowSelectedTime[1] = -1;
             buttons = mainGrid.Children.OfType<Label>();
+            selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
+            hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
+
 
             foreach (Label btn in buttons)
             {
-                btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnClick);
+                btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
+                btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
                 btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
                 btn.MouseLeave += new MouseEventHandler(OnMouseLeave);
             }
         }
 
-        private void OnClick(object sender, RoutedEventArgs e)
+        private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             foreach(Label btn in buttons)
             {
@@ -47,22 +53,50 @@ namespace ClassroomReservation
             Label button = sender as Label;
             int index = Grid.GetRow(button) + 1;
 
-            button.Background = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
+            button.Background = selectedColor;
             nowSelectedTime[0] = nowSelectedTime[1] = index;
+            mouseLeftButtonDown = true;
+        }
+
+        private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            mouseLeftButtonDown = false;
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e)
         {
             Label button = sender as Label;
             int index = Grid.GetRow(button) + 1;
-            if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
+
+            if(mouseLeftButtonDown)
             {
-                button.Background = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
+                if(nowSelectedTime[1] - nowSelectedTime[0] < 2)
+                {
+                    if(index < nowSelectedTime[0])
+                    {
+                        nowSelectedTime[0] = index;
+                        button.Background = selectedColor;
+                    }
+                    else if(nowSelectedTime[1] < index)
+                    {
+                        nowSelectedTime[1] = index;
+                        button.Background = selectedColor;
+                    }
+                }
             }
             else
             {
-                button.Background = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
+                if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
+                {
+                    button.Background = selectedColor;
+                }
+                else
+                {
+                    button.Background = hoverColor;
+                }
             }
+
+            
         }
 
         private void OnMouseLeave(object sender, RoutedEventArgs e)
@@ -71,7 +105,7 @@ namespace ClassroomReservation
             int index = Grid.GetRow(button) + 1;
             if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
             {
-                button.Background = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
+                button.Background = selectedColor;
             }
             else
             {
