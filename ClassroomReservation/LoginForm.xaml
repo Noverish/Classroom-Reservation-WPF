@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ClassroomReservation"
         mc:Ignorable="d"
         Height="350" Width="525"
-        WindowState="Normal" ResizeMode="CanMinimize">
+        WindowState="Normal" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

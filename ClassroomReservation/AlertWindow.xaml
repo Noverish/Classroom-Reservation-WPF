@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassroomReservation"
         mc:Ignorable="d"
-        Title="Window1" Height="200" Width="300">
+        Title="Window1" Height="200" Width="300"
+        WindowStartupLocation="CenterScreen">
     <Grid>
         <Label Name="contentLabel" Content="으아아아" HorizontalContentAlignment="Center" VerticalAlignment="Center"/>
     </Grid>

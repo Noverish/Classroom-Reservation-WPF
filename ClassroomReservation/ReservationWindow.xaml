@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassroomReservation"
         mc:Ignorable="d"
-        Height="900" Width="1500"
-        WindowState="Normal" ResizeMode="CanMinimize">
+        Height="768" Width="1366"
+        WindowState="Normal" ResizeMode="CanMinimize"
+        WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="TimeSelectButtonStyle" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
