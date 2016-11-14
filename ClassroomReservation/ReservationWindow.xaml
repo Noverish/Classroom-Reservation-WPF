@@ -7,6 +7,13 @@
         mc:Ignorable="d"
         Height="900" Width="1500"
         WindowState="Normal" ResizeMode="CanMinimize">
+    <Window.Resources>
+        <Style x:Key="TimeSelectButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="VerticalAlignment" Value="Stretch"/>
+            <Setter Property="Background" Value="White" />
+        </Style>
+    </Window.Resources>
     <Border BorderThickness="2" BorderBrush="Black">
         <Grid Margin="0,1,0,-1">
             <Grid.ColumnDefinitions>
@@ -29,7 +36,7 @@
                 <Calendar  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="SingleRange"/>
             </Viewbox>
 
-            <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
+            <Grid Name="mainGrid" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
@@ -52,17 +59,7 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                 </Grid.ColumnDefinitions>
-                <Button Name="time1" Grid.Row="0" Grid.Column="0" Content="1교시-9:00AM~10:15AM" Background="White"/>
-                <Button Name="time2" Grid.Row="1" Grid.Column="0" Content="2교시-10:30AM~11:45AM" Background="White"/>
-                <Button Name="time3" Grid.Row="2" Grid.Column="0" Content="3교시-12:00PM~12:50PM" Background="White"/>
-                <Button Name="time4" Grid.Row="3" Grid.Column="0" Content="4교시-1:00PM~1:50PM" Background="White"/>
-                <Button Name="time5" Grid.Row="4" Grid.Column="0" Content="5교시-2:00PM~3:15PM" Background="White"/>
-                <Button Name="time6" Grid.Row="5" Grid.Column="0" Content="6교시-3:30PM~4:45APM" Background="White"/>
-                <Button Name="time7" Grid.Row="6" Grid.Column="0" Content="7교시-5:00PM~5:50PM" Background="White"/>
-                <Button Name="time8" Grid.Row="7" Grid.Column="0" Content="8교시-6:00PM~6:50PM" Background="White"/>
-                <Button Name="time9" Grid.Row="8" Grid.Column="0" Content="9교시-7:00PM~7:50PM" Background="White"/>
-                <Button Name="time10" Grid.Row="9" Grid.Column="0" Content="10교시-8:00PM~8:50PM" Background="White"/>
-
+                <local:TimeSelectControl x:Name="TimeSelectControl" Grid.Row="0" Grid.RowSpan="10" Grid.Column="0" />
 
                 <Label Name="room_name1" Content="이학별관" FontWeight="Bold" Grid.Row="0" Grid.Column="1" Grid.RowSpan="4" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Name="room_name2" Content="정보관" FontWeight="Bold" Grid.Row="1" Grid.Column="1" Grid.RowSpan="8" HorizontalAlignment="Center" VerticalAlignment="Center"/>

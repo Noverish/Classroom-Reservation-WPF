@@ -24,11 +24,27 @@ namespace ClassroomReservation
             InitializeComponent();
 
             Cancel_Button.Click += new RoutedEventHandler(Button_Click_Close);
+
+            //int column = 0;
+            //for(int row = 0;row<10;row++)
+            //{
+            //    Button button = (Button) mainGrid.Children
+            //        .Cast<UIElement>()
+            //        .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
+
+            //    button.Click += new RoutedEventHandler(ChangeButtonColorToSelected);
+            //}
+
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void ChangeButtonColorToSelected(object sender, RoutedEventArgs e)
+        {
+           
         }
     }
 }
