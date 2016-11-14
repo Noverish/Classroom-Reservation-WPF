@@ -55,7 +55,7 @@ namespace ClassroomReservation
 
 			AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
 
-			animationTimer.Interval = new TimeSpan(30);
+			animationTimer.Interval = new TimeSpan(120);
 			animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
 			button4.Click += new RoutedEventHandler(Button_Click);
@@ -109,7 +109,7 @@ namespace ClassroomReservation
 			reservationStatusPerDayWidth = child.ActualWidth;
 
 			animationTimer.Start();
-			deltaDirection = (e.Delta < 0) ? 1 : -1;
+			deltaDirection = (e.Delta < 0) ? 2 : -2;
 			delta = 0;
 			startPos = ScrollViewer.HorizontalOffset;
 
@@ -149,7 +149,7 @@ namespace ClassroomReservation
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             ReservationWindow win2 = new ReservationWindow();
-            win2.Show();
+            win2.ShowDialog();
         }
     }
 }

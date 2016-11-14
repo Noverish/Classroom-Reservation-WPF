@@ -33,7 +33,7 @@
             <Label Name="inserting_info" Grid.Row="0" Grid.Column="3" Content="정보 입력" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
             <Viewbox Grid.Row="1" Grid.Column="0" VerticalAlignment="Top">
-                <Calendar  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="SingleRange"/>
+                <Calendar Name="calendar" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" SelectionMode="SingleRange" SelectedDatesChanged="Calendar_OnSelectedDatesChanged"/>
             </Viewbox>
 
             <Grid Name="mainGrid" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3">
