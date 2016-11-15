@@ -20,24 +20,31 @@ namespace ClassroomReservation.Reservation
     /// </summary>
     public partial class TimeSelectControl : UserControl
     {
-        private IEnumerable<Label> buttons;
-        private int[] nowSelectedTime = new int[2];
+        private static List<Label> selectedViews = new List<Label>();
+
+        private const int TOTAL = 10;
+
+        private List<Label> buttons;
+        
         private bool mouseLeftButtonDown = false;
-        private SolidColorBrush selectedColor, hoverColor;
+
+        private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
+        private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
+        private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
+        private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 
         public TimeSelectControl()
         {
             InitializeComponent();
-            nowSelectedTime[0] = nowSelectedTime[1] = -1;
-            buttons = mainGrid.Children.OfType<Label>();
-            selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
-            hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
-
-
+            buttons = mainGrid.Children.OfType<Label>().ToList();
+            
             foreach (Label btn in buttons)
             {
+                setOriginColor(btn);
+
                 btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
                 btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
+                btn.MouseMove += new MouseEventHandler(onMouseMove);
                 btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
                 btn.MouseLeave += new MouseEventHandler(OnMouseLeave);
             }
@@ -45,71 +52,117 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            foreach(Label btn in buttons)
-            {
-                btn.Background = Brushes.White;
-            }
-
             Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
 
+            foreach (Label btn in buttons)
+                setOriginColor(btn);
             button.Background = selectedColor;
-            nowSelectedTime[0] = nowSelectedTime[1] = index;
+
+            selectedViews.Clear();
+            selectedViews.Add(button);
+
             mouseLeftButtonDown = true;
+
+            Mouse.Capture(button);
         }
 
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
+
+            Mouse.Capture(null);
+        }
+
+        private void onMouseMove(object sender, RoutedEventArgs e)
+        {
+            if (mouseLeftButtonDown)
+            {
+                Label btn = sender as Label;
+                double height = btn.ActualHeight;
+                double pos = Mouse.GetPosition(btn).Y;
+                int row = Grid.GetRow(btn);
+                
+                Console.WriteLine(height + " " + pos);
+
+                if (-2 * height < pos && pos < -height)
+                {
+                    setting(row - 2, true);
+                    setting(row - 1, true);
+                    setting(row + 1, false);
+                    setting(row + 2, false);
+                }
+                else if (-height < pos && pos < 0)
+                {
+                    setting(row - 2, false);
+                    setting(row - 1, true);
+                    setting(row + 1, false);
+                    setting(row + 2, false);
+                }
+                else if (0 < pos && pos < height)
+                {
+                    setting(row - 2, false);
+                    setting(row - 1, false);
+                    setting(row + 1, false);
+                    setting(row + 2, false);
+                }
+                else if (height < pos && pos < 2 * height)
+                {
+                    setting(row - 2, false);
+                    setting(row - 1, false);
+                    setting(row + 1, true);
+                    setting(row + 2, false);
+                }
+                else if (2 * height < pos && pos < 3 * height)
+                {
+                    setting(row - 2, false);
+                    setting(row - 1, false);
+                    setting(row + 1, true);
+                    setting(row + 2, true);
+                }
+            }
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e)
         {
-            Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
+            Label btn = sender as Label;
 
-            if(mouseLeftButtonDown)
-            {
-                if(nowSelectedTime[1] - nowSelectedTime[0] < 2)
-                {
-                    if(index < nowSelectedTime[0])
-                    {
-                        nowSelectedTime[0] = index;
-                        button.Background = selectedColor;
-                    }
-                    else if(nowSelectedTime[1] < index)
-                    {
-                        nowSelectedTime[1] = index;
-                        button.Background = selectedColor;
-                    }
-                }
-            }
-            else
-            {
-                if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
-                {
-                    button.Background = selectedColor;
-                }
-                else
-                {
-                    button.Background = hoverColor;
-                }
-            }
-
-            
+            if (!selectedViews.Contains(btn))
+                btn.Background = hoverColor;
         }
 
         private void OnMouseLeave(object sender, RoutedEventArgs e)
         {
-            Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
-            if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
-            {
-                button.Background = selectedColor;
-            }
+            Label btn = sender as Label;
+
+            if (!selectedViews.Contains(btn))
+                setOriginColor(btn);
+
+        }
+
+        private void setOriginColor(Label button)
+        {
+            if (Grid.GetRow(button) % 2 == 0)
+                button.Background = backgroundEven;
             else
+                button.Background = backgroundOdd;
+        }
+
+        private void setting(int index, bool makeSelect)
+        {
+            if(0 <= index && index < TOTAL)
             {
-                button.Background = Brushes.White;
+                Label button = buttons[index];
+
+                if (makeSelect)
+                {
+                    button.Background = selectedColor;
+                    selectedViews.Add(button);
+                }
+                else
+                {
+                    setOriginColor(button);
+                    selectedViews.Remove(button);
+                }
             }
         }
     }

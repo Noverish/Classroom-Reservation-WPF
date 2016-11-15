@@ -84,16 +84,18 @@ namespace ClassroomReservation.Main
 
         private void onMouseDown(object sender, RoutedEventArgs e)
         {
+            TextBlock button = sender as TextBlock;
+
             foreach(TextBlock selectedView in selectedViews)
                 setOriginColor(selectedView);
-            (sender as TextBlock).Background = selectColor;
+            button.Background = selectColor;
 
             selectedViews.Clear();
-            selectedViews.Add(sender as TextBlock);
+            selectedViews.Add(button);
 
             mouseLeftButtonDown = true;
 
-            Mouse.Capture(sender as TextBlock);
+            Mouse.Capture(button);
         }
 
         private void onMouseUp(object sender, RoutedEventArgs e)
@@ -104,153 +106,48 @@ namespace ClassroomReservation.Main
 
         private void onMouseMove(object sender, RoutedEventArgs e)
         {
-            TextBlock btn = sender as TextBlock;
-            int index = getColumn(btn);
-            double width = btn.ActualWidth;
-            double pos = Mouse.GetPosition(btn).X;
-
             if (mouseLeftButtonDown)
             {
+                TextBlock btn = sender as TextBlock;
+                double width = btn.ActualWidth;
+                double pos = Mouse.GetPosition(btn).X;
+                int row = getRow(btn);
+                int column = getColumn(btn);
+
                 if (-2 * width < pos && pos < -width)
                 {
-                    if(index > 1)
-                    {
-                        TextBlock prevPrev = getChild(getRow(btn), getColumn(btn) - 2);
-                        prevPrev.Background = selectColor;
-                        selectedViews.Add(prevPrev);
-                    }
-                    if(index > 0)
-                    {
-                        TextBlock prev = getChild(getRow(btn), getColumn(btn) - 1);
-                        prev.Background = selectColor;
-                        selectedViews.Add(prev);
-
-                    }
-                    if(index < COLUMN_NUMBER - 1)
-                    {
-                        TextBlock next = getChild(getRow(btn), getColumn(btn) + 1);
-                        setOriginColor(next);
-                        selectedViews.Remove(next);
-
-                    }
-                    if(index < COLUMN_NUMBER - 2)
-                    {
-                        TextBlock nextNext = getChild(getRow(btn), getColumn(btn) + 2);
-                        setOriginColor(nextNext);
-                        selectedViews.Remove(nextNext);
-                    }
+                    setting(row, column - 2, true);
+                    setting(row, column - 1, true);
+                    setting(row, column + 1, false);
+                    setting(row, column + 2, false);
                 }
-                else if (-width < pos && pos < 0 && getColumn(btn) > 0)
+                else if (-width < pos && pos < 0)
                 {
-                    if (index > 1)
-                    {
-                        TextBlock prevPrev = getChild(getRow(btn), getColumn(btn) - 2);
-                        setOriginColor(prevPrev);
-                        selectedViews.Remove(prevPrev);
-                    }
-                    if (index > 0)
-                    {
-                        TextBlock prev = getChild(getRow(btn), getColumn(btn) - 1);
-                        prev.Background = selectColor;
-                        selectedViews.Add(prev);
-
-                    }
-                    if (index < COLUMN_NUMBER - 1)
-                    {
-                        TextBlock next = getChild(getRow(btn), getColumn(btn) + 1);
-                        setOriginColor(next);
-                        selectedViews.Remove(next);
-
-                    }
-                    if (index < COLUMN_NUMBER - 2)
-                    {
-                        TextBlock nextNext = getChild(getRow(btn), getColumn(btn) + 2);
-                        setOriginColor(nextNext);
-                        selectedViews.Remove(nextNext);
-                    }
+                    setting(row, column - 2, false);
+                    setting(row, column - 1, true);
+                    setting(row, column + 1, false);
+                    setting(row, column + 2, false);
                 }
                 else if(0 < pos && pos < width)
                 {
-                    if (index > 1)
-                    {
-                        TextBlock prevPrev = getChild(getRow(btn), getColumn(btn) - 2);
-                        setOriginColor(prevPrev);
-                        selectedViews.Remove(prevPrev);
-                    }
-                    if (index > 0)
-                    {
-                        TextBlock prev = getChild(getRow(btn), getColumn(btn) - 1);
-                        setOriginColor(prev);
-                        selectedViews.Remove(prev);
-                    }
-                    if (index < COLUMN_NUMBER - 1)
-                    {
-                        TextBlock next = getChild(getRow(btn), getColumn(btn) + 1);
-                        setOriginColor(next);
-                        selectedViews.Remove(next);
-
-                    }
-                    if (index < COLUMN_NUMBER - 2)
-                    {
-                        TextBlock nextNext = getChild(getRow(btn), getColumn(btn) + 2);
-                        setOriginColor(nextNext);
-                        selectedViews.Remove(nextNext);
-                    }
+                    setting(row, column - 2, false);
+                    setting(row, column - 1, false);
+                    setting(row, column + 1, false);
+                    setting(row, column + 2, false);
                 }
                 else if (width < pos && pos < 2 * width)
                 {
-                    if (index > 1)
-                    {
-                        TextBlock prevPrev = getChild(getRow(btn), getColumn(btn) - 2);
-                        setOriginColor(prevPrev);
-                        selectedViews.Remove(prevPrev);
-                    }
-                    if (index > 0)
-                    {
-                        TextBlock prev = getChild(getRow(btn), getColumn(btn) - 1);
-                        setOriginColor(prev);
-                        selectedViews.Remove(prev);
-
-                    }
-                    if (index < COLUMN_NUMBER - 1)
-                    {
-                        TextBlock next = getChild(getRow(btn), getColumn(btn) + 1);
-                        next.Background = selectColor;
-                        selectedViews.Add(next);
-                    }
-                    if (index < COLUMN_NUMBER - 2)
-                    {
-                        TextBlock nextNext = getChild(getRow(btn), getColumn(btn) + 2);
-                        setOriginColor(nextNext);
-                        selectedViews.Remove(nextNext);
-                    }
+                    setting(row, column - 2, false);
+                    setting(row, column - 1, false);
+                    setting(row, column + 1, true);
+                    setting(row, column + 2, false);
                 }
                 else if (2 * width < pos && pos < 3 * width)
                 {
-                    if (index > 1)
-                    {
-                        TextBlock prevPrev = getChild(getRow(btn), getColumn(btn) - 2);
-                        setOriginColor(prevPrev);
-                        selectedViews.Remove(prevPrev);
-                    }
-                    if (index > 0)
-                    {
-                        TextBlock prev = getChild(getRow(btn), getColumn(btn) - 1);
-                        setOriginColor(prev);
-                        selectedViews.Remove(prev);
-                    }
-                    if (index < COLUMN_NUMBER - 1)
-                    {
-                        TextBlock next = getChild(getRow(btn), getColumn(btn) + 1);
-                        next.Background = selectColor;
-                        selectedViews.Add(next);
-                    }
-                    if (index < COLUMN_NUMBER - 2)
-                    {
-                        TextBlock nextNext = getChild(getRow(btn), getColumn(btn) + 2);
-                        nextNext.Background = selectColor;
-                        selectedViews.Add(nextNext);
-                    }
+                    setting(row, column - 2, false);
+                    setting(row, column - 1, false);
+                    setting(row, column + 1, true);
+                    setting(row, column + 2, true);
                 }
             }
         }
@@ -292,6 +189,25 @@ namespace ClassroomReservation.Main
                 button.Background = backgroundEven;
             else
                 button.Background = backgroundOdd;
+        }
+
+        private void setting(int row, int column, bool makeSelect)
+        {
+            if (0 <= column && column < COLUMN_NUMBER)
+            {
+                TextBlock button = getChild(row, column);
+
+                if (makeSelect)
+                {
+                    button.Background = selectColor;
+                    selectedViews.Add(button);
+                }
+                else
+                {
+                    setOriginColor(button);
+                    selectedViews.Remove(button);
+                }
+            }
         }
     }
 }
