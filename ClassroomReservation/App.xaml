@@ -17,5 +17,10 @@
         <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
         <SolidColorBrush x:Key="MicrosoftRed" Color="#f65314"/>
         <SolidColorBrush x:Key="MicrosoftBlue" Color="#00a1f1"/>
+        <x:Array x:Key="TimeTable" Type="sys:String" 
+            xmlns:sys="clr-namespace:System;assembly=mscorlib">
+            <sys:String>One</sys:String>
+            <sys:String>Two</sys:String>
+        </x:Array>
     </Application.Resources>
 </Application>
