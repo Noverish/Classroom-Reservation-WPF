@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,27 @@ namespace ClassroomReservation
         public LoginForm()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            StreamWriter sw = new StreamWriter("a.txt");
+            StreamReader sr = new StreamReader("check.txt");
+
+            while (sr.Peek() >= 0)
+            {
+                if (String.Equals(sr.ReadLine(), Insert_Id.Text) && String.Equals(sr.ReadLine(), Insert_Password.Password))
+                {
+                    sw.WriteLine("check");
+                    break;
+                }
+            }
+
+            sw.Close();
+            sr.Close();
+
+            Insert_Id.Clear();
+            Insert_Password.Clear();
         }
     }
 }
