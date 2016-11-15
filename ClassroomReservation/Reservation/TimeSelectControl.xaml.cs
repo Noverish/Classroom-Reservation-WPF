@@ -81,8 +81,6 @@ namespace ClassroomReservation.Reservation
                 double height = btn.ActualHeight;
                 double pos = Mouse.GetPosition(btn).Y;
                 int row = Grid.GetRow(btn);
-                
-                Console.WriteLine(height + " " + pos);
 
                 if (-2 * height < pos && pos < -height)
                 {
