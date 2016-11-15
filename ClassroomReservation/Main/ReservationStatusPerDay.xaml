@@ -13,12 +13,16 @@
             <Setter Property="Height" Value="75"/>
             <Setter Property="Fill" Value="#ABCDEF"/>
         </Style>-->
-        <Style TargetType="TextBlock">
-            <Setter Property="TextAlignment" Value="center"></Setter>
-            <Setter Property="VerticalAlignment" Value="center"></Setter>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="center"></Setter>
+            <Setter Property="HorizontalContentAlignment" Value="center"></Setter>
+            <Setter Property="VerticalAlignment" Value="Stretch"></Setter>
+            <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
+            <Setter Property="BorderBrush" Value="Gray"></Setter>
+            <Setter Property="BorderThickness" Value="0, 1, 0, 1"></Setter>
         </Style>
     </UserControl.Resources>
-    <Border BorderThickness="2" BorderBrush="Black">
+    <Border BorderThickness="3, 3, 0, 3" BorderBrush="Black">
         <Grid Name="wrapPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="450">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -49,17 +53,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Name="DateTextBlock" Text="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10"/>
-            <TextBlock Text="1교시" Grid.Row="1" Grid.Column="0"/>
-            <TextBlock Text="2교시" Grid.Row="1" Grid.Column="1"/>
-            <TextBlock Text="3교시" Grid.Row="1" Grid.Column="2"/>
-            <TextBlock Text="4교시" Grid.Row="1" Grid.Column="3"/>
-            <TextBlock Text="5교시" Grid.Row="1" Grid.Column="4"/>
-            <TextBlock Text="6교시" Grid.Row="1" Grid.Column="5"/>
-            <TextBlock Text="7교시" Grid.Row="1" Grid.Column="6"/>
-            <TextBlock Text="8교시" Grid.Row="1" Grid.Column="7"/>
-            <TextBlock Text="9교시" Grid.Row="1" Grid.Column="8"/>
-            <TextBlock Text="10교시" Grid.Row="1" Grid.Column="9"/>
+            <Label Name="DateTextBlock" Content="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+            <Label Content="1교시" Grid.Row="1" Grid.Column="0" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="2교시" Grid.Row="1" Grid.Column="1" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="3교시" Grid.Row="1" Grid.Column="2" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="4교시" Grid.Row="1" Grid.Column="3" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="5교시" Grid.Row="1" Grid.Column="4" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="6교시" Grid.Row="1" Grid.Column="5" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="7교시" Grid.Row="1" Grid.Column="6" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="8교시" Grid.Row="1" Grid.Column="7" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="9교시" Grid.Row="1" Grid.Column="8" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Content="10교시" Grid.Row="1" Grid.Column="9" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
         </Grid>
     </Border>
 </UserControl>

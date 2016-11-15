@@ -27,7 +27,8 @@ namespace ClassroomReservation.Main
         private int selectedButtonNum = 0;
         private int nowSelectedRow = -1;
 
-        private Brush defaultColor = Brushes.Azure;
+        private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+        private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private Brush selectColor = Brushes.Crimson;
 
         delegate void asdf(object s, RoutedEventArgs e);
@@ -43,7 +44,7 @@ namespace ClassroomReservation.Main
             InitializeComponent();
 
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
-            DateTextBlock.Text = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
+            DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
 
             for (int i = 0; i < 12; i++)
             {
@@ -54,7 +55,10 @@ namespace ClassroomReservation.Main
                     //newBtn.Content = i + ", " + j;
                     //newBtn.Name = "Button" + i.ToString();
 
-                    newBtn.Background = defaultColor;
+                    if (i % 2 == 0)
+                        newBtn.Background = defaultColorOfEven;
+                    else
+                        newBtn.Background = defaultColorOfOdd;
                     newBtn.VerticalAlignment = VerticalAlignment.Stretch;
                     newBtn.HorizontalAlignment = HorizontalAlignment.Stretch;
                     newBtn.Name = "_" + i + "_" + j;
@@ -66,13 +70,13 @@ namespace ClassroomReservation.Main
                     newBtn.MouseMove += new MouseEventHandler(onMouseMove);
 
                     Border myBorder1 = new Border();
-                    myBorder1.BorderBrush = Brushes.Black;
+                    myBorder1.BorderBrush = Brushes.Gray;
                     if (j == 0)
-                        myBorder1.BorderThickness = new Thickness { Top = 1, Bottom = 1, Left = 0, Right = 1 };
+                        myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
                     else if (j == 9)
-                        myBorder1.BorderThickness = new Thickness { Top = 1, Bottom = 1, Left = 1, Right = 0 };
+                        myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 0 };
                     else
-                        myBorder1.BorderThickness = new Thickness(1);
+                        myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
 
 
                     myBorder1.Child = newBtn;
@@ -89,7 +93,10 @@ namespace ClassroomReservation.Main
         {
             foreach(TextBlock selectedView in selectedViews)
             {
-                selectedView.Background = defaultColor;
+                if(getRow(selectedView) % 2 == 0)
+                    selectedView.Background = defaultColorOfEven;
+                else
+                    selectedView.Background = defaultColorOfOdd;
             }
 
             (sender as TextBlock).Background = selectColor;
@@ -98,18 +105,12 @@ namespace ClassroomReservation.Main
             selectedViews.Add(sender as TextBlock);
 
             mouseLeftButtonDown = true;
-            
-
-            Console.WriteLine("onMouseDown");
         }
 
         private void onMouseUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
             //Mouse.Capture(null);
-
-
-            Console.WriteLine("onMouseUp");
         }
 
         private void onMouseEnter(object sender, RoutedEventArgs e)
@@ -120,13 +121,10 @@ namespace ClassroomReservation.Main
                 selectedViews.Add(sender as TextBlock);
                 selectedButtonNum++;
             }
-
-            Console.WriteLine("onMouseEnter");
         }
 
         private void onMouseLeave(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("onMouseLeave");
             //Mouse.Capture(sender as TextBlock);
         }
 
