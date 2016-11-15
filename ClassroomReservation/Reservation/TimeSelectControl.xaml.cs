@@ -25,6 +25,10 @@ namespace ClassroomReservation.Reservation
         private bool mouseLeftButtonDown = false;
         private SolidColorBrush selectedColor, hoverColor;
 
+        private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
+        private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+
+
         public TimeSelectControl()
         {
             InitializeComponent();
@@ -32,7 +36,6 @@ namespace ClassroomReservation.Reservation
             buttons = mainGrid.Children.OfType<Label>();
             selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
             hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
-
 
             foreach (Label btn in buttons)
             {
@@ -47,7 +50,10 @@ namespace ClassroomReservation.Reservation
         {
             foreach(Label btn in buttons)
             {
-                btn.Background = Brushes.White;
+                if (Grid.GetRow(btn) % 2 == 0)
+                    btn.Background = backgroundEven;
+                else
+                    btn.Background = backgroundOdd;
             }
 
             Label button = sender as Label;
