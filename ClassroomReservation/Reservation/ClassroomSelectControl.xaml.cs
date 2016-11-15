@@ -92,16 +92,17 @@ namespace ClassroomReservation.Reservation
 
             else
             {
-                if(previousColor>=0 && previousColor % 2 == 0)
+                if(previousColor>=0 && previousColor % 2 == 0 && labelNames[previousColor].Background != selectedColor)
                 {
                     labelNames[previousColor].Background = backgroundOdd;
                 }
-                else if(previousColor >= 0 && previousColor % 2 ==1)
+                else if(previousColor >= 0 && previousColor % 2 ==1 && labelNames[previousColor].Background != selectedColor)
                 {
                     labelNames[previousColor].Background = backgroundEven;
                 }
                 previousColor = Grid.GetRow(sender as Label);
-                labelNames[previousColor].Background = hoverColor;
+                if(labelNames[previousColor].Background != selectedColor)
+                    labelNames[previousColor].Background = hoverColor;
             }
         }
 

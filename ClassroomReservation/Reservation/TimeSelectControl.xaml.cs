@@ -39,6 +39,11 @@ namespace ClassroomReservation.Reservation
 
             foreach (Label btn in buttons)
             {
+                if (Grid.GetRow(btn) % 2 == 0)
+                    btn.Background = backgroundEven;
+                else
+                    btn.Background = backgroundOdd;
+
                 btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
                 btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
                 btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
