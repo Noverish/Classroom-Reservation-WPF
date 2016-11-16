@@ -28,6 +28,7 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 
+        private Label previousButton = null;
 
         public TimeSelectControl()
         {
@@ -103,7 +104,12 @@ namespace ClassroomReservation.Reservation
                 }
                 else
                 {
+                    if (previousButton !=null && Grid.GetRow(previousButton) % 2 == 0)
+                        previousButton.Background = backgroundEven;
+                    else if(previousButton != null && Grid.GetRow(previousButton) % 2 == 1)
+                        previousButton.Background = backgroundOdd;
                     button.Background = hoverColor;
+                    previousButton = button;
                 }
             }
 
@@ -120,7 +126,10 @@ namespace ClassroomReservation.Reservation
             }
             else
             {
-                button.Background = Brushes.White;
+                if (Grid.GetRow(button) % 2 == 0)
+                    button.Background = backgroundEven;
+                else if (Grid.GetRow(button) % 2 == 1)
+                    button.Background = backgroundOdd;
             }
         }
     }

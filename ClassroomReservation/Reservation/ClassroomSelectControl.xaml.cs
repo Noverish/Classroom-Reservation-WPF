@@ -100,6 +100,7 @@ namespace ClassroomReservation.Reservation
                 {
                     labelNames[previousColor].Background = backgroundEven;
                 }
+
                 previousColor = Grid.GetRow(sender as Label);
                 if(labelNames[previousColor].Background != selectedColor)
                     labelNames[previousColor].Background = hoverColor;
@@ -108,7 +109,15 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeave(object sender, RoutedEventArgs e)
         {
-            //getrow
+            for(int i = 0; i < 12; i++)
+            {
+                if (labelNames[i].Background == selectedColor)
+                    labelNames[i].Background = selectedColor;
+                else if (i % 2 == 0)
+                    labelNames[i].Background = backgroundOdd;
+                else if (i % 2 == 1)
+                    labelNames[i].Background = backgroundEven;
+            }
         }
     }
 }
