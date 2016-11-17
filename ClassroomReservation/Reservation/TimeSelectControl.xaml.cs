@@ -104,9 +104,9 @@ namespace ClassroomReservation.Reservation
                 }
                 else
                 {
-                    if (previousButton !=null && Grid.GetRow(previousButton) % 2 == 0)
+                    if (previousButton !=null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 0)
                         previousButton.Background = backgroundEven;
-                    else if(previousButton != null && Grid.GetRow(previousButton) % 2 == 1)
+                    else if(previousButton != null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 1)
                         previousButton.Background = backgroundOdd;
                     button.Background = hoverColor;
                     previousButton = button;
