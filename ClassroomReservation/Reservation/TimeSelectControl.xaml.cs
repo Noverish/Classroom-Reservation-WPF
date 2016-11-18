@@ -33,14 +33,18 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 
+        private Label previousButton = null;
+
         public TimeSelectControl()
         {
             InitializeComponent();
+
             buttons = mainGrid.Children.OfType<Label>().ToList();
             
             foreach (Label btn in buttons)
             {
                 setOriginColor(btn);
+
 
                 btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
                 btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
@@ -52,6 +56,14 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
+            foreach (Label btn in buttons)
+            {
+                if (Grid.GetRow(btn) % 2 == 0)
+                    btn.Background = backgroundEven;
+                else
+                    btn.Background = backgroundOdd;
+            }
+
             Label button = sender as Label;
 
             foreach (Label btn in buttons)
@@ -116,6 +128,14 @@ namespace ClassroomReservation.Reservation
                     setting(row - 1, false);
                     setting(row + 1, true);
                     setting(row + 2, true);
+//=======
+//                    if (previousButton !=null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 0)
+//                        previousButton.Background = backgroundEven;
+//                    else if(previousButton != null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 1)
+//                        previousButton.Background = backgroundOdd;
+//                    button.Background = hoverColor;
+//                    previousButton = button;
+//>>>>>>> origin/rebeca
                 }
             }
         }
@@ -161,6 +181,12 @@ namespace ClassroomReservation.Reservation
                     setOriginColor(button);
                     selectedViews.Remove(button);
                 }
+//=======
+//                if (Grid.GetRow(button) % 2 == 0)
+//                    button.Background = backgroundEven;
+//                else if (Grid.GetRow(button) % 2 == 1)
+//                    button.Background = backgroundOdd;
+//>>>>>>> origin/rebeca
             }
         }
     }

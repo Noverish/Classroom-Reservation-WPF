@@ -21,18 +21,37 @@ namespace ClassroomReservation.Reservation
     public partial class ClassroomSelectControl : UserControl
     {
         private IEnumerable<Label> buttons;
-        private int[] nowSelectedTime = new int[2];
+
         private bool mouseLeftButtonDown = false;
         private SolidColorBrush selectedColor, hoverColor;
+
+        private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
+        private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+
+        private Label[] labelNames;
+        private int previousColor = -1;
 
         public ClassroomSelectControl()
         {
             InitializeComponent();
-            nowSelectedTime[0] = nowSelectedTime[1] = -1;
+
+            labelNames = new Label[]{ time1, time2, time3, time4, time5, time6, time7, time8, time9, time10, time11, time12};
+
+            for (int i=0; i<12; i++)
+            {
+                if(i%2==0)
+                {
+                    labelNames[i].Background = backgroundOdd;
+                }
+                else
+                {
+                    labelNames[i].Background = backgroundEven;
+                }
+            }
+
             buttons = mainGrid.Children.OfType<Label>();
             selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
             hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
-
 
             foreach (Label btn in buttons)
             {
@@ -45,16 +64,20 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            foreach(Label btn in buttons)
+            for (int i = 0; i < 12; i++)
             {
-                btn.Background = Brushes.White;
+                if (i % 2 == 0)
+                {
+                    labelNames[i].Background = backgroundOdd;
+                }
+                else
+                {
+                    labelNames[i].Background = backgroundEven;
+                }
             }
 
-            Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
-
-            button.Background = selectedColor;
-            nowSelectedTime[0] = nowSelectedTime[1] = index;
+            (sender as Label).Background = selectedColor;
+            previousColor = -1;
             mouseLeftButtonDown = true;
         }
 
@@ -64,52 +87,36 @@ namespace ClassroomReservation.Reservation
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e)
-        {
-            Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
+        {        
+            if(mouseLeftButtonDown){}
 
-            if(mouseLeftButtonDown)
-            {
-                if(nowSelectedTime[1] - nowSelectedTime[0] < 2)
-                {
-                    if(index < nowSelectedTime[0])
-                    {
-                        nowSelectedTime[0] = index;
-                        button.Background = selectedColor;
-                    }
-                    else if(nowSelectedTime[1] < index)
-                    {
-                        nowSelectedTime[1] = index;
-                        button.Background = selectedColor;
-                    }
-                }
-            }
             else
             {
-                if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
+                if(previousColor>=0 && previousColor % 2 == 0 && labelNames[previousColor].Background != selectedColor)
                 {
-                    button.Background = selectedColor;
+                    labelNames[previousColor].Background = backgroundOdd;
                 }
-                else
+                else if(previousColor >= 0 && previousColor % 2 ==1 && labelNames[previousColor].Background != selectedColor)
                 {
-                    button.Background = hoverColor;
+                    labelNames[previousColor].Background = backgroundEven;
                 }
-            }
 
-            
+                previousColor = Grid.GetRow(sender as Label);
+                if(labelNames[previousColor].Background != selectedColor)
+                    labelNames[previousColor].Background = hoverColor;
+            }
         }
 
         private void OnMouseLeave(object sender, RoutedEventArgs e)
         {
-            Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
-            if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
+            for(int i = 0; i < 12; i++)
             {
-                button.Background = selectedColor;
-            }
-            else
-            {
-                button.Background = Brushes.White;
+                if (labelNames[i].Background == selectedColor)
+                    labelNames[i].Background = selectedColor;
+                else if (i % 2 == 0)
+                    labelNames[i].Background = backgroundOdd;
+                else if (i % 2 == 1)
+                    labelNames[i].Background = backgroundEven;
             }
         }
     }
