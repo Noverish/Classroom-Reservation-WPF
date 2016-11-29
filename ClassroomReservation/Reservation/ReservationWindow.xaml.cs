@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
-    /// <summary>
-    /// WpfApplication3.xaml에 대한 상호 작용 논리
-    /// </summary>
     public partial class ReservationWindow : Window
     {
         private bool changedByUser = true;
@@ -37,6 +34,13 @@ namespace ClassroomReservation.Reservation
             //    button.Click += new RoutedEventHandler(ChangeButtonColorToSelected);
             //}
 
+            //calendar.SelectionMode = CalendarSelectionMode.SingleDate;
+
+            foreach (Label btn in timeSelectControl.mainGrid.Children.OfType<Label>())
+            {
+                btn.IsEnabled = false;
+            }
+
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
         }
@@ -46,13 +50,21 @@ namespace ClassroomReservation.Reservation
             this.Close();
         }
 
-        private void ChangeButtonColorToSelected(object sender, RoutedEventArgs e)
-        {
-           
-        }
-
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
+            var calendar = sender as Calendar;
+            
+            if (calendar.SelectedDate.HasValue && calendar.SelectedDates.Count > 0) //See if a date is selected.
+            {
+                foreach (Label btn in timeSelectControl.mainGrid.Children.OfType<Label>())
+                {
+                    btn.IsEnabled = true;
+                }
+                // ... Display SelectedDate in Title.
+                //DateTime date = calendar.SelectedDate.Value;
+                //this.Title = date.ToShortDateString();
+            }
+
             //var calendar = sender as Calendar;
 
             //if (calendar.SelectedDate.HasValue && calendar.SelectedDates.Count > 0)
@@ -80,7 +92,7 @@ namespace ClassroomReservation.Reservation
             //    {
             //        AlertWindow window = new AlertWindow("오늘 부터 7일안의 날짜에만 예약 할 수 있습니다.");
             //        window.ShowDialog();
-                    
+
             //        calendar.SelectedDates.Clear();
             //        calendar.SelectedDate = DateTime.Today;
 

@@ -60,6 +60,11 @@ namespace ClassroomReservation.Reservation
                 btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
                 btn.MouseLeave += new MouseEventHandler(OnMouseLeave);
             }
+
+            foreach (Label btn in buttons)
+            {
+                btn.IsEnabled = false;
+            }
         }
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)

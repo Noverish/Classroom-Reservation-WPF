@@ -23,17 +23,21 @@ namespace ClassroomReservation.Main
     {
         private static List<TextBlock> selectedViews = new List<TextBlock>();
 
-        private const int COLUMN_NUMBER = 10;
-        private const int ROW_NUMBER = 12;
-
-        private TextBlock[,] buttons = new TextBlock[ROW_NUMBER, COLUMN_NUMBER];
-
         private bool mouseLeftButtonDown = false;
+        private int selectedButtonNum = 0;
+        private int nowSelectedRow = -1;
 
-        private Brush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
-        private Brush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
-        private Brush selectColor = (SolidColorBrush)Application.Current.FindResource("Selected");
-        private Brush hoverColor = (SolidColorBrush)Application.Current.FindResource("Hover");
+        private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+        private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
+        private Brush selectColor = Brushes.Crimson;
+
+        delegate void asdf(object s, RoutedEventArgs e);
+
+        private SolidColorBrush red = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+        private SolidColorBrush green = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+        private SolidColorBrush blue = new SolidColorBrush(Color.FromRgb(255, 0, 0));
+        private SolidColorBrush orange = new SolidColorBrush(Color.FromRgb(255, 255, 0));
+        private SolidColorBrush purple = new SolidColorBrush(Color.FromRgb(255, 0, 255));
 
         public ReservationStatusPerDay(DateTime date)
         {
@@ -42,172 +46,97 @@ namespace ClassroomReservation.Main
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
             DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
 
-            for (int row = 0; row < ROW_NUMBER; row++)
+            for (int i = 0; i < 12; i++)
             {
-                for (int column = 0; column < COLUMN_NUMBER; column++)
+                for (int j = 0; j < 10; j++)
                 {
-                    TextBlock newButton = new TextBlock();
+                    TextBlock newBtn = new TextBlock();
 
+                    //newBtn.Content = i + ", " + j;
+                    //newBtn.Name = "Button" + i.ToString();
 
-                    newButton.VerticalAlignment = VerticalAlignment.Stretch;
-                    newButton.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    newButton.Name = "_" + row + "_" + column;
+                    if (i % 2 == 0)
+                        newBtn.Background = defaultColorOfEven;
+                    else
+                        newBtn.Background = defaultColorOfOdd;
+                    newBtn.VerticalAlignment = VerticalAlignment.Stretch;
+                    newBtn.HorizontalAlignment = HorizontalAlignment.Stretch;
+                    newBtn.Name = "_" + i + "_" + j;
 
-                    newButton.MouseDown += new MouseButtonEventHandler(onMouseDown);
-                    newButton.MouseUp += new MouseButtonEventHandler(onMouseUp);
-                    newButton.MouseMove += new MouseEventHandler(onMouseMove);
-                    newButton.MouseEnter += new MouseEventHandler(onMouseEnter);
-                    newButton.MouseLeave += new MouseEventHandler(OnMouseLeave);
-
-                    setOriginColor(newButton);
-
-                    buttons[row, column] = newButton;
+                    newBtn.MouseDown += new MouseButtonEventHandler(onMouseDown);
+                    newBtn.MouseUp += new MouseButtonEventHandler(onMouseUp);
+                    newBtn.MouseEnter += new MouseEventHandler(onMouseEnter);
+                    newBtn.MouseLeave += new MouseEventHandler(onMouseLeave);
+                    newBtn.MouseMove += new MouseEventHandler(onMouseMove);
 
                     Border myBorder1 = new Border();
                     myBorder1.BorderBrush = Brushes.Gray;
-                    if (column == 0)
+                    if (j == 0)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
-                    else if (column == 9)
+                    else if (j == 9)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 0 };
                     else
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
-                    
-                    myBorder1.Child = newButton;
 
-                    Grid.SetRow(myBorder1, row + 2);
-                    Grid.SetColumn(myBorder1, column);
 
-                    mainGrid.Children.Add(myBorder1);
+                    myBorder1.Child = newBtn;
+
+                    Grid.SetRow(myBorder1, i + 2);
+                    Grid.SetColumn(myBorder1, j);
+
+                    wrapPanel.Children.Add(myBorder1);
                 }
             }
         }
 
         private void onMouseDown(object sender, RoutedEventArgs e)
         {
-            TextBlock button = sender as TextBlock;
-
             foreach(TextBlock selectedView in selectedViews)
-                setOriginColor(selectedView);
-            button.Background = selectColor;
+            {
+                if(getRow(selectedView) % 2 == 0)
+                    selectedView.Background = defaultColorOfEven;
+                else
+                    selectedView.Background = defaultColorOfOdd;
+            }
 
-            selectedViews.Clear();
-            selectedViews.Add(button);
+            (sender as TextBlock).Background = selectColor;
+            nowSelectedRow = getRow(sender as TextBlock);
+            selectedButtonNum = 0;
+            selectedViews.Add(sender as TextBlock);
 
             mouseLeftButtonDown = true;
-
-            Mouse.Capture(button);
         }
 
         private void onMouseUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
-            Mouse.Capture(null);
-        }
-
-        private void onMouseMove(object sender, RoutedEventArgs e)
-        {
-            if (mouseLeftButtonDown)
-            {
-                TextBlock btn = sender as TextBlock;
-                double width = btn.ActualWidth;
-                double pos = Mouse.GetPosition(btn).X;
-                int row = getRow(btn);
-                int column = getColumn(btn);
-
-                if (-2 * width < pos && pos < -width)
-                {
-                    setting(row, column - 2, true);
-                    setting(row, column - 1, true);
-                    setting(row, column + 1, false);
-                    setting(row, column + 2, false);
-                }
-                else if (-width < pos && pos < 0)
-                {
-                    setting(row, column - 2, false);
-                    setting(row, column - 1, true);
-                    setting(row, column + 1, false);
-                    setting(row, column + 2, false);
-                }
-                else if(0 < pos && pos < width)
-                {
-                    setting(row, column - 2, false);
-                    setting(row, column - 1, false);
-                    setting(row, column + 1, false);
-                    setting(row, column + 2, false);
-                }
-                else if (width < pos && pos < 2 * width)
-                {
-                    setting(row, column - 2, false);
-                    setting(row, column - 1, false);
-                    setting(row, column + 1, true);
-                    setting(row, column + 2, false);
-                }
-                else if (2 * width < pos && pos < 3 * width)
-                {
-                    setting(row, column - 2, false);
-                    setting(row, column - 1, false);
-                    setting(row, column + 1, true);
-                    setting(row, column + 2, true);
-                }
-            }
+            //Mouse.Capture(null);
         }
 
         private void onMouseEnter(object sender, RoutedEventArgs e)
         {
-            TextBlock btn = sender as TextBlock;
-
-            if (!selectedViews.Contains(btn))
-                btn.Background = hoverColor;
+            if (mouseLeftButtonDown && selectedButtonNum < 2 && getRow(sender as TextBlock) == nowSelectedRow)
+            {
+                (sender as TextBlock).Background = selectColor;
+                selectedViews.Add(sender as TextBlock);
+                selectedButtonNum++;
+            }
         }
 
-        private void OnMouseLeave(object sender, RoutedEventArgs e)
+        private void onMouseLeave(object sender, RoutedEventArgs e)
         {
-            TextBlock btn = sender as TextBlock;
-
-            if (!selectedViews.Contains(btn))
-                setOriginColor(btn);
+            //Mouse.Capture(sender as TextBlock);
         }
 
-        private int getRow(TextBlock obj)
+        private void onMouseMove(object sender, RoutedEventArgs e)
+        {
+            //if(mouseLeftButtonDown)
+                //Console.WriteLine(Mouse.GetPosition(sender as TextBlock));
+        }
+
+        private int getRow (TextBlock obj)
         {
             return Int32.Parse(obj.Name.Split('_')[1]);
-        }
-
-        private int getColumn(TextBlock obj)
-        {
-            return Int32.Parse(obj.Name.Split('_')[2]);
-        }
-
-        private TextBlock getChild(int row, int column)
-        {
-            return buttons[row, column];
-        }
-
-        private void setOriginColor(TextBlock button)
-        {
-            if (getRow(button) % 2 == 0)
-                button.Background = backgroundEven;
-            else
-                button.Background = backgroundOdd;
-        }
-
-        private void setting(int row, int column, bool makeSelect)
-        {
-            if (0 <= column && column < COLUMN_NUMBER)
-            {
-                TextBlock button = getChild(row, column);
-
-                if (makeSelect)
-                {
-                    button.Background = selectColor;
-                    selectedViews.Add(button);
-                }
-                else
-                {
-                    setOriginColor(button);
-                    selectedViews.Remove(button);
-                }
-            }
         }
     }
 }

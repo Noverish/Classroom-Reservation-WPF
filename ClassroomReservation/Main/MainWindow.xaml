@@ -14,6 +14,9 @@
         </Style>
     </Window.Resources>
     <DockPanel Name="dockpanel1">
+        <DockPanel.Background>
+            <ImageBrush Stretch="Fill" AlignmentX="Center" AlignmentY="Top"/>
+        </DockPanel.Background>
         <Border DockPanel.Dock="Bottom" Height="300" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -23,58 +26,83 @@
                 </Grid.ColumnDefinitions>
                 <DockPanel Name="AdminButtonPanel" Grid.Column="0" Margin="90,0,30,0">
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="button1" Content="선택 기간 DB 삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
-
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                        </Border.Effect>
+                        <Button Name="button1" Content="선택 기간 DB 삭제" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24"/>
                     </Border>
+                    
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                        </Border.Effect>
+                        <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24"/>
                     </Border>
+                    
                     <Border DockPanel.Dock="Bottom" Height="100">
-                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="LightCoral" Foreground="White" Margin="0,10,0,10" FontSize="20"/>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                        </Border.Effect>
+                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24" Click="readExcelFileButton_Click"/>
                     </Border>
                 </DockPanel>
 
                 <DockPanel Name="dockpanel3" Grid.Column="1" Margin="30,10,30,10">
-                    <Border DockPanel.Dock="Right" Width="150" BorderThickness="1" BorderBrush="Black">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="50*"/>
-                                <RowDefinition Height="50*"/>
-                            </Grid.RowDefinitions>
-                            <Button Name="button5" Content="정보 수정" Grid.Row="0" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White" FontSize="20"/>
-                            <Button Name="button6" Content="예약 삭제" Grid.Row="1" BorderThickness="1" BorderBrush="Black" Background="LightCoral" Foreground="White" FontSize="20"/>
-                        </Grid>
-                    </Border>
-                    <Border DockPanel.Dock="Right" Width="350" BorderThickness="1" BorderBrush="Black">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="*"/>
-                                <RowDefinition Height="2*"/>
-                            </Grid.RowDefinitions>
-                            <TextBox Name="TextBox1" Grid.Row="0" BorderThickness="1" BorderBrush="Black"/>
-                            <TextBox Name="TextBox2" Grid.Row="1" BorderThickness="1" BorderBrush="Black"/>
-                            <TextBox Name="TextBox3" Grid.Row="2" BorderThickness="1" BorderBrush="Black"/>
-                        </Grid>
-                    </Border>
+                    <Border>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                        </Border.Effect>
+                        <Grid Background="CadetBlue">
+                            <DockPanel Name="dockpanel_in" Margin="20">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*"/>
+                                        <ColumnDefinition Width="5*"/>
+                                        <ColumnDefinition Width="3*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="2*"/>
+                                    </Grid.RowDefinitions>
 
-                    <Border BorderThickness="1" BorderBrush="Black">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="25*"/>
-                                <RowDefinition Height="50*"/>
-                            </Grid.RowDefinitions>
-                            <Label Name="label1" Grid.Row="0" BorderThickness="1" BorderBrush="Black">이름</Label>
-                            <Label Name="label2" Grid.Row="1" BorderThickness="1" BorderBrush="Black">연락처</Label>
-                            <Label Name="label3" Grid.Row="2" BorderThickness="1" BorderBrush="Black">대관 내용</Label>
+                                    <Border>
+                                        
+                                        <Label Name="label1" Grid.Row="0"  Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">이름</Label>
+                                    </Border>
+                                    <Border Grid.Row="1">
+                                        <Label Name="label2" Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">연락처</Label>
+                                    </Border>
+                                    <Border Grid.Row="2">
+                                        <Label Name="label3" Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
+                                    </Border>
+                                    <Border Grid.Row="0" Grid.Column="1" Margin="5">
+                                        <TextBox Name="txtbox1"/>
+                                    </Border>
+                                    <Border Grid.Row="1" Grid.Column="1" Margin="5">
+                                        <TextBox Name="txtbox2"/>
+                                    </Border>
+                                    <Border Grid.Row="2" Grid.Column="1" Margin="5">
+                                        <TextBox Name="txtbox3"/>
+                                    </Border>
+                                    <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="5">
+                                        <Button Name="button5" Content="정보 수정" Grid.Row="0" Background="White" Foreground="Black" FontSize="20"/>
+                                    </Border>
+                                    <Border Grid.Row="2" Grid.Column="2" Margin="5">
+                                        <Button Name="button6" Content="예약 삭제" Grid.Row="0" Background="White" Foreground="Black" FontSize="20"/>
+                                    </Border>
+                                </Grid>
+                            </DockPanel>
                         </Grid>
                     </Border>
-
                 </DockPanel>
 
-                <Button Grid.Column="2" Name="button4" Content="예약하러 가기" Background="LightCoral" Foreground="White" Margin="30,10,50,10" FontSize="20"/>
-
+                <Border Grid.Column="2">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <Button Name="button4" Content="예약하러 가기" Background="CadetBlue" Foreground="White" Margin="30,10,50,10" FontSize="24"/>
+                </Border>
             </Grid>
         </Border>
 
@@ -85,8 +113,8 @@
                 </Border>
 
                 <Border DockPanel.Dock="Bottom" Height="18"/>
-                
-                <Border BorderThickness="1" BorderBrush="Black">
+
+                <Border>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -106,39 +134,59 @@
                             <ColumnDefinition Width="55*"/>
                             <ColumnDefinition Width="45*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Name="label4" Grid.Row="0" Grid.Column="0" Content="이학별관" BorderThickness="1" BorderBrush="Black"/>
-                        <Label Name="label5" Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Content="정보관" BorderThickness="1" BorderBrush="Black"/>
-                        <Label Name="label6" Grid.Row="9" Grid.Column="0" Grid.RowSpan="3" Content="과도관" BorderThickness="1" BorderBrush="Black"/>
-                        <Label Name="label7" Grid.Row="0" Grid.Column="1" Content="107호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label8" Grid.Row="1" Grid.Column="1" Content="B102호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-                        <Label Name="label9" Grid.Row="2" Grid.Column="1" Content="B103호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label10" Grid.Row="3" Grid.Column="1" Content="B104호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-                        <Label Name="label11" Grid.Row="4" Grid.Column="1" Content="201호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label12" Grid.Row="5" Grid.Column="1" Content="202호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-                        <Label Name="label13" Grid.Row="6" Grid.Column="1" Content="205호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label14" Grid.Row="7" Grid.Column="1" Content="206호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-                        <Label Name="label15" Grid.Row="8" Grid.Column="1" Content="208호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label16" Grid.Row="9" Grid.Column="1" Content="611호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-                        <Label Name="label17" Grid.Row="10" Grid.Column="1" Content="614A호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-                        <Label Name="label18" Grid.Row="11" Grid.Column="1" Content="615호" BorderThickness="1" BorderBrush="Black" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Border>
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                            </Border.Effect>
+                            <Label Name="label4" Content="이학별관" Background="CadetBlue" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"/>
+                        </Border>
+                        <Border  Grid.Row="1" Grid.Column="0" Grid.RowSpan="8">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                            </Border.Effect>
+                            <Label Name="label50" Content="정보관" Background="CadetBlue" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"/>
+                        </Border>
+                        <Border  Grid.Row="9" Grid.Column="0" Grid.RowSpan="3">
+                            <Border.Effect>
+                                <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                            </Border.Effect>
+                            <Label Name="label6" Content="과도관" Background="CadetBlue" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5"/>
+                        </Border>
+                        <Label Name="label7" Grid.Row="0" Grid.Column="1" Content="107호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label8" Grid.Row="1" Grid.Column="1" Content="B102호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Label Name="label9" Grid.Row="2" Grid.Column="1" Content="B103호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label10" Grid.Row="3" Grid.Column="1" Content="B104호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Label Name="label11" Grid.Row="4" Grid.Column="1" Content="201호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label12" Grid.Row="5" Grid.Column="1" Content="202호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Label Name="label13" Grid.Row="6" Grid.Column="1" Content="205호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label14" Grid.Row="7" Grid.Column="1" Content="206호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Label Name="label15" Grid.Row="8" Grid.Column="1" Content="208호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label16" Grid.Row="9" Grid.Column="1" Content="611호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+                        <Label Name="label17" Grid.Row="10" Grid.Column="1" Content="614A호" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
+                        <Label Name="label18" Grid.Row="11" Grid.Column="1" Content="615호" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
 
                     </Grid>
                 </Border>
             </DockPanel>
         </Border>
 
-        <Border DockPanel.Dock="Top" Height="43" BorderThickness="1" BorderBrush="Black">
+        <Border DockPanel.Dock="Top" Height="43">
             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
-                <Button Name="ChangeModeButton" DockPanel.Dock="Right"  VerticalAlignment="Center" HorizontalAlignment="Right" FontSize="24">
-                    관리자 모드로 변경
-                </Button>
+                <Border DockPanel.Dock="Right">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="Wheat" FontSize="24" Margin="0,0,50,0">
+                        관리자 모드로 변경
+                    </Button>
+                </Border>
                 <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                     <DatePicker Name="MainWindow_DatePicker" SelectedDateFormat="Long"/>
                 </Viewbox>
             </DockPanel>
         </Border>
-        <Border BorderThickness="1">
-            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Disabled"
+        <Border>
+            <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <StackPanel Orientation="Horizontal" Name="scrollViewContentPanel"/>
             </ScrollViewer>
