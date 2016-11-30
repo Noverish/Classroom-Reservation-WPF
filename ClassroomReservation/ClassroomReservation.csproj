@@ -73,6 +73,8 @@
     <Compile Include="Other\AlertWindow.xaml.cs">
       <DependentUpon>AlertWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Server\ReservationItem.cs" />
+    <Compile Include="Server\ServerClient.cs" />
     <Page Include="Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
