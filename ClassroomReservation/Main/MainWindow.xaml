@@ -15,7 +15,7 @@
     </Window.Resources>
     <DockPanel Name="dockpanel1">
         <DockPanel.Background>
-            <ImageBrush ImageSource="/ClassroomReservation;component/Resource/Background.jpg" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="/Resource/Background.png"/>
         </DockPanel.Background>
         <Border DockPanel.Dock="Bottom" Height="300" Margin="0,10,0,0">
             <Grid>
