@@ -85,12 +85,12 @@ namespace ClassroomReservation.Reservation
             {
                 if(nowSelectedTime[1] - nowSelectedTime[0] < 2)
                 {
-                    if(index < nowSelectedTime[0] && nowSelectedTime[1] - index < 3)
+                    if(index < nowSelectedTime[0] && nowSelectedTime[0] - index < 2)
                     {
                         nowSelectedTime[0] = index;
                         button.Background = selectedColor;
                     }
-                    else if(nowSelectedTime[1] < index && index - nowSelectedTime[0] < 3)
+                    else if(nowSelectedTime[1] < index && index - nowSelectedTime[1] < 2)
                     {
                         nowSelectedTime[1] = index;
                         button.Background = selectedColor;
