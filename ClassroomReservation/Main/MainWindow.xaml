@@ -176,7 +176,7 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
                     </Border.Effect>
-                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="Wheat" FontSize="24" Margin="0,0,50,0">
+                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="24" Margin="0,0,50,0">
                         관리자 모드로 변경
                     </Button>
                 </Border>

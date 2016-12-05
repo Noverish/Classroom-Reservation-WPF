@@ -64,7 +64,6 @@ namespace ClassroomReservation.Reservation
                 //DateTime date = calendar.SelectedDate.Value;
                 //this.Title = date.ToShortDateString();
             }
-
             //var calendar = sender as Calendar;
 
             //if (calendar.SelectedDate.HasValue && calendar.SelectedDates.Count > 0)
