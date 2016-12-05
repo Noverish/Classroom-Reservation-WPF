@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.16.10.68/";
-        private const string makeReservationPage = "classroom.php";
-        private const string getReservationPage = "user_data.php";
+        private const string serverDomain = "http://10.16.30.193/";
+        private const string makeReservationPage = "reserv_make_one.php";
+        private const string getReservationPage = "reserv_get_one.php";
 
         public void MakeReservation(ReservationItem reservation) {
             string url = serverDomain + makeReservationPage;
