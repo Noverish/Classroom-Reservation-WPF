@@ -28,6 +28,7 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 
+        private Label selected;
         private Label[] labelNames;
         private int previousColor = -1;
 
@@ -76,6 +77,7 @@ namespace ClassroomReservation.Reservation
                 }
             }
 
+            selected = sender as Label;
             (sender as Label).Background = selectedColor;
             previousColor = -1;
             mouseLeftButtonDown = true;
@@ -118,6 +120,10 @@ namespace ClassroomReservation.Reservation
                 else if (i % 2 == 1)
                     labelNames[i].Background = backgroundEven;
             }
+        }
+
+        public string GetNowSelectedClassroom() {
+            return (string) selected.Content;
         }
     }
 }

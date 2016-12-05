@@ -133,5 +133,9 @@ namespace ClassroomReservation.Reservation
                     button.Background = backgroundEven;
             }
         }
+
+        public int[] GetSelectedTime() {
+            return nowSelectedTime;
+        }
     }
 }

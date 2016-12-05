@@ -43,6 +43,8 @@ namespace ClassroomReservation.Reservation
 
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
+
+            OK_Button.Click += new RoutedEventHandler(Reserve);
         }
 
         private void Button_Click_Close(object sender, RoutedEventArgs e)
@@ -100,6 +102,22 @@ namespace ClassroomReservation.Reservation
             //        Console.WriteLine("1");
             //    }
             //}
+        }
+
+        private void Reserve(object sender, RoutedEventArgs e) {
+            DateTime startDate = calendar.SelectedDates[0];
+            DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
+            int[] time = timeSelectControl.GetSelectedTime();
+            string classroom = classroomSelectControl.GetNowSelectedClassroom();
+
+            string name = nameTextBox.Text;
+            string contact = numberTextBox.Text;
+            string content = contentTextBox.Text;
+            string password = passwordTextBox.Text;
+
+            Server.ReservationItem item = new Server.ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
+
+            Server.ServerClient.MakeReservation(item);
         }
     }
 }
