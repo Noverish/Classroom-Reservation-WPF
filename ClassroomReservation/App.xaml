@@ -17,8 +17,8 @@
         <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
         <SolidColorBrush x:Key="MicrosoftRed" Color="#f65314"/>
         <SolidColorBrush x:Key="MicrosoftBlue" Color="#00a1f1"/>
-        <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="White"/>
-        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="LightGray"/>
+        <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#EEEEEE"/>
         <SolidColorBrush x:Key="Hover" Color="LightGray"/>
         <x:Array x:Key="TimeTable" Type="sys:String" 
             xmlns:sys="clr-namespace:System;assembly=mscorlib">

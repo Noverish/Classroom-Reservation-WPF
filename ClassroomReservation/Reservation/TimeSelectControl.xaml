@@ -36,7 +36,7 @@
         <Label Name="time3" Grid.Row="2" Grid.Column="0" Content="3교시-12:00PM~12:50PM"/>
         <Label Name="time4" Grid.Row="3" Grid.Column="0" Content="4교시-1:00PM~1:50PM"/>
         <Label Name="time5" Grid.Row="4" Grid.Column="0" Content="5교시-2:00PM~3:15PM"/>
-        <Label Name="time6" Grid.Row="5" Grid.Column="0" Content="6교시-3:30PM~4:45APM"/>
+        <Label Name="time6" Grid.Row="5" Grid.Column="0" Content="6교시-3:30PM~4:45PM"/>
         <Label Name="time7" Grid.Row="6" Grid.Column="0" Content="7교시-5:00PM~5:50PM"/>
         <Label Name="time8" Grid.Row="7" Grid.Column="0" Content="8교시-6:00PM~6:50PM"/>
         <Label Name="time9" Grid.Row="8" Grid.Column="0" Content="9교시-7:00PM~7:50PM"/>
