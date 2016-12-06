@@ -59,7 +59,7 @@ namespace ClassroomReservation.Main
 			animationTimer.Interval = new TimeSpan(120);
 			animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
-			button4.Click += new RoutedEventHandler(Button_Click);
+			button4.Click += new RoutedEventHandler((sender, e) => (new ReservationWindow()).ShowDialog());
 		}
 
         public void changeMode(object sender, RoutedEventArgs e)
@@ -145,12 +145,6 @@ namespace ClassroomReservation.Main
                 // Open document 
                 //fileOpenTextBox.Text = dlg.FileName;
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            ReservationWindow win2 = new ReservationWindow();
-            win2.ShowDialog();
         }
 
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)

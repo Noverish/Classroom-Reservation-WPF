@@ -63,6 +63,14 @@ namespace ClassroomReservation.Reservation
             }
         }
 
+        public void Enable(bool enable) {
+            if (enable) {
+                overlapRectangle.Visibility = Visibility.Hidden;
+            } else {
+                overlapRectangle.Visibility = Visibility.Visible;
+            }
+        }
+
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             for (int i = 0; i < 12; i++)
