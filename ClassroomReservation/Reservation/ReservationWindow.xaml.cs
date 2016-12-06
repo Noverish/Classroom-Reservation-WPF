@@ -28,14 +28,23 @@ namespace ClassroomReservation.Reservation
             OK_Button.Click += new RoutedEventHandler(Reserve);
             Cancel_Button.Click += new RoutedEventHandler((sender, e) => this.Close());
 
-            classroomSelectControl.SetOnClassroomSelectChanged(new OnClassroomSelectChanged(OnClassroomSelectChanged));
+            timeSelectControl.enable(false);
             timeSelectControl.SetOnTimeSelectChanged(new OnTimeSelectChanged(OnTimeSelectChanged));
+
+            classroomSelectControl.enable(false);
+            classroomSelectControl.SetOnClassroomSelectChanged(new OnClassroomSelectChanged(OnClassroomSelectChanged));
+
+            EnableInputUserData(false);
         }
 
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
+            timeSelectControl.enable(true);
             timeSelectControl.ResetSelection();
+
+            classroomSelectControl.enable(true);
             classroomSelectControl.ResetSelection();
+
             EnableInputUserData(false);
         }
 

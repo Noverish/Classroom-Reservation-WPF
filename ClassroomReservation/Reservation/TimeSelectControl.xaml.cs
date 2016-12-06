@@ -25,6 +25,7 @@ namespace ClassroomReservation.Reservation
         private OnTimeSelectChanged callback;
 
         private IEnumerable<Label> buttons;
+        private int[] beforeSelectedTime = new int[2];
         private int[] nowSelectedTime = new int[2];
         private bool mouseLeftButtonDown = false;
 
@@ -38,6 +39,7 @@ namespace ClassroomReservation.Reservation
         public TimeSelectControl()
         {
             InitializeComponent();
+            beforeSelectedTime[0] = beforeSelectedTime[1] = -1;
             nowSelectedTime[0] = nowSelectedTime[1] = -1;
             buttons = mainGrid.Children.OfType<Label>();
 
@@ -52,7 +54,16 @@ namespace ClassroomReservation.Reservation
             }
         }
 
+
+        public void enable(bool enable) {
+            if (enable)
+                overlapRectangle.Visibility = Visibility.Hidden;
+            else
+                overlapRectangle.Visibility = Visibility.Visible;
+        }
+
         public void ResetSelection() {
+            beforeSelectedTime[0] = beforeSelectedTime[1] = -1;
             nowSelectedTime[0] = nowSelectedTime[1] = -1;
             ResetBackground();
         }
@@ -69,6 +80,7 @@ namespace ClassroomReservation.Reservation
             callback = func;
         }
 
+
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             ResetBackground();
@@ -83,9 +95,17 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("before : " + beforeSelectedTime[0] + ", " + beforeSelectedTime[1]);
+            Console.WriteLine("now    : " + nowSelectedTime[0] + ", " + nowSelectedTime[1]);
+
             mouseLeftButtonDown = false;
 
-            callback(nowSelectedTime);
+            if (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1)
+                if (beforeSelectedTime[0] != nowSelectedTime[0] || beforeSelectedTime[1] != nowSelectedTime[1])
+                    callback(nowSelectedTime);
+
+            beforeSelectedTime[0] = nowSelectedTime[0];
+            beforeSelectedTime[1] = nowSelectedTime[1];
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e) //when mouse on entered area

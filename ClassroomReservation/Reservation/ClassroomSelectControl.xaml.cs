@@ -57,6 +57,14 @@ namespace ClassroomReservation.Reservation
             }
         }
 
+
+        public void enable(bool enable) {
+            if (enable)
+                overlapRectangle.Visibility = Visibility.Hidden;
+            else
+                overlapRectangle.Visibility = Visibility.Visible;
+        }
+
         public void ResetSelection() {
             selected = null;
             ResetBackground();
@@ -74,12 +82,20 @@ namespace ClassroomReservation.Reservation
             callback = func;
         }
 
+
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
+            Label btn = sender as Label;
+
             ResetBackground();
 
-            selected = sender as Label;
-            (sender as Label).Background = selectedColor;
+
+            if (selected != null && selected != btn) {
+                callback(selected.Content as string);
+            }
+
+            selected = btn;
+            btn.Background = selectedColor;
             previousColor = -1;
             mouseLeftButtonDown = true;
         }
