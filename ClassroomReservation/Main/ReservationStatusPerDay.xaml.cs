@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
+using ClassroomReservation.Server;
 
 namespace ClassroomReservation.Main
 {
@@ -78,13 +79,22 @@ namespace ClassroomReservation.Main
                     else
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
 
-
                     myBorder1.Child = newBtn;
 
                     Grid.SetRow(myBorder1, i + 2);
                     Grid.SetColumn(myBorder1, j);
 
                     wrapPanel.Children.Add(myBorder1);
+                }
+            }
+
+            List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
+            for (int i = 0; i < items.Count; i++) {
+                int row = classroomToRow(items[i].classroom) + 2;
+                
+                for (int column = items[i].startClass; column <= items[i].endClass; column++) {
+                    TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column - 1)) as Border).Child as TextBlock;
+                    btn.Background = purple;
                 }
             }
         }
@@ -137,6 +147,34 @@ namespace ClassroomReservation.Main
         private int getRow (TextBlock obj)
         {
             return Int32.Parse(obj.Name.Split('_')[1]);
+        }
+
+        private int classroomToRow(string name) {
+            if (name.Equals("107호"))
+                return 0;
+            if (name.Equals("B102호"))
+                return 1;
+            if (name.Equals("B103호"))
+                return 2;
+            if (name.Equals("B104호"))
+                return 3;
+            if (name.Equals("201호"))
+                return 4;
+            if (name.Equals("202호"))
+                return 5;
+            if (name.Equals("205호"))
+                return 6;
+            if (name.Equals("206호"))
+                return 7;
+            if (name.Equals("208호"))
+                return 8;
+            if (name.Equals("611호"))
+                return 9;
+            if (name.Equals("614A호"))
+                return 10;
+            if (name.Equals("615호"))
+                return 11;
+            return -1;
         }
     }
 }

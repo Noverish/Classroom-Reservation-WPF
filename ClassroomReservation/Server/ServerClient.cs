@@ -5,12 +5,15 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://192.168.0.1/";
+        private const string serverDomain = "http://10.16.12.145/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
+        private const string getDayReservationPage = "reserv_get_day.php";
 
         public static void MakeReservation(ReservationItem reservation) {
             string url = serverDomain + makeReservationPage;
@@ -45,6 +48,38 @@ namespace ClassroomReservation.Server {
             return items;
         }
 
+        public static List<ReservationItem> GetDayReservation(DateTime date) {
+            List<ReservationItem> items = new List<ReservationItem>();
+            string url = serverDomain + getDayReservationPage;
+
+            string dataStr =
+                "date=" + date.ToString("yyyy-MM-dd");
+
+            string result = connect(url, dataStr);
+
+            Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
+
+            List<dynamic> array = JsonConvert.DeserializeObject<List<dynamic>>(result);
+
+            for (int i = 0; i < array.Count; i++) {
+                DateTime startDate = Convert.ToDateTime(array[i].StartDate);
+                DateTime endDate = Convert.ToDateTime(array[i].EndDate);
+                int startClass = array[i].StartClass;
+                int endClass = array[i].EndClass;
+                string classroom = array[i].Classroom;
+                string userName = array[i].UserName;
+                string contact = array[i].Contact;
+                string content = array[i].Content;
+                string password = array[i].Password;
+
+                ReservationItem item = new ReservationItem(startDate, endDate, startClass, endClass, classroom, userName, contact, content, password);
+
+                items.Add(item);
+            }
+
+            return items;
+        }
+
         public static string connect(string url, string dataStr) {
             try {
                 byte[] data = UTF8Encoding.UTF8.GetBytes(dataStr);
@@ -66,7 +101,7 @@ namespace ClassroomReservation.Server {
 
                 string result = readerPost.ReadToEnd();
 
-                Console.WriteLine(result);
+                //Console.WriteLine(result);
 
                 return result;
             } catch (Exception e) {
