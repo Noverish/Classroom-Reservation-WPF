@@ -15,11 +15,15 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
+    public delegate void OnClassroomSelectChanged(string nowSelectedClassroom);
+
     /// <summary>
     /// TimeSelectControl.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class ClassroomSelectControl : UserControl
     {
+        private OnClassroomSelectChanged callback;
+
         private IEnumerable<Label> buttons;
 
         private bool mouseLeftButtonDown = false;
@@ -38,17 +42,7 @@ namespace ClassroomReservation.Reservation
 
             labelNames = new Label[]{ time1, time2, time3, time4, time5, time6, time7, time8, time9, time10, time11, time12};
 
-            for (int i=0; i<12; i++)
-            {
-                if(i%2==0)
-                {
-                    labelNames[i].Background = backgroundOdd;
-                }
-                else
-                {
-                    labelNames[i].Background = backgroundEven;
-                }
-            }
+            ResetBackground();
 
             buttons = mainGrid.Children.OfType<Label>();
             selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
@@ -63,27 +57,26 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        public void Enable(bool enable) {
-            if (enable) {
-                overlapRectangle.Visibility = Visibility.Hidden;
-            } else {
-                overlapRectangle.Visibility = Visibility.Visible;
-            }
+        public void ResetSelection() {
+            selected = null;
+            ResetBackground();
+        }
+
+        public bool HasSelectedClassroom() {
+            return selected != null;
+        }
+
+        public string GetSelectedClassroom() {
+            return (string)selected.Content;
+        }
+
+        public void SetOnClassroomSelectChanged(OnClassroomSelectChanged func) {
+            callback = func;
         }
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            for (int i = 0; i < 12; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    labelNames[i].Background = backgroundOdd;
-                }
-                else
-                {
-                    labelNames[i].Background = backgroundEven;
-                }
-            }
+            ResetBackground();
 
             selected = sender as Label;
             (sender as Label).Background = selectedColor;
@@ -130,8 +123,14 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        public string GetNowSelectedClassroom() {
-            return (string) selected.Content;
+        private void ResetBackground() {
+            for (int i = 0; i < 12; i++) {
+                if (i % 2 == 0) {
+                    labelNames[i].Background = backgroundOdd;
+                } else {
+                    labelNames[i].Background = backgroundEven;
+                }
+            }
         }
     }
 }

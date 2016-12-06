@@ -16,29 +16,9 @@ namespace ClassroomReservation.Reservation
 {
     public partial class ReservationWindow : Window
     {
-        private bool changedByUser = true;
-
         public ReservationWindow()
         {
             InitializeComponent();
-
-
-            //int column = 0;
-            //for(int row = 0;row<10;row++)
-            //{
-            //    Button button = (Button) mainGrid.Children
-            //        .Cast<UIElement>()
-            //        .First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
-
-            //    button.Click += new RoutedEventHandler(ChangeButtonColorToSelected);
-            //}
-
-            //calendar.SelectionMode = CalendarSelectionMode.SingleDate;
-
-            //foreach (Label btn in timeSelectControl.mainGrid.Children.OfType<Label>())
-            //{
-            //    btn.IsEnabled = false;
-            //}
 
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
@@ -47,11 +27,15 @@ namespace ClassroomReservation.Reservation
 
             OK_Button.Click += new RoutedEventHandler(Reserve);
             Cancel_Button.Click += new RoutedEventHandler((sender, e) => this.Close());
+
+            classroomSelectControl.SetOnClassroomSelectChanged(new OnClassroomSelectChanged(OnClassroomSelectChanged));
+            timeSelectControl.SetOnTimeSelectChanged(new OnTimeSelectChanged(OnTimeSelectChanged));
         }
 
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
         {
-            classroomSelectControl.Enable(false);
+            timeSelectControl.ResetSelection();
+            classroomSelectControl.ResetSelection();
             EnableInputUserData(false);
         }
 
@@ -59,7 +43,7 @@ namespace ClassroomReservation.Reservation
             DateTime startDate = calendar.SelectedDates[0];
             DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
             int[] time = timeSelectControl.GetSelectedTime();
-            string classroom = classroomSelectControl.GetNowSelectedClassroom();
+            string classroom = classroomSelectControl.GetSelectedClassroom();
 
             string name = nameTextBox.Text;
             string contact = numberTextBox.Text;
@@ -77,6 +61,14 @@ namespace ClassroomReservation.Reservation
             } else {
                 overlapRectangle.Visibility = Visibility.Visible;
             }
+        }
+
+        private void OnTimeSelectChanged(int[] nowSelectedTime) {
+            classroomSelectControl.ResetSelection();
+        }
+
+        private void OnClassroomSelectChanged(string nowSelectedClassroom) {
+            timeSelectControl.ResetSelection();
         }
     }
 }
