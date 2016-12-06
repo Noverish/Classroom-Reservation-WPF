@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
-    public delegate void OnTimeSelectChanged(int[] nowSelectedTime);
+    public delegate void OnTimeSelectChanged(int[] nowSelectedTime, bool isDataChanged);
 
     /// <summary>
     /// TimeSelectControl.xaml에 대한 상호 작용 논리
@@ -95,17 +95,11 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine("before : " + beforeSelectedTime[0] + ", " + beforeSelectedTime[1]);
-            Console.WriteLine("now    : " + nowSelectedTime[0] + ", " + nowSelectedTime[1]);
-
             mouseLeftButtonDown = false;
+            
+            callback(nowSelectedTime, (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
 
-            if (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1)
-                if (beforeSelectedTime[0] != nowSelectedTime[0] || beforeSelectedTime[1] != nowSelectedTime[1])
-                    callback(nowSelectedTime);
-
-            beforeSelectedTime[0] = nowSelectedTime[0];
-            beforeSelectedTime[1] = nowSelectedTime[1];
+            beforeSelectedTime = (int[]) nowSelectedTime.Clone();
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e) //when mouse on entered area

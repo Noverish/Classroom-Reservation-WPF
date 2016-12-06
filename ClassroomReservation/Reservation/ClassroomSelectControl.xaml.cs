@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
-    public delegate void OnClassroomSelectChanged(string nowSelectedClassroom);
+    public delegate void OnClassroomSelectChanged(string nowSelectedClassroom, bool isDataChanged);
 
     /// <summary>
     /// TimeSelectControl.xaml에 대한 상호 작용 논리
@@ -32,7 +32,8 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 
-        private Label selected;
+        private Label beforeSelected;
+        private Label nowSelected;
         private Label[] labelNames;
         private int previousColor = -1;
 
@@ -66,16 +67,17 @@ namespace ClassroomReservation.Reservation
         }
 
         public void ResetSelection() {
-            selected = null;
+            beforeSelected = null;
+            nowSelected = null;
             ResetBackground();
         }
 
         public bool HasSelectedClassroom() {
-            return selected != null;
+            return nowSelected != null;
         }
 
         public string GetSelectedClassroom() {
-            return (string)selected.Content;
+            return (string)nowSelected.Content;
         }
 
         public void SetOnClassroomSelectChanged(OnClassroomSelectChanged func) {
@@ -85,17 +87,11 @@ namespace ClassroomReservation.Reservation
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
-            Label btn = sender as Label;
+            nowSelected = sender as Label;
 
             ResetBackground();
-
-
-            if (selected != null && selected != btn) {
-                callback(selected.Content as string);
-            }
-
-            selected = btn;
-            btn.Background = selectedColor;
+            
+            nowSelected.Background = selectedColor;
             previousColor = -1;
             mouseLeftButtonDown = true;
         }
@@ -103,6 +99,9 @@ namespace ClassroomReservation.Reservation
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
+            
+            callback(nowSelected.Content as string, beforeSelected != null && beforeSelected != nowSelected);
+            beforeSelected = nowSelected;
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e)

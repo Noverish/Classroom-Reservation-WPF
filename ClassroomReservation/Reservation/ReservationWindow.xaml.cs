@@ -72,12 +72,26 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        private void OnTimeSelectChanged(int[] nowSelectedTime) {
-            classroomSelectControl.ResetSelection();
+        private void OnTimeSelectChanged(int[] nowSelectedTime, bool isDataChanged) {
+            if (isDataChanged) {
+                classroomSelectControl.ResetSelection();
+                EnableInputUserData(false);
+            } else {
+                if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
+                    EnableInputUserData(true);
+            }
         }
 
-        private void OnClassroomSelectChanged(string nowSelectedClassroom) {
-            timeSelectControl.ResetSelection();
+        private void OnClassroomSelectChanged(string nowSelectedClassroom, bool isDataChanged) {
+            Console.WriteLine("isDataChanged" + isDataChanged);
+
+            if (isDataChanged) {
+                timeSelectControl.ResetSelection();
+                EnableInputUserData(false);
+            } else {
+                if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
+                    EnableInputUserData(true);
+            }
         }
     }
 }
