@@ -62,6 +62,8 @@ namespace ClassroomReservation.Reservation
             Server.ReservationItem item = new Server.ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
 
             Server.ServerClient.MakeReservation(item);
+
+            this.Close();
         }
 
         private void EnableInputUserData(bool enable) {
