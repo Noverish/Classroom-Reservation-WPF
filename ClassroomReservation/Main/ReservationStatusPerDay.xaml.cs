@@ -112,9 +112,9 @@ namespace ClassroomReservation.Main
             foreach(TextBlock selectedView in selectedViews)
             {
                 if(getRow(selectedView) % 2 == 0)
-                    selectedView.Background = defaultColorOfEven;
-                else
                     selectedView.Background = defaultColorOfOdd;
+                else
+                    selectedView.Background = defaultColorOfEven;
             }
 
             (sender as TextBlock).Background = selectColor;
