@@ -97,6 +97,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
+                httpWebRequest.Timeout = 1000;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);
@@ -114,7 +115,7 @@ namespace ClassroomReservation.Server {
                 return result;
             } catch (Exception e) {
                 Other.AlertWindow alert = new Other.AlertWindow(e.Message);
-                alert.ShowDialog();
+                //alert.ShowDialog();
 
                 throw new ServerException();
             }

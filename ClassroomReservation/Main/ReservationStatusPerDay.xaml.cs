@@ -96,14 +96,18 @@ namespace ClassroomReservation.Main
         public void refresh() {
             ResetBackground();
 
-            List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
-            for (int i = 0; i < items.Count; i++) {
-                int row = classroomToRow(items[i].classroom) + 2;
+            try {
+                List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
+                for (int i = 0; i < items.Count; i++) {
+                    int row = classroomToRow(items[i].classroom) + 2;
 
-                for (int column = items[i].startClass; column <= items[i].endClass; column++) {
-                    TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column - 1)) as Border).Child as TextBlock;
-                    btn.Background = purple;
+                    for (int column = items[i].startClass; column <= items[i].endClass; column++) {
+                        TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column - 1)) as Border).Child as TextBlock;
+                        btn.Background = purple;
+                    }
                 }
+            } catch (Exception ex) {
+
             }
         }
 
