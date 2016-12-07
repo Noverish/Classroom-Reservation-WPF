@@ -22,7 +22,7 @@ namespace ClassroomReservation.Reservation
     /// </summary>
     public partial class ClassroomSelectControl : UserControl
     {
-        private OnClassroomSelectChanged callback;
+        public OnClassroomSelectChanged onClassroomSelectChanged { set; private get; }
 
         private IEnumerable<Label> buttons;
 
@@ -80,10 +80,6 @@ namespace ClassroomReservation.Reservation
             return (string)nowSelected.Content;
         }
 
-        public void SetOnClassroomSelectChanged(OnClassroomSelectChanged func) {
-            callback = func;
-        }
-
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
@@ -99,8 +95,8 @@ namespace ClassroomReservation.Reservation
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
-            
-            callback(nowSelected.Content as string, beforeSelected != null && beforeSelected != nowSelected);
+
+            onClassroomSelectChanged?.Invoke(nowSelected.Content as string, beforeSelected != null && beforeSelected != nowSelected);
             beforeSelected = nowSelected;
         }
 

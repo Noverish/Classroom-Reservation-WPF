@@ -59,7 +59,7 @@ namespace ClassroomReservation.Main
 
             button4.Click += new RoutedEventHandler((sender, e) => {
                 ReservationWindow window = new ReservationWindow();
-                window.SetOnReservationSuccess(OnReservationSuccess);
+                window.onReservationSuccess = OnReservationSuccess;
                 window.ShowDialog();
             });
         }

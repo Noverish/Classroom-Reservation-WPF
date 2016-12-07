@@ -19,7 +19,7 @@ namespace ClassroomReservation.Reservation
 
     public partial class ReservationWindow : Window
     {
-        private OnReservationSuccess callback;
+        public OnReservationSuccess onReservationSuccess { set; private get; }
 
         public ReservationWindow()
         {
@@ -34,16 +34,12 @@ namespace ClassroomReservation.Reservation
             Cancel_Button.Click += new RoutedEventHandler((sender, e) => this.Close());
 
             timeSelectControl.enable(false);
-            timeSelectControl.SetOnTimeSelectChanged(new OnTimeSelectChanged(OnTimeSelectChanged));
+            timeSelectControl.onTimeSelectChanged = OnTimeSelectChanged;
 
             classroomSelectControl.enable(false);
-            classroomSelectControl.SetOnClassroomSelectChanged(new OnClassroomSelectChanged(OnClassroomSelectChanged));
+            classroomSelectControl.onClassroomSelectChanged = OnClassroomSelectChanged;
 
             EnableInputUserData(false);
-        }
-
-        public void SetOnReservationSuccess(OnReservationSuccess func) {
-            this.callback = func;
         }
 
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
@@ -73,8 +69,8 @@ namespace ClassroomReservation.Reservation
             try {
                 ServerClient.MakeReservation(item);
 
-                callback(item);
-                this.Close();
+                onReservationSuccess?.Invoke(item);
+                Close();
             } catch (ServerException ex) {
 
             }

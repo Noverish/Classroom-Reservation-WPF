@@ -22,7 +22,7 @@ namespace ClassroomReservation.Reservation
     /// </summary>
     public partial class TimeSelectControl : UserControl
     {
-        private OnTimeSelectChanged callback;
+        public OnTimeSelectChanged onTimeSelectChanged { set; private get; }
 
         private IEnumerable<Label> buttons;
         private int[] beforeSelectedTime = new int[2];
@@ -76,10 +76,6 @@ namespace ClassroomReservation.Reservation
             return nowSelectedTime;
         }
 
-        public void SetOnTimeSelectChanged(OnTimeSelectChanged func) {
-            callback = func;
-        }
-
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
@@ -97,7 +93,7 @@ namespace ClassroomReservation.Reservation
         {
             mouseLeftButtonDown = false;
             
-            callback(nowSelectedTime, (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
+            onTimeSelectChanged?.Invoke(nowSelectedTime, (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
 
             beforeSelectedTime = (int[]) nowSelectedTime.Clone();
         }
