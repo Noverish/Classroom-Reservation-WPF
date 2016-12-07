@@ -47,7 +47,7 @@
                     </Border>
                 </DockPanel>
 
-                <DockPanel Name="dockpanel3" Grid.Column="1" Margin="30,10,30,10">
+                <DockPanel Name="infoPanel" Grid.Column="1" Margin="30,10,30,10" Visibility="Hidden">
                     <Border>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>

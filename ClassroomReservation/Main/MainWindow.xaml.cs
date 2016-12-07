@@ -45,6 +45,7 @@ namespace ClassroomReservation.Main
             for (int i = 0; i < 7; i++) {
                 if (today.AddDays(i).DayOfWeek != 0) {
                     ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today.AddDays(i));
+                    fileInputBox1.onOneSelected = onOneSelected;
                     scrollViewContentPanel.Children.Add(fileInputBox1);
                 }
             }
@@ -174,6 +175,18 @@ namespace ClassroomReservation.Main
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void onOneSelected(ReservationItem item) {
+            if (item != null) {
+                infoPanel.Visibility = Visibility.Visible;
+
+                txtbox1.Text = item.userName;
+                txtbox2.Text = item.contact;
+                txtbox3.Text = item.content;
+            } else {
+                infoPanel.Visibility = Visibility.Hidden;
+            }
         }
 
         private void OnReservationSuccess(ReservationItem item) {

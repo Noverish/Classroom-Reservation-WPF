@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://192.168.0.8/";
+        private const string serverDomain = "http://10.4.0.250/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
         private const string getDayReservationPage = "reserv_get_day.php";

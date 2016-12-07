@@ -17,22 +17,30 @@ using ClassroomReservation.Server;
 
 namespace ClassroomReservation.Main
 {
+
+    public delegate void OnOneSelected(ReservationItem item);
+
     /// <summary>
     /// ReservationStatusPerDay.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class ReservationStatusPerDay : UserControl
     {
-        private static List<TextBlock> selectedViews = new List<TextBlock>();
+        private const int TOTAL_COLUMN = 10;
+        private const int TOTAL_ROW = 14;
 
-        private DateTime date;
-
+        private static ReservationStatusPerDay nowSelectedStatusControl;
+        private static int[] nowSelectedColumn = new int[2] { -1, -1 };
+        private static int nowSelectedRow = -1;
         private bool mouseLeftButtonDown = false;
-        private int selectedButtonNum = 0;
-        private int nowSelectedRow = -1;
+
+        public OnOneSelected onOneSelected { private get; set; }
+        private CustomTextBlock[,] buttons = new CustomTextBlock[TOTAL_ROW, TOTAL_COLUMN];
+        private DateTime date;
 
         private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private Brush selectColor = Brushes.Crimson;
+        private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
 
         private SolidColorBrush red = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         private SolidColorBrush green = new SolidColorBrush(Color.FromRgb(255, 0, 0));
@@ -49,22 +57,21 @@ namespace ClassroomReservation.Main
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
             DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
 
-            for (int i = 0; i < 12; i++)
+            for (int row = 2; row < TOTAL_ROW; row++)
             {
-                for (int j = 0; j < 10; j++)
+                for (int col = 0; col < TOTAL_COLUMN; col++)
                 {
-                    TextBlock newBtn = new TextBlock();
+                    CustomTextBlock newBtn = new CustomTextBlock();
 
-                    //newBtn.Content = i + ", " + j;
-                    //newBtn.Name = "Button" + i.ToString();
-
-                    if (i % 2 == 0)
+                    if (row % 2 == 0) {
                         newBtn.Background = defaultColorOfEven;
-                    else
+                        newBtn.originColor = defaultColorOfEven;
+                    } else {
                         newBtn.Background = defaultColorOfOdd;
+                        newBtn.originColor = defaultColorOfOdd;
+                    }
                     newBtn.VerticalAlignment = VerticalAlignment.Stretch;
                     newBtn.HorizontalAlignment = HorizontalAlignment.Stretch;
-                    newBtn.Name = "_" + i + "_" + j;
 
                     newBtn.MouseDown += new MouseButtonEventHandler(onMouseDown);
                     newBtn.MouseUp += new MouseButtonEventHandler(onMouseUp);
@@ -74,17 +81,18 @@ namespace ClassroomReservation.Main
 
                     Border myBorder1 = new Border();
                     myBorder1.BorderBrush = Brushes.Gray;
-                    if (j == 0)
+                    if (col == 0)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
-                    else if (j == 9)
+                    else if (col == 9)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 0 };
                     else
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
 
                     myBorder1.Child = newBtn;
+                    buttons[row, col] = newBtn;
 
-                    Grid.SetRow(myBorder1, i + 2);
-                    Grid.SetColumn(myBorder1, j);
+                    Grid.SetRow(myBorder1, row);
+                    Grid.SetColumn(myBorder1, col);
 
                     wrapPanel.Children.Add(myBorder1);
                 }
@@ -94,18 +102,20 @@ namespace ClassroomReservation.Main
         }
 
         public void refresh() {
-            ResetBackground();
-
             try {
                 List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
+
                 for (int i = 0; i < items.Count; i++) {
                     int row = classroomToRow(items[i].classroom) + 2;
 
-                    for (int column = items[i].startClass; column <= items[i].endClass; column++) {
-                        TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column - 1)) as Border).Child as TextBlock;
-                        btn.Background = purple;
+                    for (int column = items[i].startClass - 1; column <= items[i].endClass - 1; column++) {
+                        CustomTextBlock btn = buttons[row, column];
+                        btn.originColor = purple;
+                        btn.item = items[i];
                     }
                 }
+
+                ResetBackground();
             } catch (Exception ex) {
 
             }
@@ -113,52 +123,94 @@ namespace ClassroomReservation.Main
 
         private void onMouseDown(object sender, RoutedEventArgs e)
         {
-            foreach(TextBlock selectedView in selectedViews)
-            {
-                if(getRow(selectedView) % 2 == 0)
-                    selectedView.Background = defaultColorOfOdd;
-                else
-                    selectedView.Background = defaultColorOfEven;
-            }
+            nowSelectedStatusControl?.ResetBackground();
 
-            (sender as TextBlock).Background = selectColor;
-            nowSelectedRow = getRow(sender as TextBlock);
-            selectedButtonNum = 0;
-            selectedViews.Add(sender as TextBlock);
+            CustomTextBlock button = sender as CustomTextBlock;
+            Border border = button.Parent as Border;
+            int row = Grid.GetRow(border);
+            int column = Grid.GetColumn(border);
 
+            nowSelectedStatusControl = this;
+            nowSelectedColumn[0] = nowSelectedColumn[1] = column;
+            nowSelectedRow = row;
+
+            Mouse.Capture(button);
             mouseLeftButtonDown = true;
+
+            SetSelection(column, column, column, row);
+            
+            onOneSelected?.Invoke(button.item);
         }
 
         private void onMouseUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
-            //Mouse.Capture(null);
+            Mouse.Capture(null);
         }
 
         private void onMouseEnter(object sender, RoutedEventArgs e)
         {
-            if (mouseLeftButtonDown && selectedButtonNum < 2 && getRow(sender as TextBlock) == nowSelectedRow)
-            {
-                (sender as TextBlock).Background = selectColor;
-                selectedViews.Add(sender as TextBlock);
-                selectedButtonNum++;
-            }
+            TextBlock button = sender as TextBlock;
+            button.Background = hoverColor;
         }
 
-        private void onMouseLeave(object sender, RoutedEventArgs e)
+        private void onMouseLeave(object sender, RoutedEventArgs ee)
         {
-            //Mouse.Capture(sender as TextBlock);
+            ResetBackground();
+            if (Equals(nowSelectedStatusControl)) {
+                if (nowSelectedColumn[0] >= 0 && nowSelectedColumn[1] < TOTAL_COLUMN) {
+                    for (int column = nowSelectedColumn[0]; column <= nowSelectedColumn[1]; column++) {
+                        (((wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == nowSelectedRow && Grid.GetColumn(e) == column)) as Border).Child as TextBlock).Background = selectColor;
+                    }
+                }
+            }
         }
 
         private void onMouseMove(object sender, RoutedEventArgs e)
         {
-            //if(mouseLeftButtonDown)
-                //Console.WriteLine(Mouse.GetPosition(sender as TextBlock));
+            if (mouseLeftButtonDown) {
+                TextBlock button = sender as TextBlock;
+                Border border = button.Parent as Border;
+                int row = Grid.GetRow(border);
+                int column = Grid.GetColumn(border);
+                double width = button.ActualWidth;
+                double x = Mouse.GetPosition(button).X;
+
+                if (-2 * width < x && x < -width)
+                    SetSelection(column - 2, column, column, row);
+                else if (-width < x && x < 0)
+                    SetSelection(column - 1, column, column, row);
+                else if (0 < x && x < width)
+                    SetSelection(column, column, column, row);
+                else if (width < x && x < 2 * width)
+                    SetSelection(column, column + 1, column, row);
+                else if (2 * width < x && x < 3 * width)
+                    SetSelection(column, column + 2, column, row);
+            }
         }
 
-        private int getRow (TextBlock obj)
-        {
-            return Int32.Parse(obj.Name.Split('_')[1]);
+        private void SetSelection(int startColumn, int endColumn, int pivotColumn, int row) {
+            if (startColumn < 0)
+                startColumn = 0;
+
+            if (endColumn > TOTAL_COLUMN - 1)
+                endColumn = TOTAL_COLUMN - 1;
+
+            for (int column = pivotColumn - 2; column <= pivotColumn + 2; column++) {
+                if (column < 0 || column > TOTAL_COLUMN - 1)
+                    continue;
+
+                CustomTextBlock btn = buttons[row, column];
+
+                if (startColumn <= column && column <= endColumn) {
+                    btn.Background = selectColor;
+                } else {
+                    btn.Background = btn.originColor;
+                }
+            }
+
+            nowSelectedColumn[0] = startColumn;
+            nowSelectedColumn[1] = endColumn;
         }
 
         private int classroomToRow(string name) {
@@ -190,16 +242,15 @@ namespace ClassroomReservation.Main
         }
 
         private void ResetBackground() {
-            for (int row = 2; row < 14; row++) {
-                for (int column = 0; column < 10; column++) {
-                    TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column)) as Border).Child as TextBlock;
-
-                    if (row % 2 == 0)
-                        btn.Background = defaultColorOfOdd;
-                    else
-                        btn.Background = defaultColorOfEven;
-                }
+            foreach (CustomTextBlock btn in buttons) {
+                if (btn != null)
+                    btn.Background = btn.originColor;
             }
+        }
+
+        public class CustomTextBlock : TextBlock {
+            public Brush originColor { get; set; }
+            public ReservationItem item { get; set; }
         }
     }
 }
