@@ -36,7 +36,7 @@ namespace ClassroomReservation.Main
 		int deltaDirection = 1;
 		double startPos;
         static Hashtable ht;
-        
+
         public MainWindow() {
             InitializeComponent();
 
@@ -186,25 +186,45 @@ namespace ClassroomReservation.Main
             }
         }
 
+        static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binformatter;
         private class LoginOnClick : LoginFormOnClick
         {
             void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
             {
-                //if (ht.Contains(Id))
-               // {
-                //    if (LoginForm.DecryptString(ht[Id], password) == Id)// {계정이 존재함.}
-               // }
-                //form.Close();
+                Hashtable vectorDeserialized = null;
+
+                using (var fs = File.Open("c:\\temp\\vector.bin", FileMode.Open))
+                {
+                    vectorDeserialized = (Hashtable)binformatter.Deserialize(fs);
+                }
+
+                foreach (DictionaryEntry entry in vectorDeserialized)
+                {
+                    if(Id == (string)entry.Key)
+                    {
+                        if(LoginForm.DecryptString((string)entry.Key,(string)entry.Value) == password)
+                        {
+                            form.Close();
+                        }
+                    }
+                }
             }
         }
 
-       private class RegisterOnClick : LoginFormOnClick
+        private class RegisterOnClick : LoginFormOnClick
         {
             void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
             {
-             //   string encryptedData = LoginForm.EncryptString(Id, password);
-               // ht.Add(Id, encryptedData);
-               // form.Close();
+                ht.Add(Id, LoginForm.EncryptString(Id, password));
+
+                binformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+
+                using (var fs = File.Create("c:\\temp\\vector.bin"))
+                {
+                    binformatter.Serialize(fs, ht);
+                }
+
+                form.Close();
             }
         }
     }
