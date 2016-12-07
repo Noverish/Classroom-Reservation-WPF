@@ -22,6 +22,8 @@ namespace ClassroomReservation.Reservation
     /// </summary>
     public partial class TimeSelectControl : UserControl
     {
+        private const int CLASS_NUM = 10;
+
         public OnTimeSelectChanged onTimeSelectChanged { set; private get; }
 
         private IEnumerable<Label> buttons;
@@ -33,14 +35,12 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
-
-        private Label previousButton = null;
-
+        
         public TimeSelectControl()
         {
             InitializeComponent();
-            beforeSelectedTime[0] = beforeSelectedTime[1] = -1;
-            nowSelectedTime[0] = nowSelectedTime[1] = -1;
+            beforeSelectedTime[0] = beforeSelectedTime[1] = -2;
+            nowSelectedTime[0] = nowSelectedTime[1] = -2;
             buttons = mainGrid.Children.OfType<Label>();
 
             ResetBackground();
@@ -51,6 +51,7 @@ namespace ClassroomReservation.Reservation
                 btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
                 btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
                 btn.MouseLeave += new MouseEventHandler(OnMouseLeave);
+                btn.MouseMove += new MouseEventHandler(OnMouseMove);
             }
         }
 
@@ -63,17 +64,21 @@ namespace ClassroomReservation.Reservation
         }
 
         public void ResetSelection() {
-            beforeSelectedTime[0] = beforeSelectedTime[1] = -1;
-            nowSelectedTime[0] = nowSelectedTime[1] = -1;
+            beforeSelectedTime[0] = beforeSelectedTime[1] = -2;
+            nowSelectedTime[0] = nowSelectedTime[1] = -2;
             ResetBackground();
         }
 
         public bool HasSeletedTime() {
-            return (nowSelectedTime[0] >= 1 && nowSelectedTime[1] >= 1);
+            return (nowSelectedTime[0] >= 0 && nowSelectedTime[1] >= 0);
         }
 
         public int[] GetSelectedTime() {
-            return nowSelectedTime;
+            int[] returnArray = (int[])nowSelectedTime.Clone();
+            returnArray[0]++;
+            returnArray[1]++;
+
+            return returnArray;
         }
 
 
@@ -82,77 +87,86 @@ namespace ClassroomReservation.Reservation
             ResetBackground();
 
             Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
+            int index = Grid.GetRow(button);
 
             button.Background = selectedColor;
-            nowSelectedTime[0] = nowSelectedTime[1] = index;
             mouseLeftButtonDown = true;
+
+            Mouse.Capture(button);
         }
 
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             mouseLeftButtonDown = false;
-            
-            onTimeSelectChanged?.Invoke(nowSelectedTime, (beforeSelectedTime[0] >= 1 && beforeSelectedTime[1] >= 1) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
 
-            beforeSelectedTime = (int[]) nowSelectedTime.Clone();
+            Mouse.Capture(null);
+
+            onTimeSelectChanged?.Invoke(GetSelectedTime(), (beforeSelectedTime[0] >= 0 && beforeSelectedTime[1] >= 0) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
+
+            beforeSelectedTime = (int[])nowSelectedTime.Clone();
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e) //when mouse on entered area
         {
+
             Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
+            int index = Grid.GetRow(button);
 
-            if(mouseLeftButtonDown)
-            {
-                if(nowSelectedTime[1] - nowSelectedTime[0] < 2)
-                {
-                    if(index < nowSelectedTime[0] && nowSelectedTime[0] - index < 2)
-                    {
-                        nowSelectedTime[0] = index;
-                        button.Background = selectedColor;
-                    }
-                    else if(nowSelectedTime[1] < index && index - nowSelectedTime[1] < 2)
-                    {
-                        nowSelectedTime[1] = index;
-                        button.Background = selectedColor;
-                    }
-                }
+            if (!mouseLeftButtonDown) {
+                button.Background = hoverColor;
             }
-            else
-            {
-                if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
-                {
-                    button.Background = selectedColor;
-                }
-                else
-                {
-                    if (previousButton !=null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 0)
-                        previousButton.Background = backgroundOdd;
-                    else if(previousButton != null && previousButton.Background != selectedColor && Grid.GetRow(previousButton) % 2 == 1)
-                        previousButton.Background = backgroundEven;
-                    button.Background = hoverColor;
-                    previousButton = button;
-                }
-            }
-
-            
         }
 
         private void OnMouseLeave(object sender, RoutedEventArgs e)
         {
             Label button = sender as Label;
-            int index = Grid.GetRow(button) + 1;
+            int index = Grid.GetRow(button);
+
             if (nowSelectedTime[0] <= index && index <= nowSelectedTime[1])
-            {
                 button.Background = selectedColor;
-            }
-            else
-            {
-                if (Grid.GetRow(button) % 2 == 0)
+            else {
+                if (index % 2 == 0)
                     button.Background = backgroundOdd;
-                else if (Grid.GetRow(button) % 2 == 1)
+                else
                     button.Background = backgroundEven;
+            }
+        }
+
+        private void OnMouseMove(object sender, RoutedEventArgs e) {
+            if (mouseLeftButtonDown) {
+                Label button = sender as Label;
+                int row = Grid.GetRow(button);
+                double height = button.ActualHeight;
+                double y = Mouse.GetPosition(button).Y;
+
+                if (-2 * height < y && y < -height)
+                    SetSelectByRow(row - 2, row);
+                else if (-height < y && y < 0)
+                    SetSelectByRow(row - 1, row);
+                else if (0 < y && y < height)
+                    SetSelectByRow(row, row);
+                else if (height < y && y < 2 * height)
+                    SetSelectByRow(row, row + 1);
+                else if (2 * height < y && y < 3 * height)
+                    SetSelectByRow(row, row + 2);
+            }
+        }
+
+        private void SetSelectByRow(int fromRow, int toRow) {
+            if (fromRow < 0)
+                fromRow = 0;
+
+            if (toRow > CLASS_NUM - 1)
+                toRow = CLASS_NUM - 1;
+
+            nowSelectedTime[0] = fromRow;
+            nowSelectedTime[1] = toRow;
+
+            ResetBackground();
+
+            for (int i = fromRow; i <= toRow; i++) {
+                Label item = mainGrid.Children.Cast<Label>().First(e => Grid.GetRow(e) == i && Grid.GetColumn(e) == 0);
+                item.Background = selectedColor;
             }
         }
 
