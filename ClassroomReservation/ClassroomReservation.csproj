@@ -55,6 +55,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Main\LoginFormOnClick.cs" />
     <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
     </Compile>

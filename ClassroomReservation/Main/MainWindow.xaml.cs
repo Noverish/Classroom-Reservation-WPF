@@ -18,6 +18,7 @@ using System.IO;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ClassroomReservation.Reservation;
+using System.Collections;
 
 namespace ClassroomReservation.Main
 {
@@ -33,8 +34,10 @@ namespace ClassroomReservation.Main
 		double delta = 0;
 		int deltaDirection = 1;
 		double startPos;
+        static Hashtable ht;
 
-		public MainWindow()
+
+        public MainWindow()
 		{
 			InitializeComponent();
 
@@ -51,7 +54,10 @@ namespace ClassroomReservation.Main
 			
 			MainWindow_DatePicker.SelectedDate = today;
 
+            Addid.Click += new RoutedEventHandler(ShowSignUp);
+
 			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+            ChangeModeButton.Click += new RoutedEventHandler(ShowLogin);
 			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
 			AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
@@ -60,7 +66,22 @@ namespace ClassroomReservation.Main
 			animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
 			button4.Click += new RoutedEventHandler(Button_Click);
-		}
+
+            ht = new Hashtable();
+        }
+
+        public void ShowSignUp(object sender, RoutedEventArgs e)
+        {
+            LoginForm signWin = new LoginForm(new RegisterOnClick());
+            signWin.LoginButton.Content = "회원가입";
+            signWin.ShowDialog();
+        }
+
+        public void ShowLogin(object sender, RoutedEventArgs e)
+        {
+            LoginForm loginWin = new LoginForm(new LoginOnClick());
+            loginWin.ShowDialog();
+        }
 
         public void changeMode(object sender, RoutedEventArgs e)
         {
@@ -156,6 +177,28 @@ namespace ClassroomReservation.Main
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private class LoginOnClick : LoginFormOnClick
+        {
+            void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
+            {
+                //if (ht.Contains(Id))
+               // {
+                //    if (LoginForm.DecryptString(ht[Id], password) == Id)// {계정이 존재함.}
+               // }
+                //form.Close();
+            }
+        }
+
+       private class RegisterOnClick : LoginFormOnClick
+        {
+            void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
+            {
+             //   string encryptedData = LoginForm.EncryptString(Id, password);
+               // ht.Add(Id, encryptedData);
+               // form.Close();
+            }
         }
     }
 }

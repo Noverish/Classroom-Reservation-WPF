@@ -68,13 +68,13 @@
 
                                     <Border>
                                         
-                                        <Label Name="label1" Grid.Row="0"  Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">이름</Label>
+                                        <Label Name="label1" Grid.Row="0" Background="Salmon" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">이름</Label>
                                     </Border>
                                     <Border Grid.Row="1">
-                                        <Label Name="label2" Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">연락처</Label>
+                                        <Label Name="label2" Background="Salmon" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">연락처</Label>
                                     </Border>
                                     <Border Grid.Row="2">
-                                        <Label Name="label3" Background="White" Foreground="Black" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
+                                        <Label Name="label3" Background="Salmon" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Margin="5">
                                         <TextBox Name="txtbox1"/>
@@ -86,10 +86,10 @@
                                         <TextBox Name="txtbox3"/>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="5">
-                                        <Button Name="button5" Content="정보 수정" Grid.Row="0" Background="White" Foreground="Black" FontSize="20"/>
+                                        <Button Name="button5" Content="정보 수정" Grid.Row="0" Background="Salmon" BorderThickness="0" Foreground="White" FontSize="20"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="2" Margin="5">
-                                        <Button Name="button6" Content="예약 삭제" Grid.Row="0" Background="White" Foreground="Black" FontSize="20"/>
+                                        <Button Name="button6" Content="예약 삭제" Grid.Row="0" Background="Salmon" BorderThickness="0" Foreground="White" FontSize="20"/>
                                     </Border>
                                 </Grid>
                             </DockPanel>
@@ -176,8 +176,16 @@
                     <Border.Effect>
                         <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
                     </Border.Effect>
-                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="24" Margin="0,0,50,0">
+                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="20" Margin="0,0,50,0">
                         관리자 모드로 변경
+                    </Button>
+                </Border>
+                <Border DockPanel.Dock="Right">
+                    <Border.Effect>
+                        <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                    </Border.Effect>
+                    <Button Name="Addid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="20" Margin="0,0,50,0">
+                        관리자 아이디 추가
                     </Button>
                 </Border>
                 <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">

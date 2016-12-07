@@ -64,42 +64,8 @@ namespace ClassroomReservation.Reservation
                 //DateTime date = calendar.SelectedDate.Value;
                 //this.Title = date.ToShortDateString();
             }
-            //var calendar = sender as Calendar;
-
-            //if (calendar.SelectedDate.HasValue && calendar.SelectedDates.Count > 0)
-            //{
-            //    var selectedDate = calendar.SelectedDate.Value;
-            //    var selectedDates = calendar.SelectedDates;
-
-
-            //    Console.WriteLine("selected date - " + calendar.SelectedDate);
-            //    Console.WriteLine("display date - " + calendar.DisplayDate);
-
-            //    if (selectedDate < DateTime.Today)
-            //    {
-            //        AlertWindow window = new AlertWindow("지난 날은 예약 할 수 없습니다.");
-            //        window.ShowDialog();
-
-            //        calendar.SelectedDates.Clear();
-            //        calendar.SelectedDate = DateTime.Today;
-            //        Console.WriteLine("2");
-            //        calendar.DisplayDate = DateTime.Today;
-            //        Console.WriteLine("3");
-            //        calendar.BlackoutDates
-            //    }
-            //    else if (DateTime.Today.AddDays(6) < selectedDate || DateTime.Today.AddDays(6) < selectedDates[selectedDates.Count - 1])
-            //    {
-            //        AlertWindow window = new AlertWindow("오늘 부터 7일안의 날짜에만 예약 할 수 있습니다.");
-            //        window.ShowDialog();
-
-            //        calendar.SelectedDates.Clear();
-            //        calendar.SelectedDate = DateTime.Today;
-
-            //        Console.WriteLine("0");
-            //        calendar.DisplayDate = DateTime.Today;
-            //        Console.WriteLine("1");
-            //    }
-            //}
         }
+
+        //MouseLeftButtonDown="onMouseLeftBtnDown" MouseEnter="onMouseEnter" MouseLeftButtonUp="OnMouseLeftBtnUp"
     }
 }
