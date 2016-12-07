@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassroomReservation.Server {
-    class ReservationItem {
+    public class ReservationItem {
         public DateTime startDate;
         public DateTime endDate;
         public int startClass;

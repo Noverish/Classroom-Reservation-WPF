@@ -18,6 +18,7 @@ using System.IO;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using ClassroomReservation.Reservation;
+using ClassroomReservation.Server;
 
 namespace ClassroomReservation.Main
 {
@@ -34,33 +35,34 @@ namespace ClassroomReservation.Main
 		int deltaDirection = 1;
 		double startPos;
 
-		public MainWindow()
-		{
-			InitializeComponent();
+        public MainWindow() {
+            InitializeComponent();
 
-			DateTime today = DateTime.Now;
+            DateTime today = DateTime.Now;
 
-			for (int i = 0; i < 7; i++)
-			{
-				if (today.AddDays(i).DayOfWeek != 0)
-				{
-					ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today.AddDays(i));
-					scrollViewContentPanel.Children.Add(fileInputBox1);
-				}
-			}
-			
-			MainWindow_DatePicker.SelectedDate = today;
+            for (int i = 0; i < 7; i++) {
+                if (today.AddDays(i).DayOfWeek != 0) {
+                    ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today.AddDays(i));
+                    scrollViewContentPanel.Children.Add(fileInputBox1);
+                }
+            }
 
-			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
-			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
+            MainWindow_DatePicker.SelectedDate = today;
 
-			AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+            ChangeModeButton.Click += new RoutedEventHandler(changeMode);
+            readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
 
-			animationTimer.Interval = new TimeSpan(120);
-			animationTimer.Tick += new EventHandler(MyTimer_Tick);
+            AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
 
-			button4.Click += new RoutedEventHandler((sender, e) => (new ReservationWindow()).ShowDialog());
-		}
+            animationTimer.Interval = new TimeSpan(120);
+            animationTimer.Tick += new EventHandler(MyTimer_Tick);
+
+            button4.Click += new RoutedEventHandler((sender, e) => {
+                ReservationWindow window = new ReservationWindow();
+                window.SetOnReservationSuccess(OnReservationSuccess);
+                window.ShowDialog();
+            });
+        }
 
         public void changeMode(object sender, RoutedEventArgs e)
         {
@@ -150,6 +152,16 @@ namespace ClassroomReservation.Main
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void OnReservationSuccess(ReservationItem item) {
+            int childrenNum = scrollViewContentPanel.Children.Count;
+
+            for (int i = 0; i < childrenNum; i++) {
+                var child = scrollViewContentPanel.Children[i];
+                ReservationStatusPerDay day = child as ReservationStatusPerDay;
+                day.refresh();
+            }
         }
     }
 }

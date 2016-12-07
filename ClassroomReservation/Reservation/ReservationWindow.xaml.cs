@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassroomReservation.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,8 +15,12 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
+    public delegate void OnReservationSuccess(ReservationItem item);
+
     public partial class ReservationWindow : Window
     {
+        private OnReservationSuccess callback;
+
         public ReservationWindow()
         {
             InitializeComponent();
@@ -35,6 +40,10 @@ namespace ClassroomReservation.Reservation
             classroomSelectControl.SetOnClassroomSelectChanged(new OnClassroomSelectChanged(OnClassroomSelectChanged));
 
             EnableInputUserData(false);
+        }
+
+        public void SetOnReservationSuccess(OnReservationSuccess func) {
+            this.callback = func;
         }
 
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)
@@ -59,11 +68,16 @@ namespace ClassroomReservation.Reservation
             string content = contentTextBox.Text;
             string password = passwordTextBox.Text;
 
-            Server.ReservationItem item = new Server.ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
+            ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
 
-            Server.ServerClient.MakeReservation(item);
+            try {
+                ServerClient.MakeReservation(item);
 
-            this.Close();
+                callback(item);
+                this.Close();
+            } catch (ServerException ex) {
+
+            }
         }
 
         private void EnableInputUserData(bool enable) {

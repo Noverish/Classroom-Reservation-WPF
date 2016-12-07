@@ -24,6 +24,8 @@ namespace ClassroomReservation.Main
     {
         private static List<TextBlock> selectedViews = new List<TextBlock>();
 
+        private DateTime date;
+
         private bool mouseLeftButtonDown = false;
         private int selectedButtonNum = 0;
         private int nowSelectedRow = -1;
@@ -31,8 +33,6 @@ namespace ClassroomReservation.Main
         private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private Brush selectColor = Brushes.Crimson;
-
-        delegate void asdf(object s, RoutedEventArgs e);
 
         private SolidColorBrush red = new SolidColorBrush(Color.FromRgb(255, 0, 0));
         private SolidColorBrush green = new SolidColorBrush(Color.FromRgb(255, 0, 0));
@@ -43,6 +43,8 @@ namespace ClassroomReservation.Main
         public ReservationStatusPerDay(DateTime date)
         {
             InitializeComponent();
+
+            this.date = date;
 
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
             DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
@@ -88,10 +90,16 @@ namespace ClassroomReservation.Main
                 }
             }
 
+            refresh();
+        }
+
+        public void refresh() {
+            ResetBackground();
+
             List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
             for (int i = 0; i < items.Count; i++) {
                 int row = classroomToRow(items[i].classroom) + 2;
-                
+
                 for (int column = items[i].startClass; column <= items[i].endClass; column++) {
                     TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column - 1)) as Border).Child as TextBlock;
                     btn.Background = purple;
@@ -175,6 +183,19 @@ namespace ClassroomReservation.Main
             if (name.Equals("615호"))
                 return 11;
             return -1;
+        }
+
+        private void ResetBackground() {
+            for (int row = 2; row < 14; row++) {
+                for (int column = 0; column < 10; column++) {
+                    TextBlock btn = (wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == (column)) as Border).Child as TextBlock;
+
+                    if (row % 2 == 0)
+                        btn.Background = defaultColorOfOdd;
+                    else
+                        btn.Background = defaultColorOfEven;
+                }
+            }
         }
     }
 }

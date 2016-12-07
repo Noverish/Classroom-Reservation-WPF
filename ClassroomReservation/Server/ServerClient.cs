@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.16.12.145/";
+        private const string serverDomain = "http://192.168.0.8/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
         private const string getDayReservationPage = "reserv_get_day.php";
@@ -35,49 +35,57 @@ namespace ClassroomReservation.Server {
         }
 
         public static List<ReservationItem> GetReservation(DateTime date, int classTime, int classroom) {
-            List<ReservationItem> items = new List<ReservationItem>();
-            string url = serverDomain + getReservationPage;
+            try {
+                List<ReservationItem> items = new List<ReservationItem>();
+                string url = serverDomain + getReservationPage;
 
-            string dataStr =
-                "date=" + date.ToString("yyyy-MM-dd") +
-                "&class=" + classTime +
-                "&classroom=" + classroom;
+                string dataStr =
+                    "date=" + date.ToString("yyyy-MM-dd") +
+                    "&class=" + classTime +
+                    "&classroom=" + classroom;
 
-            string result = connect(url, dataStr);
+                string result = connect(url, dataStr);
 
-            return items;
+                return items;
+            } catch (ServerException e) {
+                throw e;
+            }
         }
 
         public static List<ReservationItem> GetDayReservation(DateTime date) {
-            List<ReservationItem> items = new List<ReservationItem>();
-            string url = serverDomain + getDayReservationPage;
+            try {
+                List<ReservationItem> items = new List<ReservationItem>();
+                string url = serverDomain + getDayReservationPage;
 
-            string dataStr =
-                "date=" + date.ToString("yyyy-MM-dd");
+                string dataStr =
+                    "date=" + date.ToString("yyyy-MM-dd");
 
-            string result = connect(url, dataStr);
+                string result = connect(url, dataStr);
 
-            Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
+                Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
 
-            List<dynamic> array = JsonConvert.DeserializeObject<List<dynamic>>(result);
+                List<dynamic> array = JsonConvert.DeserializeObject<List<dynamic>>(result);
 
-            for (int i = 0; i < array.Count; i++) {
-                DateTime startDate = Convert.ToDateTime(array[i].StartDate);
-                DateTime endDate = Convert.ToDateTime(array[i].EndDate);
-                int startClass = array[i].StartClass;
-                int endClass = array[i].EndClass;
-                string classroom = array[i].Classroom;
-                string userName = array[i].UserName;
-                string contact = array[i].Contact;
-                string content = array[i].Content;
-                string password = array[i].Password;
+                for (int i = 0; i < array.Count; i++) {
+                    DateTime startDate = Convert.ToDateTime(array[i].StartDate);
+                    DateTime endDate = Convert.ToDateTime(array[i].EndDate);
+                    int startClass = array[i].StartClass;
+                    int endClass = array[i].EndClass;
+                    string classroom = array[i].Classroom;
+                    string userName = array[i].UserName;
+                    string contact = array[i].Contact;
+                    string content = array[i].Content;
+                    string password = array[i].Password;
 
-                ReservationItem item = new ReservationItem(startDate, endDate, startClass, endClass, classroom, userName, contact, content, password);
+                    ReservationItem item = new ReservationItem(startDate, endDate, startClass, endClass, classroom, userName, contact, content, password);
 
-                items.Add(item);
+                    items.Add(item);
+                }
+
+                return items;
+            } catch (ServerException e) {
+                throw e;
             }
-
-            return items;
         }
 
         public static string connect(string url, string dataStr) {
@@ -108,8 +116,12 @@ namespace ClassroomReservation.Server {
                 Other.AlertWindow alert = new Other.AlertWindow(e.Message);
                 alert.ShowDialog();
 
-                return null;
+                throw new ServerException();
             }
         }
+    }
+
+    class ServerException : Exception {
+
     }
 }
