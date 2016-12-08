@@ -200,9 +200,9 @@ namespace ClassroomReservation.Main
 
                 foreach (DictionaryEntry entry in vectorDeserialized)
                 {
-                    if(Id == (string)entry.Key)
+                    if(Id.Equals(entry.Key))
                     {
-                        if(LoginForm.DecryptString((string)entry.Key,(string)entry.Value) == password)
+                        if(Id.Equals(LoginForm.DecryptString((string)entry.Value, password)))
                         {
                             form.Close();
                         }
