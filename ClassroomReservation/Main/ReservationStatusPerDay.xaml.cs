@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Globalization;
 using ClassroomReservation.Server;
+using ClassroomReservation.Resource;
 
 namespace ClassroomReservation.Main
 {
@@ -25,27 +26,23 @@ namespace ClassroomReservation.Main
     /// </summary>
     public partial class ReservationStatusPerDay : UserControl
     {
-        private const int TOTAL_COLUMN = 10;
-        private const int TOTAL_ROW = 14;
+        private static int TOTAL_COLUMN = Database.getInstance().classTimeTable.Count;
+        private static int TOTAL_ROW = Database.getInstance().classroomTable.Count + 2;
 
-        private static ReservationStatusPerDay nowSelectedStatusControl;
-        private static int[] nowSelectedColumn = new int[2] { -1, -1 };
-        private static int nowSelectedRow = -1;
+        public static ReservationStatusPerDay nowSelectedStatusControl { get; private set; }
+        public static int[] nowSelectedColumn { get; private set; } = new int[2] { -1, -1 };
+        public static int nowSelectedRow { get; private set; } = -1;
         private bool mouseLeftButtonDown = false;
 
         public OnOneSelected onOneSelected { private get; set; }
         private CustomTextBlock[,] buttons = new CustomTextBlock[TOTAL_ROW, TOTAL_COLUMN];
-        private DateTime date;
+        public DateTime date { get; private set; }
 
         private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private Brush selectColor = Brushes.Crimson;
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
-
-        private SolidColorBrush red = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-        private SolidColorBrush green = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-        private SolidColorBrush blue = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-        private SolidColorBrush orange = new SolidColorBrush(Color.FromRgb(255, 255, 0));
+        
         private SolidColorBrush purple = new SolidColorBrush(Color.FromRgb(255, 0, 255));
 
         public ReservationStatusPerDay(DateTime date)
@@ -106,7 +103,7 @@ namespace ClassroomReservation.Main
                 List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
 
                 for (int i = 0; i < items.Count; i++) {
-                    int row = classroomToRow(items[i].classroom) + 2;
+                    int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
 
                     for (int column = items[i].startClass - 1; column <= items[i].endClass - 1; column++) {
                         CustomTextBlock btn = buttons[row, column];
@@ -211,34 +208,6 @@ namespace ClassroomReservation.Main
 
             nowSelectedColumn[0] = startColumn;
             nowSelectedColumn[1] = endColumn;
-        }
-
-        private int classroomToRow(string name) {
-            if (name.Equals("107호"))
-                return 0;
-            if (name.Equals("B102호"))
-                return 1;
-            if (name.Equals("B103호"))
-                return 2;
-            if (name.Equals("B104호"))
-                return 3;
-            if (name.Equals("201호"))
-                return 4;
-            if (name.Equals("202호"))
-                return 5;
-            if (name.Equals("205호"))
-                return 6;
-            if (name.Equals("206호"))
-                return 7;
-            if (name.Equals("208호"))
-                return 8;
-            if (name.Equals("611호"))
-                return 9;
-            if (name.Equals("614A호"))
-                return 10;
-            if (name.Equals("615호"))
-                return 11;
-            return -1;
         }
 
         private void ResetBackground() {

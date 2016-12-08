@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.4.0.250/";
+        private const string serverDomain = "http://10.16.34.153/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
         private const string getDayReservationPage = "reserv_get_day.php";
@@ -97,7 +97,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 1000;
+                httpWebRequest.Timeout = 100;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);

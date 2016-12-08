@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClassroomReservation.Resource;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,6 +41,18 @@ namespace ClassroomReservation.Reservation
         public TimeSelectControl()
         {
             InitializeComponent();
+
+            Hashtable classTimeTable = Database.getInstance().classTimeTable;
+            for (int row = 0; row < classTimeTable.Count; row++) {
+                Label label = new Label();
+                label.Content = classTimeTable[row];
+
+                Grid.SetRow(label, row);
+                Grid.SetColumn(label, 0);
+                
+                mainGrid.Children.Add(label);
+            }
+
             beforeSelectedTime[0] = beforeSelectedTime[1] = -2;
             nowSelectedTime[0] = nowSelectedTime[1] = -2;
             buttons = mainGrid.Children.OfType<Label>();

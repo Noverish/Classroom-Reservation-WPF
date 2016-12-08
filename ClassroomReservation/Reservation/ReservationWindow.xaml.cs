@@ -95,8 +95,6 @@ namespace ClassroomReservation.Reservation
         }
 
         private void OnClassroomSelectChanged(string nowSelectedClassroom, bool isDataChanged) {
-            Console.WriteLine("isDataChanged" + isDataChanged);
-
             if (isDataChanged) {
                 timeSelectControl.ResetSelection();
                 EnableInputUserData(false);
