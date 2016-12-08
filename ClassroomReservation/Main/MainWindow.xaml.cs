@@ -20,6 +20,7 @@ using System.Windows.Threading;
 using ClassroomReservation.Reservation;
 using ClassroomReservation.Server;
 using System.Collections;
+using ClassroomReservation.Resource;
 
 namespace ClassroomReservation.Main
 {
@@ -55,10 +56,7 @@ namespace ClassroomReservation.Main
 
 			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
             ChangeModeButton.Click += new RoutedEventHandler(ShowLogin);
-			readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
-
-            ChangeModeButton.Click += new RoutedEventHandler(changeMode);
-            readExcelFileButton.Click += new RoutedEventHandler(readExcelFile);
+			readExcelFileButton.Click += new RoutedEventHandler(readExcelFileButton_Click);
 
             AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
             
@@ -142,39 +140,9 @@ namespace ClassroomReservation.Main
 			e.Handled = true;
         }
 
-        public void readExcelFile(object sender, RoutedEventArgs e)
-        {
-            //var fileName = string.Format("{0}\\fileNameHere", Directory.GetCurrentDirectory());
-            //var connectionString = string.Format("Provider=Microsoft.Jet.OLEDB.4.0; data source={0}; Extended Properties=Excel 8.0;", fileName);
-
-            //var adapter = new OleDbDataAdapter("SELECT * FROM [workSheetNameHere$]", connectionString);
-            //var ds = new DataSet();
-
-            //adapter.Fill(ds, "anyNameHere");
-
-            //DataTable data = ds.Tables["anyNameHere"];
-
-            // Create OpenFileDialog 
-            Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
-
-            // Set filter for file extension and default file extension 
-            dlg.DefaultExt = ".txt";
-            dlg.Filter = "Excel Files|*.xls;*.xlsx;*.xlsm";
-
-            // Display OpenFileDialog by calling ShowDialog method 
-            Nullable<bool> result = dlg.ShowDialog();
-
-            // Get the selected file name and display in a TextBox 
-            if (result == true)
-            {
-                // Open document 
-                //fileOpenTextBox.Text = dlg.FileName;
-            }
-        }
-
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
         {
-
+            List<ReservationItem> items = ExcelReadClient.readExcel();
         }
 
         private void onOneSelected(ReservationItem item) {

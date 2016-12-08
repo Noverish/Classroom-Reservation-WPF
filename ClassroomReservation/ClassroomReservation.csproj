@@ -79,6 +79,7 @@
       <DependentUpon>AlertWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resource\Database.cs" />
+    <Compile Include="Resource\ExcelReadClient.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Page Include="Main\MainWindow.xaml">
