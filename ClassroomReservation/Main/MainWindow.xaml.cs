@@ -31,6 +31,8 @@ namespace ClassroomReservation.Main
     {
         private bool isUserMode = true;
 
+        private int CLASSROOM_NUM;
+
 		DispatcherTimer animationTimer = new DispatcherTimer();
 		private double reservationStatusPerDayWidth;
 		double delta = 0;
@@ -38,8 +40,58 @@ namespace ClassroomReservation.Main
 		double startPos;
         static Hashtable ht;
 
+
+        private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
+        private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+
         public MainWindow() {
             InitializeComponent();
+
+            Hashtable classroomTable = Database.getInstance().classroomTable;
+            CLASSROOM_NUM = classroomTable.Count;
+            Border nowBuildingLabelBorder = null;
+            for (int row = 0; row < CLASSROOM_NUM; row++) {
+
+                //Add RowDefinition
+                RowDefinition rowDef = new RowDefinition();
+                rowDef.Height = new GridLength(1, GridUnitType.Star);
+                leftLabelsGrid.RowDefinitions.Add(rowDef);
+
+                //Get building name and classroom name
+                string classroomName = (classroomTable[row] as ClassroomItem).classroom;
+                string buildingName = (classroomTable[row] as ClassroomItem).building;
+
+                //Add label to Grid
+                Label classroomLabel = new Label();
+                classroomLabel.Content = classroomName;
+                classroomLabel.Background = (row % 2 == 0) ? backgroundOdd : backgroundEven;
+
+                Grid.SetRow(classroomLabel, row);
+                Grid.SetColumn(classroomLabel, 1);
+
+                leftLabelsGrid.Children.Add(classroomLabel);
+
+                //Adjust building label
+                if (nowBuildingLabelBorder != null && (nowBuildingLabelBorder.Child as Label).Content.Equals(buildingName)) {
+                    Grid.SetRowSpan(nowBuildingLabelBorder, Grid.GetRowSpan(nowBuildingLabelBorder) + 1);
+                } else {
+                    Label buildingLabel = new Label();
+                    buildingLabel.Content = buildingName;
+                    buildingLabel.Style = Resources["LabelStyle"] as Style;
+
+                    Border border = new Border();
+                    border.Style = Resources["BorderStyle"] as Style;
+                    border.Child = buildingLabel;
+
+                    Grid.SetRow(border, row);
+                    Grid.SetColumn(border, 0);
+                    Grid.SetRowSpan(border, 1);
+
+                    nowBuildingLabelBorder = border;
+                    leftLabelsGrid.Children.Add(border);
+                }
+            }
+
 
             DateTime today = DateTime.Now;
 

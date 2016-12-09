@@ -56,6 +56,11 @@ namespace ClassroomReservation.Main
 
             for (int row = 2; row < TOTAL_ROW; row++)
             {
+                //Add RowDefinition
+                RowDefinition rowDef = new RowDefinition();
+                rowDef.Height = new GridLength(1, GridUnitType.Star);
+                wrapPanel.RowDefinitions.Add(rowDef);
+
                 for (int col = 0; col < TOTAL_COLUMN; col++)
                 {
                     CustomTextBlock newBtn = new CustomTextBlock();

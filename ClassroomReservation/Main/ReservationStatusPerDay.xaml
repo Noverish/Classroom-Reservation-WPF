@@ -39,6 +39,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
+                <!--<RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -49,8 +50,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>-->
             </Grid.RowDefinitions>
 
             <Label Name="DateTextBlock" Content="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
