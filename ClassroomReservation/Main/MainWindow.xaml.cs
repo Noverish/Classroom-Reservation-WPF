@@ -64,7 +64,7 @@ namespace ClassroomReservation.Main
                 //Add label to Grid
                 Label classroomLabel = new Label();
                 classroomLabel.Content = classroomName;
-                classroomLabel.Background = (row % 2 == 0) ? backgroundOdd : backgroundEven;
+                classroomLabel.Background = (row % 2 == 0) ? backgroundEven : backgroundOdd;
 
                 Grid.SetRow(classroomLabel, row);
                 Grid.SetColumn(classroomLabel, 1);
