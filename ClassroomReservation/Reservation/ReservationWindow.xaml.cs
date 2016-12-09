@@ -1,4 +1,6 @@
-﻿using ClassroomReservation.Server;
+﻿using ClassroomReservation.Main;
+using ClassroomReservation.Resource;
+using ClassroomReservation.Server;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +42,20 @@ namespace ClassroomReservation.Reservation
             classroomSelectControl.onClassroomSelectChanged = OnClassroomSelectChanged;
 
             EnableInputUserData(false);
+
+            try {
+                DateTime selectedDate = ReservationStatusPerDay.nowSelectedStatusControl.date;
+                int[] selectedClasstimeRow = ReservationStatusPerDay.nowSelectedColumn;
+                int selectedClassroomRow = ReservationStatusPerDay.NowSelectedRow;
+
+                calendar.SelectedDate = selectedDate;
+                timeSelectControl.SetSelectedTime(selectedClasstimeRow);
+                classroomSelectControl.SetSelectedClassroom(selectedClassroomRow);
+                
+                EnableInputUserData(true);
+            } catch (Exception ex) {
+
+            }
         }
 
         private void Calendar_OnSelectedDatesChanged(object sender, SelectionChangedEventArgs e)

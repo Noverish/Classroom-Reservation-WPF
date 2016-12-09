@@ -95,6 +95,11 @@ namespace ClassroomReservation.Reservation
             return returnArray;
         }
 
+        public void SetSelectedTime(int[] selectedTimeRow) {
+            enable(true);
+            nowSelectedTime = (int[])selectedTimeRow.Clone();
+            SetSelectByRow(nowSelectedTime[0], nowSelectedTime[1]);
+        }
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {

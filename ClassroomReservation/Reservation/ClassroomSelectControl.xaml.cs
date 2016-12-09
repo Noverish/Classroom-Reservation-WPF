@@ -113,6 +113,12 @@ namespace ClassroomReservation.Reservation {
             return nowSelected.GetFullName();
         }
 
+        public void SetSelectedClassroom(int classroomRow) {
+            enable(true);
+            nowSelected = buttons[classroomRow];
+            nowSelected.Background = selectedColor;
+        }
+
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e) {
             nowSelected = sender as ClassroomLabel;

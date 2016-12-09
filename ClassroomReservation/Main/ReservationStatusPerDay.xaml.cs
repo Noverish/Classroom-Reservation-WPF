@@ -31,7 +31,8 @@ namespace ClassroomReservation.Main
 
         public static ReservationStatusPerDay nowSelectedStatusControl { get; private set; }
         public static int[] nowSelectedColumn { get; private set; } = new int[2] { -1, -1 };
-        public static int nowSelectedRow { get; private set; } = -1;
+        private static int nowSelectedRow = -1;
+        public static int NowSelectedRow { get { return nowSelectedRow - 2; } private set { nowSelectedRow = value; } }
         private bool mouseLeftButtonDown = false;
 
         public OnOneSelected onOneSelected { private get; set; }
