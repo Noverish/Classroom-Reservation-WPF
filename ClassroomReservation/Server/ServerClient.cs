@@ -10,10 +10,11 @@ using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.16.34.153/";
+        private const string serverDomain = "http://192.168.0.28/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
         private const string getDayReservationPage = "reserv_get_day.php";
+        private const string deleteReservationOnePage = "reserv_delete_one.php";
 
         public static void MakeReservation(ReservationItem reservation) {
             string url = serverDomain + makeReservationPage;
@@ -32,6 +33,20 @@ namespace ClassroomReservation.Server {
             Console.WriteLine(dataStr);
 
             connect(url, dataStr);
+        }
+
+        public static bool DeleteReservation(int reservID, string password) {
+            try {
+                string url = serverDomain + deleteReservationOnePage;
+                string dataStr = "reservID=" + reservID + "&password=" + password;
+
+                string result = connect(url, dataStr);
+
+                return true;
+
+            } catch (ServerException e) {
+                throw e;
+            }
         }
 
         public static List<ReservationItem> GetReservation(DateTime date, int classTime, int classroom) {

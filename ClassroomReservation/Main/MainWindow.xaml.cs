@@ -40,6 +40,7 @@ namespace ClassroomReservation.Main
 		double startPos;
         static Hashtable ht;
 
+        private StatusItem nowSelectedItem;
 
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
@@ -122,6 +123,10 @@ namespace ClassroomReservation.Main
             });
 
             ht = new Hashtable();
+
+            button6.Click += new RoutedEventHandler((sender, e) => {
+                ServerClient.DeleteReservation(nowSelectedItem.reservID, "비밀번호1");
+            });
         }
 
         public void ShowSignUp(object sender, RoutedEventArgs e)
@@ -199,6 +204,8 @@ namespace ClassroomReservation.Main
 
         private void onOneSelected(StatusItem item) {
             if (item != null) {
+                nowSelectedItem = item;
+
                 infoPanel.Visibility = Visibility.Visible;
 
                 txtbox1.Text = item.userName;
