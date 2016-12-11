@@ -125,7 +125,14 @@ namespace ClassroomReservation.Main
             ht = new Hashtable();
 
             button6.Click += new RoutedEventHandler((sender, e) => {
-                ServerClient.DeleteReservation(nowSelectedItem.reservID, "비밀번호1");
+                (new PasswordForm((form, password) => {
+                    if (ServerClient.DeleteReservation(nowSelectedItem.reservID, password)) {
+                        OnReservationSuccess(null);
+                        form.Close();
+                    } else {
+
+                    }
+                })).ShowDialog();
             });
         }
 

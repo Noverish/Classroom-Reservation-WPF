@@ -30,7 +30,7 @@ namespace ClassroomReservation.Server {
                 "&content=" + reservation.content +
                 "&password=" + reservation.password;
 
-            Console.WriteLine(dataStr);
+            //Console.WriteLine(dataStr);
 
             connect(url, dataStr);
         }
@@ -42,8 +42,7 @@ namespace ClassroomReservation.Server {
 
                 string result = connect(url, dataStr);
 
-                return true;
-
+                return result.Equals("1");
             } catch (ServerException e) {
                 throw e;
             }
@@ -98,7 +97,7 @@ namespace ClassroomReservation.Server {
 
                 return items;
             } catch (ServerException e) {
-                Console.WriteLine(e.StackTrace);
+                //Console.WriteLine(e.StackTrace);
                 throw e;
             }
         }
@@ -125,7 +124,7 @@ namespace ClassroomReservation.Server {
 
                 string result = readerPost.ReadToEnd();
 
-                Console.WriteLine(result);
+                Console.WriteLine("result : " + result);
 
                 return result;
             } catch (Exception e) {

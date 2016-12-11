@@ -123,7 +123,7 @@ namespace ClassroomReservation.Main
                 }
 
                 for (int i = 0; i < items.Count; i++) {
-                    Console.WriteLine(items[i].classroom);
+                    //Console.WriteLine(items[i].classroom);
 
                     int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
                     int column = items[i].classtime - 1;
@@ -135,7 +135,7 @@ namespace ClassroomReservation.Main
 
                 ResetBackground();
             } catch (Exception ex) {
-                Console.WriteLine(ex.StackTrace);
+                //Console.WriteLine(ex.StackTrace);
             }
         }
 

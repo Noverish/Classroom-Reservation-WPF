@@ -59,6 +59,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Main\PasswordForm.xaml.cs">
+      <DependentUpon>PasswordForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main\LoginFormOnClick.cs" />
     <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
@@ -83,6 +86,10 @@
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\StatusItem.cs" />
+    <Page Include="Main\PasswordForm.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
