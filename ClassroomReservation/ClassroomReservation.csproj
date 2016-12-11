@@ -82,6 +82,7 @@
     <Compile Include="Resource\ExcelReadClient.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
+    <Compile Include="Server\StatusItem.cs" />
     <Page Include="Main\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

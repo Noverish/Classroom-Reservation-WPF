@@ -197,7 +197,7 @@ namespace ClassroomReservation.Main
             List<ReservationItem> items = ExcelReadClient.readExcel();
         }
 
-        private void onOneSelected(ReservationItem item) {
+        private void onOneSelected(StatusItem item) {
             if (item != null) {
                 infoPanel.Visibility = Visibility.Visible;
 

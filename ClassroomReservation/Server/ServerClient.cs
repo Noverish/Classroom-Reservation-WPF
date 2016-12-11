@@ -52,38 +52,38 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public static List<ReservationItem> GetDayReservation(DateTime date) {
+        public static List<StatusItem> GetDayReservation(DateTime datePara) {
             try {
-                List<ReservationItem> items = new List<ReservationItem>();
+                List<StatusItem> items = new List<StatusItem>();
                 string url = serverDomain + getDayReservationPage;
 
                 string dataStr =
-                    "date=" + date.ToString("yyyy-MM-dd");
+                    "date=" + datePara.ToString("yyyy-MM-dd");
 
                 string result = connect(url, dataStr);
 
-                Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
+                //Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
 
                 List<dynamic> array = JsonConvert.DeserializeObject<List<dynamic>>(result);
 
                 for (int i = 0; i < array.Count; i++) {
-                    DateTime startDate = Convert.ToDateTime(array[i].StartDate);
-                    DateTime endDate = Convert.ToDateTime(array[i].EndDate);
-                    int startClass = array[i].StartClass;
-                    int endClass = array[i].EndClass;
+                    int reservID = array[i].ReservID;
+                    int type = array[i].Type;
+                    DateTime date = Convert.ToDateTime(array[i].Date);
+                    int classtime = array[i].Classtime;
                     string classroom = array[i].Classroom;
                     string userName = array[i].UserName;
                     string contact = array[i].Contact;
                     string content = array[i].Content;
-                    string password = array[i].Password;
 
-                    ReservationItem item = new ReservationItem(startDate, endDate, startClass, endClass, classroom, userName, contact, content, password);
+                    StatusItem item = new StatusItem(reservID, type, date, classtime, classroom, userName, contact, content);
 
                     items.Add(item);
                 }
 
                 return items;
             } catch (ServerException e) {
+                Console.WriteLine(e.StackTrace);
                 throw e;
             }
         }
@@ -97,7 +97,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 100;
+                httpWebRequest.Timeout = 1000;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);
@@ -110,12 +110,12 @@ namespace ClassroomReservation.Server {
 
                 string result = readerPost.ReadToEnd();
 
-                //Console.WriteLine(result);
+                Console.WriteLine(result);
 
                 return result;
             } catch (Exception e) {
                 Other.AlertWindow alert = new Other.AlertWindow(e.Message);
-                //alert.ShowDialog();
+                alert.ShowDialog();
 
                 throw new ServerException();
             }

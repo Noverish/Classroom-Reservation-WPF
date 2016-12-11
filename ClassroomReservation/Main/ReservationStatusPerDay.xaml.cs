@@ -19,7 +19,7 @@ using ClassroomReservation.Resource;
 namespace ClassroomReservation.Main
 {
 
-    public delegate void OnOneSelected(ReservationItem item);
+    public delegate void OnOneSelected(StatusItem item);
 
     /// <summary>
     /// ReservationStatusPerDay.xaml에 대한 상호 작용 논리
@@ -106,21 +106,22 @@ namespace ClassroomReservation.Main
 
         public void refresh() {
             try {
-                List<ReservationItem> items = Server.ServerClient.GetDayReservation(date);
+                List<StatusItem> items = Server.ServerClient.GetDayReservation(date);
 
                 for (int i = 0; i < items.Count; i++) {
-                    int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
+                    Console.WriteLine(items[i].classroom);
 
-                    for (int column = items[i].startClass - 1; column <= items[i].endClass - 1; column++) {
-                        CustomTextBlock btn = buttons[row, column];
-                        btn.originColor = purple;
-                        btn.item = items[i];
-                    }
+                    int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
+                    int column = items[i].classtime - 1;
+
+                    CustomTextBlock btn = buttons[row, column];
+                    btn.originColor = purple;
+                    btn.item = items[i];
                 }
 
                 ResetBackground();
             } catch (Exception ex) {
-
+                Console.WriteLine(ex.StackTrace);
             }
         }
 
@@ -225,7 +226,7 @@ namespace ClassroomReservation.Main
 
         public class CustomTextBlock : TextBlock {
             public Brush originColor { get; set; }
-            public ReservationItem item { get; set; }
+            public StatusItem item { get; set; }
         }
     }
 }
