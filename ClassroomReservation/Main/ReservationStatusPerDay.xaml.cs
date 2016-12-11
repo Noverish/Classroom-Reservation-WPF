@@ -65,6 +65,8 @@ namespace ClassroomReservation.Main
                 for (int col = 0; col < TOTAL_COLUMN; col++)
                 {
                     CustomTextBlock newBtn = new CustomTextBlock();
+                    newBtn.row = row;
+                    newBtn.column = col;
 
                     if (row % 2 == 0) {
                         newBtn.Background = defaultColorOfEven;
@@ -106,7 +108,19 @@ namespace ClassroomReservation.Main
 
         public void refresh() {
             try {
+                nowSelectedStatusControl = null;
+                nowSelectedRow = -1;
+                nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
+
                 List<StatusItem> items = Server.ServerClient.GetDayReservation(date);
+
+                foreach(CustomTextBlock btn in buttons) {
+                    if (btn != null) {
+                        btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
+                        btn.Background = btn.originColor;
+                        btn.item = null;
+                    }
+                }
 
                 for (int i = 0; i < items.Count; i++) {
                     Console.WriteLine(items[i].classroom);
@@ -225,6 +239,8 @@ namespace ClassroomReservation.Main
         }
 
         public class CustomTextBlock : TextBlock {
+            public int row { get; set; }
+            public int column { get; set; }
             public Brush originColor { get; set; }
             public StatusItem item { get; set; }
         }
