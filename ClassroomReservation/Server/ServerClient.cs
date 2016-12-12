@@ -10,11 +10,12 @@ using Newtonsoft.Json;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://192.168.0.28/";
+        private const string serverDomain = "http://192.168.0.13/";
         private const string makeReservationPage = "reserv_make_one.php";
         private const string getReservationPage = "reserv_get_one.php";
         private const string getDayReservationPage = "reserv_get_day.php";
         private const string deleteReservationOnePage = "reserv_delete_one.php";
+        private const string getClassroomListPage = "classroom_list.php";
 
         public static void MakeReservation(ReservationItem reservation) {
             string url = serverDomain + makeReservationPage;
@@ -98,6 +99,14 @@ namespace ClassroomReservation.Server {
                 return items;
             } catch (ServerException e) {
                 //Console.WriteLine(e.StackTrace);
+                throw e;
+            }
+        }
+
+        public static string[] GetClassroomList() {
+            try {
+                return connect(serverDomain + getClassroomListPage, "").Split('\n');
+            } catch (ServerException e) {
                 throw e;
             }
         }

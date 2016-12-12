@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassroomReservation.Server;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -71,15 +72,7 @@ namespace ClassroomReservation.Resource {
         }
 
         private void readClassroom() {
-            string[] lines;
-            try {
-                lines = File.ReadAllLines(CLASSROOM_PATH);
-            } catch (Exception ex) {
-                lines = defaultClassroom;
-                File.WriteAllLines(CLASSROOM_PATH, lines);
-            }
-
-            Array.Sort(lines);
+            string[] lines = ServerClient.GetClassroomList();
             
             classroomTable = new Hashtable();
 
