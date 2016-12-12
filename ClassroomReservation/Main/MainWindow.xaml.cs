@@ -21,6 +21,8 @@ using ClassroomReservation.Reservation;
 using ClassroomReservation.Server;
 using System.Collections;
 using ClassroomReservation.Resource;
+using ClassroomReservation.Client;
+using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Main
 {
@@ -38,12 +40,12 @@ namespace ClassroomReservation.Main
 		double delta = 0;
 		int deltaDirection = 1;
 		double startPos;
-        static Hashtable ht;
 
         private StatusItem nowSelectedItem;
 
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+        
 
         public MainWindow() {
             InitializeComponent();
@@ -93,6 +95,7 @@ namespace ClassroomReservation.Main
                 }
             }
 
+            changeMode(true);
 
             DateTime today = DateTime.Now;
 
@@ -105,13 +108,15 @@ namespace ClassroomReservation.Main
             }
             
             MainWindow_DatePicker.SelectedDate = today;
-            Addid.Click += new RoutedEventHandler(ShowSignUp);
-
-			ChangeModeButton.Click += new RoutedEventHandler(changeMode);
-            ChangeModeButton.Click += new RoutedEventHandler(ShowLogin);
+            Addid.Click += new RoutedEventHandler(PasswordChange);
+            
+            ChangeModeButton.Click += new RoutedEventHandler((s,e) => {
+                if (isUserMode)
+                    Login();
+                else
+                    changeMode();
+            });
 			readExcelFileButton.Click += new RoutedEventHandler(readExcelFileButton_Click);
-
-            AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
             
             animationTimer.Interval = new TimeSpan(120);
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
@@ -121,8 +126,6 @@ namespace ClassroomReservation.Main
                 window.onReservationSuccess = OnReservationSuccess;
                 window.ShowDialog();
             });
-
-            ht = new Hashtable();
 
             button6.Click += new RoutedEventHandler((sender, e) => {
                 (new PasswordForm((form, password) => {
@@ -136,28 +139,62 @@ namespace ClassroomReservation.Main
             });
         }
 
-        public void ShowSignUp(object sender, RoutedEventArgs e)
+        private void PasswordChange(object sender, RoutedEventArgs e)
         {
-            LoginForm signWin = new LoginForm(new RegisterOnClick());
-            signWin.LoginButton.Content = "회원가입";
+            PasswordForm signWin = new PasswordForm((window, password) => {
+                LoginClient.getInstance().onChangeSuccess = (() => {
+                    AlertWindow alert = new AlertWindow("성공적으로 변경 했습니다. 다시 로그인 해주세요.");
+                    alert.ShowDialog();
+                    changeMode(true);
+                    window.Close();
+                });
+                LoginClient.getInstance().onChangeFailed = ((msg) => {
+                    AlertWindow alert = new AlertWindow("알 수 없는 오류가 발생해서 변경에 실패 했습니다. - " + msg);
+                    alert.ShowDialog();
+                });
+                LoginClient.getInstance().ChangeAccount(password);
+            });
+            signWin.LoginButton.Content = "비밀번호 변경";
             signWin.ShowDialog();
         }
 
-        public void ShowLogin(object sender, RoutedEventArgs e)
+        private void Login()
         {
-            LoginForm loginWin = new LoginForm(new LoginOnClick());
+            PasswordForm loginWin = new PasswordForm((window, password) => {
+                LoginClient.getInstance().onLoginSuccess = (() => {
+                    changeMode(false);
+                    window.Close();
+                });
+                LoginClient.getInstance().onPasswordWrong = (() => {
+                    AlertWindow alert = new AlertWindow("비밀번호가 다릅니다.");
+                    alert.ShowDialog();
+                });
+                LoginClient.getInstance().onLoginError = ((msg) => {
+                    AlertWindow alert = new AlertWindow("알 수 없는 오류가 발생 했습니다. 최초 비밀번호로 로그인 해주세요. - " + msg);
+                    alert.ShowDialog();
+                });
+                LoginClient.getInstance().Login(password);
+            });
+            loginWin.LoginButton.Content = "로그인";
             loginWin.ShowDialog();
         }
 
-        public void changeMode(object sender, RoutedEventArgs e)
+        private void changeMode() {
+            changeMode(!isUserMode);
+        }
+
+        private void changeMode(bool isUserMode)
         {
-            isUserMode = !isUserMode;
+            this.isUserMode = isUserMode;
 
             if(isUserMode)
             {
+                ChangeModeButton.Content = "관리자 모드로 변경";
+                Addid.Visibility = System.Windows.Visibility.Hidden;
                 AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
-            } else
-            {
+            } else {
+                ChangeModeButton.Content = "일반 사용자 모드로 변경";
+                Addid.Visibility = System.Windows.Visibility.Visible;
                 AdminButtonPanel.Visibility = System.Windows.Visibility.Visible;
             }
         }
@@ -230,48 +267,6 @@ namespace ClassroomReservation.Main
                 var child = scrollViewContentPanel.Children[i];
                 ReservationStatusPerDay day = child as ReservationStatusPerDay;
                 day.refresh();
-            }
-        }
-
-        static System.Runtime.Serialization.Formatters.Binary.BinaryFormatter binformatter;
-        private class LoginOnClick : LoginFormOnClick
-        {
-            void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
-            {
-                Hashtable vectorDeserialized = null;
-
-                using (var fs = File.Open("c:\\temp\\vector.bin", FileMode.Open))
-                {
-                    vectorDeserialized = (Hashtable)binformatter.Deserialize(fs);
-                }
-
-                foreach (DictionaryEntry entry in vectorDeserialized)
-                {
-                    if(Id.Equals(entry.Key))
-                    {
-                        if(Id.Equals(LoginForm.DecryptString((string)entry.Value, password)))
-                        {
-                            form.Close();
-                        }
-                    }
-                }
-            }
-        }
-
-        private class RegisterOnClick : LoginFormOnClick
-        {
-            void LoginFormOnClick.OnClick(LoginForm form, string Id, string password)
-            {
-                ht.Add(Id, LoginForm.EncryptString(Id, password));
-
-                binformatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-
-                using (var fs = File.Create("c:\\temp\\vector.bin"))
-                {
-                    binformatter.Serialize(fs, ht);
-                }
-
-                form.Close();
             }
         }
     }

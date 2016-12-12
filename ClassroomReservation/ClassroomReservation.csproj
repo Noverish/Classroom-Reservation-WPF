@@ -59,10 +59,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Client\LoginClient.cs" />
     <Compile Include="Main\PasswordForm.xaml.cs">
       <DependentUpon>PasswordForm.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\LoginFormOnClick.cs" />
     <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
     </Compile>
@@ -82,7 +82,7 @@
       <DependentUpon>AlertWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Resource\Database.cs" />
-    <Compile Include="Resource\ExcelReadClient.cs" />
+    <Compile Include="Client\ExcelReadClient.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\StatusItem.cs" />

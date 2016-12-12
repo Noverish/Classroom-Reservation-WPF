@@ -76,7 +76,7 @@ namespace ClassroomReservation.Resource {
             
             classroomTable = new Hashtable();
 
-            for (int i = 0; i < lines.Length; i++) {
+            for (int i = 0; i < lines.Length - 1; i++) {
                 string[] tmp = lines[i].Split(':');
 
                 if (tmp.Length == 2) {

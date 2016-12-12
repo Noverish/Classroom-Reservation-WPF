@@ -163,14 +163,14 @@
 
         <Border DockPanel.Dock="Top" Height="43">
             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
-                <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}">
-                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="20" Margin="0,0,50,0">
+                <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}" >
+                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="20" Margin="0,0,50,0" Width="250">
                         관리자 모드로 변경
                     </Button>
                 </Border>
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}">
                     <Button Name="Addid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="CadetBlue" Foreground="White" FontSize="20" Margin="0,0,50,0">
-                        관리자 아이디 추가
+                        비밀번호 변경
                     </Button>
                 </Border>
                 <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">
