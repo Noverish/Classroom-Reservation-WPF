@@ -28,8 +28,8 @@ namespace ClassroomReservation.Reservation {
 
         private ClassroomLabel[] buttons;
         
-        private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftBlue");
-        private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
+        private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("SelectedColor");
+        private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
 

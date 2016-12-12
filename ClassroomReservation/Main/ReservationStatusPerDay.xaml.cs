@@ -41,10 +41,10 @@ namespace ClassroomReservation.Main
 
         private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private Brush defaultColorOfEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
-        private Brush selectColor = Brushes.Crimson;
-        private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("MicrosoftRed");
-        
-        private SolidColorBrush purple = new SolidColorBrush(Color.FromRgb(255, 0, 255));
+        private Brush selectColor = (SolidColorBrush)Application.Current.FindResource("SelectedColor");
+        private Brush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
+        private Brush reservationColor = (SolidColorBrush)Application.Current.FindResource("ReservationColor");
+        private Brush lectureColor = (SolidColorBrush)Application.Current.FindResource("LectureColor");
 
         public ReservationStatusPerDay(DateTime date)
         {
@@ -129,7 +129,7 @@ namespace ClassroomReservation.Main
                     int column = items[i].classtime - 1;
 
                     CustomTextBlock btn = buttons[row, column];
-                    btn.originColor = purple;
+                    btn.originColor = reservationColor;
                     btn.item = items[i];
                 }
 
