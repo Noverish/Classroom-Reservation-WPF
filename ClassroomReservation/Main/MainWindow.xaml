@@ -110,9 +110,7 @@
 
         <Border DockPanel.Dock="Left" Width="160">
             <DockPanel Name="dockpanel4">
-                <Border DockPanel.Dock="Top" Height="115" BorderThickness="1" BorderBrush="Black">
-                    <TextBlock Text="호랑이"/>
-                </Border>
+                <Image Source="/Resource/logo.png" DockPanel.Dock="Top" Height="115"/>
 
                 <Border DockPanel.Dock="Bottom" Height="18"/>
 
