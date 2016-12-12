@@ -190,12 +190,14 @@ namespace ClassroomReservation.Main
             if(isUserMode)
             {
                 ChangeModeButton.Content = "관리자 모드로 변경";
-                Addid.Visibility = System.Windows.Visibility.Hidden;
-                AdminButtonPanel.Visibility = System.Windows.Visibility.Hidden;
+                Addid.Visibility = Visibility.Hidden;
+                AdminButtonPanel.Visibility = Visibility.Hidden;
+                leftbottomLogoImage.Visibility = Visibility.Visible;
             } else {
                 ChangeModeButton.Content = "일반 사용자 모드로 변경";
-                Addid.Visibility = System.Windows.Visibility.Visible;
-                AdminButtonPanel.Visibility = System.Windows.Visibility.Visible;
+                Addid.Visibility = Visibility.Visible;
+                AdminButtonPanel.Visibility = Visibility.Visible;
+                leftbottomLogoImage.Visibility = Visibility.Hidden;
             }
         }
 

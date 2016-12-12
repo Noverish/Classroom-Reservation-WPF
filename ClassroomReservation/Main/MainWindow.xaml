@@ -34,25 +34,31 @@
         <Border DockPanel.Dock="Bottom" Height="300" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="35*"/>
-                    <ColumnDefinition Width="35*"/>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <DockPanel Name="AdminButtonPanel" Grid.Column="0" Margin="90,0,30,0">
-                    <Border DockPanel.Dock="Bottom" Height="100" Style="{StaticResource BorderStyle}">
-                        <Button Name="button1" Content="선택 기간 DB 삭제" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24"/>
-                    </Border>
+                <Grid>
+                    <Image Name="leftbottomLogoImage" Source="/Resource/logo_big.png" Margin="60"/>
+                    <Grid Name="AdminButtonPanel" Grid.Column="0" Margin="60,10,30,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Border DockPanel.Dock="Top" Grid.Row="0" Style="{StaticResource BorderStyle}">
+                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="CadetBlue" Foreground="White" Margin="0,0,0,8" FontSize="24"/>
+                        </Border>
+                        <Border DockPanel.Dock="Top" Grid.Row="1" Style="{StaticResource BorderStyle}">
+                            <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="CadetBlue" Foreground="White" Margin="0,4,0,4" FontSize="24"/>
+                        </Border>
+                        <Border DockPanel.Dock="Top" Grid.Row="2" Style="{StaticResource BorderStyle}">
+                            <Button Name="button1" Content="선택 기간 DB 삭제" Background="CadetBlue" Foreground="White" Margin="0,8,0,0" FontSize="24"/>
+                        </Border>
+                    </Grid>
+                </Grid>
 
-                    <Border DockPanel.Dock="Bottom" Height="100" Style="{StaticResource BorderStyle}">
-                        <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24"/>
-                    </Border>
-
-                    <Border DockPanel.Dock="Bottom" Height="100" Style="{StaticResource BorderStyle}">
-                        <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="CadetBlue" Foreground="White" Margin="0,10,0,10" FontSize="24"/>
-                    </Border>
-                </DockPanel>
-
-                <DockPanel Name="infoPanel" Grid.Column="1" Margin="30,10,30,10" Visibility="Hidden">
+                <DockPanel Name="infoPanel" Grid.Column="1" Margin="30,10,30,10" >
                     <Border>
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
@@ -103,14 +109,16 @@
                 </DockPanel>
 
                 <Border Grid.Column="2" Style="{StaticResource BorderStyle}">
-                    <Button Name="button4" Content="예약하러 가기" Background="CadetBlue" Foreground="White" Margin="30,10,50,10" FontSize="24"/>
+                    <Button Name="button4" Content="예약하러 가기" Background="CadetBlue" Foreground="White" Margin="30,10,60,10" FontSize="24"/>
                 </Border>
             </Grid>
         </Border>
 
         <Border DockPanel.Dock="Left" Width="160">
             <DockPanel Name="dockpanel4">
-                <Image Source="/Resource/logo.png" DockPanel.Dock="Top" Height="115"/>
+                <Grid DockPanel.Dock="Top" Height="115">
+                    <Image Source="/Resource/logo_small.png" Margin="15"/>
+                </Grid>
 
                 <Border DockPanel.Dock="Bottom" Height="18"/>
 
