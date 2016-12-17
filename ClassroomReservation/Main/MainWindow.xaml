@@ -15,7 +15,7 @@
         <Style x:Key="BorderStyle"  TargetType="{x:Type Border}">
             <Setter Property="Effect">
                 <Setter.Value>
-                    <DropShadowEffect BlurRadius="15" Direction="-45" RenderingBias="Quality" ShadowDepth="2"/>
+                    <DropShadowEffect BlurRadius="10" Direction="-45" RenderingBias="Quality" ShadowDepth="1"/>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -24,7 +24,10 @@
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="HorizontalContentAlignment" Value="Center" />
             <Setter Property="VerticalContentAlignment" Value="Center" />
-            <!--<Setter Property="Margin" Value="2" />-->
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource ResourceKey = MainColor}"/>
+            <Setter Property="Foreground" Value="White"/>
         </Style>
     </Window.Resources>
     <DockPanel Name="dockpanel1">
@@ -47,13 +50,13 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border DockPanel.Dock="Top" Grid.Row="0" Style="{StaticResource BorderStyle}">
-                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" Margin="0,0,0,8" FontSize="24"/>
+                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,8" FontSize="24"/>
                         </Border>
                         <Border DockPanel.Dock="Top" Grid.Row="1" Style="{StaticResource BorderStyle}">
-                            <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" Margin="0,4,0,4" FontSize="24"/>
+                            <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,4" FontSize="24"/>
                         </Border>
                         <Border DockPanel.Dock="Top" Grid.Row="2" Style="{StaticResource BorderStyle}">
-                            <Button Name="button1" Content="선택 기간 DB 삭제" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" Margin="0,8,0,0" FontSize="24"/>
+                            <Button Name="button1" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,8,0,0" FontSize="24"/>
                         </Border>
                     </Grid>
                 </Grid>
@@ -106,7 +109,7 @@
                 </DockPanel>
 
                 <Border Grid.Column="2" Style="{StaticResource BorderStyle}">
-                    <Button Name="button4" Content="예약하러 가기" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" Margin="30,10,60,10" FontSize="24"/>
+                    <Button Name="button4" Content="예약하러 가기" Style="{StaticResource ButtonStyle}" Margin="30,10,60,10" FontSize="24"/>
                 </Border>
             </Grid>
         </Border>
@@ -133,12 +136,12 @@
         <Border DockPanel.Dock="Top" Height="43">
             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}" >
-                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" FontSize="20" Margin="0,0,50,0" Width="250">
+                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0" Width="250">
                         관리자 모드로 변경
                     </Button>
                 </Border>
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}">
-                    <Button Name="Addid" VerticalAlignment="Center" HorizontalAlignment="Right" Background="{StaticResource ResourceKey = MainColor}" Foreground="White" FontSize="20" Margin="0,0,50,0">
+                    <Button Name="Addid" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0">
                         비밀번호 변경
                     </Button>
                 </Border>

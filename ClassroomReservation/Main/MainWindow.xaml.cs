@@ -45,14 +45,18 @@ namespace ClassroomReservation.Main
 
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
-        
+        private SolidColorBrush labelBorderBrush = (SolidColorBrush)Application.Current.FindResource("MainColor");
+
 
         public MainWindow() {
             InitializeComponent();
 
+            labelBorderBrush = new SolidColorBrush(labelBorderBrush.Color);
+            labelBorderBrush.Opacity = 0.7;
+
             Hashtable classroomTable = Database.getInstance().classroomTable;
             CLASSROOM_NUM = classroomTable.Count;
-            Border nowBuildingLabelBorder = null;
+            Label nowBuildingLabel = null;
             for (int row = 0; row < CLASSROOM_NUM; row++) {
 
                 //Add RowDefinition
@@ -75,23 +79,20 @@ namespace ClassroomReservation.Main
                 leftLabelsGrid.Children.Add(classroomLabel);
 
                 //Adjust building label
-                if (nowBuildingLabelBorder != null && (nowBuildingLabelBorder.Child as Label).Content.Equals(buildingName)) {
-                    Grid.SetRowSpan(nowBuildingLabelBorder, Grid.GetRowSpan(nowBuildingLabelBorder) + 1);
+                if (nowBuildingLabel != null && nowBuildingLabel.Content.Equals(buildingName)) {
+                    Grid.SetRowSpan(nowBuildingLabel, Grid.GetRowSpan(nowBuildingLabel) + 1);
                 } else {
                     Label buildingLabel = new Label();
                     buildingLabel.Content = buildingName;
                     buildingLabel.Style = Resources["LabelStyle"] as Style;
+                    buildingLabel.Margin = new Thickness { Top = 1, Bottom = 0, Left = 0, Right = 0 };
 
-                    Border border = new Border();
-                    border.Style = Resources["BorderStyle"] as Style;
-                    border.Child = buildingLabel;
+                    Grid.SetRow(buildingLabel, row);
+                    Grid.SetColumn(buildingLabel, 0);
+                    Grid.SetRowSpan(buildingLabel, 1);
 
-                    Grid.SetRow(border, row);
-                    Grid.SetColumn(border, 0);
-                    Grid.SetRowSpan(border, 1);
-
-                    nowBuildingLabelBorder = border;
-                    leftLabelsGrid.Children.Add(border);
+                    nowBuildingLabel = buildingLabel;
+                    leftLabelsGrid.Children.Add(buildingLabel);
                 }
             }
 
@@ -245,20 +246,21 @@ namespace ClassroomReservation.Main
 
         private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
         {
-            List<ReservationItem> items = ExcelReadClient.readExcel();
+            //List<ReservationItem> items = ExcelReadClient.readExcel();
+            (new LoadLectureTableWindow()).ShowDialog();
         }
 
         private void onOneSelected(StatusItem item) {
             if (item != null) {
                 nowSelectedItem = item;
 
-                infoPanel.Visibility = Visibility.Visible;
-
                 txtbox1.Text = item.userName;
                 txtbox2.Text = item.contact;
                 txtbox3.Text = item.content;
             } else {
-                infoPanel.Visibility = Visibility.Hidden;
+                txtbox1.Text = "";
+                txtbox2.Text = "";
+                txtbox3.Text = "";
             }
         }
 

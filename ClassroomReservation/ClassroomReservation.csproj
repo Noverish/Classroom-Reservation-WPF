@@ -60,6 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Client\LoginClient.cs" />
+    <Compile Include="Main\LoadLectureTableWindow.xaml.cs">
+      <DependentUpon>LoadLectureTableWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main\PasswordForm.xaml.cs">
       <DependentUpon>PasswordForm.xaml</DependentUpon>
     </Compile>
@@ -83,9 +86,14 @@
     </Compile>
     <Compile Include="Resource\Database.cs" />
     <Compile Include="Client\ExcelReadClient.cs" />
+    <Compile Include="Server\LectureItem.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\StatusItem.cs" />
+    <Page Include="Main\LoadLectureTableWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\PasswordForm.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

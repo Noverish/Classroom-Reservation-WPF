@@ -107,36 +107,32 @@ namespace ClassroomReservation.Main
         }
 
         public void refresh() {
-            try {
-                nowSelectedStatusControl = null;
-                nowSelectedRow = -1;
-                nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
+            nowSelectedStatusControl = null;
+            nowSelectedRow = -1;
+            nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-                List<StatusItem> items = Server.ServerClient.GetDayReservation(date);
+            List<StatusItem> items = Server.ServerClient.GetDayReservation(date);
 
-                foreach(CustomTextBlock btn in buttons) {
-                    if (btn != null) {
-                        btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
-                        btn.Background = btn.originColor;
-                        btn.item = null;
-                    }
+            foreach(CustomTextBlock btn in buttons) {
+                if (btn != null) {
+                    btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
+                    btn.Background = btn.originColor;
+                    btn.item = null;
                 }
-
-                for (int i = 0; i < items.Count; i++) {
-                    //Console.WriteLine(items[i].classroom);
-
-                    int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
-                    int column = items[i].classtime - 1;
-
-                    CustomTextBlock btn = buttons[row, column];
-                    btn.originColor = reservationColor;
-                    btn.item = items[i];
-                }
-
-                ResetBackground();
-            } catch (Exception ex) {
-                //Console.WriteLine(ex.StackTrace);
             }
+
+            for (int i = 0; i < items.Count; i++) {
+                //Console.WriteLine(items[i].classroom);
+
+                int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
+                int column = items[i].classtime - 1;
+
+                CustomTextBlock btn = buttons[row, column];
+                btn.originColor = reservationColor;
+                btn.item = items[i];
+            }
+
+            ResetBackground();
         }
 
         private void onMouseDown(object sender, RoutedEventArgs e)

@@ -16,15 +16,17 @@
         </Style>-->
         <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
 
-        <SolidColorBrush x:Key="MainColor" Color="#FF5F9EA0"/>
-        <SolidColorBrush x:Key="SubColor" Color="#FFFA8072"/>
-        <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="#88FFFFFF"/>
-        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#88EEEEEE"/>
+        <SolidColorBrush x:Key="MainColor" Color="#74A0BF"/>
+        <SolidColorBrush x:Key="SubColor" Color="#7ABFA0"/>
+        <SolidColorBrush x:Key="LabelBackground" Color="#FF789878"/>
+        <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="#22FFFFFF"/>
+        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#22AAAAAA"/>
         <SolidColorBrush x:Key="HoverColor" Color="#f65314"/>
         <SolidColorBrush x:Key="SelectedColor" Color="#00a1f1"/>
         <SolidColorBrush x:Key="ReservationColor" Color="#ABCDEF"/>
         <SolidColorBrush x:Key="LectureColor" Color="#FEDCBA"/>
 
+        <SolidColorBrush x:Key="Crimson" Color="#980021"/>
         <SolidColorBrush x:Key="MicrosoftRed" Color="#f65314"/>
         <SolidColorBrush x:Key="MicrosoftBlue" Color="#00a1f1"/>
         <SolidColorBrush x:Key="DisableOverlap" Color="#55000000"/>

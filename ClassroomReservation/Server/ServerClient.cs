@@ -7,33 +7,65 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.Dynamic;
+using Newtonsoft.Json.Converters;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
         private const string serverDomain = "http://192.168.0.13/";
         private const string makeReservationPage = "reserv_make_one.php";
-        private const string getReservationPage = "reserv_get_one.php";
+        private const string makeLecturePage = "lecture_add.php";
         private const string getDayReservationPage = "reserv_get_day.php";
         private const string deleteReservationOnePage = "reserv_delete_one.php";
         private const string getClassroomListPage = "classroom_list.php";
 
         public static void MakeReservation(ReservationItem reservation) {
-            string url = serverDomain + makeReservationPage;
+            try {
+                string url = serverDomain + makeReservationPage;
 
-            string dataStr =
-                "startDate=" + reservation.startDate.ToString("yyyy-MM-dd") +
-                "&endDate=" + reservation.endDate.ToString("yyyy-MM-dd") +
-                "&startClass=" + reservation.startClass +
-                "&endClass=" + reservation.endClass +
-                "&classroom=" + reservation.classroom +
-                "&userName=" + reservation.userName +
-                "&contact=" + reservation.contact +
-                "&content=" + reservation.content +
-                "&password=" + reservation.password;
+                string dataStr =
+                    "startDate=" + reservation.startDate.ToString("yyyy-MM-dd") +
+                    "&endDate=" + reservation.endDate.ToString("yyyy-MM-dd") +
+                    "&startClass=" + reservation.startClass +
+                    "&endClass=" + reservation.endClass +
+                    "&classroom=" + reservation.classroom +
+                    "&userName=" + reservation.userName +
+                    "&contact=" + reservation.contact +
+                    "&content=" + reservation.content +
+                    "&password=" + reservation.password;
 
-            //Console.WriteLine(dataStr);
+                //Console.WriteLine(dataStr);
 
-            connect(url, dataStr);
+                connect(url, dataStr);
+            } catch (ServerException e) {
+                throw e;
+            }
+        }
+
+        public static void MakeLecture(LectureItem lecture, DateTime semesterStartDate) {
+            try {
+                string url = serverDomain + makeLecturePage;
+
+                DateTime semesterEndDate = semesterStartDate.AddDays((7 * 16) - 1);
+
+                string dataStr =
+                    "year=" + lecture.year +
+                    "&semester=" + lecture.semester +
+                    "&dayOfWeek=" + lecture.dayOfWeek +
+                    "&classtime=" + lecture.classtime +
+                    "&classroom=" + lecture.classroom +
+                    "&professor=" + lecture.professor +
+                    "&contact=" + lecture.contact +
+                    "&code=" + lecture.code +
+                    "&name=" + lecture.name +
+                    "&startDate=" + semesterStartDate.ToString("yyyy-MM-dd") +
+                    "&endDate=" + semesterEndDate.ToString("yyyy-MM-dd");
+
+                connect(url, dataStr);
+            } catch (ServerException e) {
+                throw e;
+            }
         }
 
         public static bool DeleteReservation(int reservID, string password) {
@@ -44,24 +76,6 @@ namespace ClassroomReservation.Server {
                 string result = connect(url, dataStr);
 
                 return result.Equals("1");
-            } catch (ServerException e) {
-                throw e;
-            }
-        }
-
-        public static List<ReservationItem> GetReservation(DateTime date, int classTime, int classroom) {
-            try {
-                List<ReservationItem> items = new List<ReservationItem>();
-                string url = serverDomain + getReservationPage;
-
-                string dataStr =
-                    "date=" + date.ToString("yyyy-MM-dd") +
-                    "&class=" + classTime +
-                    "&classroom=" + classroom;
-
-                string result = connect(url, dataStr);
-
-                return items;
             } catch (ServerException e) {
                 throw e;
             }
@@ -79,13 +93,15 @@ namespace ClassroomReservation.Server {
 
                 //Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
 
-                List<dynamic> array = JsonConvert.DeserializeObject<List<dynamic>>(result);
+                dynamic json = JsonConvert.DeserializeObject<ExpandoObject>(result, new ExpandoObjectConverter());
 
+                List<dynamic> array = json.data;
+                
                 for (int i = 0; i < array.Count; i++) {
-                    int reservID = array[i].ReservID;
-                    int type = array[i].Type;
+                    int reservID = Int32.Parse(array[i].ReservID);
+                    int type = Int32.Parse(array[i].Type);
                     DateTime date = Convert.ToDateTime(array[i].Date);
-                    int classtime = array[i].Classtime;
+                    int classtime = Int32.Parse(array[i].Classtime);
                     string classroom = array[i].Classroom;
                     string userName = array[i].UserName;
                     string contact = array[i].Contact;
@@ -98,7 +114,6 @@ namespace ClassroomReservation.Server {
 
                 return items;
             } catch (ServerException e) {
-                //Console.WriteLine(e.StackTrace);
                 throw e;
             }
         }
@@ -137,15 +152,27 @@ namespace ClassroomReservation.Server {
 
                 return result;
             } catch (Exception e) {
-                Other.AlertWindow alert = new Other.AlertWindow(e.Message);
-                alert.ShowDialog();
-
-                throw new ServerException();
+                throw new ServerException(e);
             }
         }
     }
 
-    class ServerException : Exception {
+    public class ServerException : Exception {
+        public int res { get; private set; }
+        public string msg { get; private set; }
+        public string query { get; private set; }
+        public Exception exception { get; private set; }
 
+        public ServerException() { }
+
+        public ServerException(Exception ex) {
+            this.exception = ex;
+        }
+
+        public ServerException(int res, string msg, string query) {
+            this.res = res;
+            this.msg = msg;
+            this.query = query;
+        }
     }
 }
