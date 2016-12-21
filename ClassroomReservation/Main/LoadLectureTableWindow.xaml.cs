@@ -15,10 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 namespace ClassroomReservation.Main {
+
+    public delegate void OnLectureAddSuccess();
+
     /// <summary>
     /// LoadLectureTableWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class LoadLectureTableWindow : Window {
+        public OnLectureAddSuccess onLectureAddSuccess { private get; set; }
         private List<LectureItem> items;
 
         public LoadLectureTableWindow() {
@@ -41,6 +45,8 @@ namespace ClassroomReservation.Main {
                     ServerClient.lectureAdd(item, datePicker.SelectedDate.Value);
                 }
                 Close();
+
+                onLectureAddSuccess?.Invoke();
             }
         }
     }

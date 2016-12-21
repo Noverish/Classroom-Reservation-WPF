@@ -23,8 +23,8 @@
         <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#22AAAAAA"/>
         <SolidColorBrush x:Key="HoverColor" Color="#f65314"/>
         <SolidColorBrush x:Key="SelectedColor" Color="#00a1f1"/>
-        <SolidColorBrush x:Key="ReservationColor" Color="#ABCDEF"/>
-        <SolidColorBrush x:Key="LectureColor" Color="#FEDCBA"/>
+        <SolidColorBrush x:Key="ReservationColor" Color="#CAD6FF"/>
+        <SolidColorBrush x:Key="LectureColor" Color="#778D99"/>
 
         <SolidColorBrush x:Key="Crimson" Color="#980021"/>
         <SolidColorBrush x:Key="MicrosoftRed" Color="#f65314"/>

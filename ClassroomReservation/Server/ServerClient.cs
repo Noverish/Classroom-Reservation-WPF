@@ -13,7 +13,7 @@ using Newtonsoft.Json.Converters;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.16.16.101/api/";
+        private const string serverDomain = "http://10.4.0.250/api/";
 
         private const string reservationListDayUrl = "reservation_list_day.php";
         private const string reservationAddUrl = "reservation_add.php";
@@ -189,7 +189,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 1000;
+                httpWebRequest.Timeout = 3000;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);

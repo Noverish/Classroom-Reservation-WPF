@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace ClassroomReservation.Resource {
     class Database {
@@ -72,17 +73,24 @@ namespace ClassroomReservation.Resource {
         }
 
         private void readClassroom() {
-            string[] lines = ServerClient.classroomList();
-            
-            classroomTable = new Hashtable();
+            try {
+                string[] lines = ServerClient.classroomList();
 
-            for (int i = 0; i < lines.Length - 1; i++) {
-                string[] tmp = lines[i].Split(':');
+                classroomTable = new Hashtable();
 
-                if (tmp.Length == 2) {
-                    classroomTable.Add(i, new ClassroomItem(tmp[0], tmp[1]));
-                } else {
-                    Console.WriteLine("ERROR : " + lines[i]);
+                for (int i = 0; i < lines.Length - 1; i++) {
+                    string[] tmp = lines[i].Split(':');
+
+                    if (tmp.Length == 2) {
+                        classroomTable.Add(i, new ClassroomItem(tmp[0], tmp[1]));
+                    } else {
+                        Console.WriteLine("ERROR : " + lines[i]);
+                    }
+                }
+            } catch (ServerResult e) {
+                MessageBoxResult r = MessageBox.Show("알 수 없는 오류가 발생했습니다. - " + e.exception.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (r == MessageBoxResult.OK) {
+                    Application.Current.Shutdown();
                 }
             }
         }

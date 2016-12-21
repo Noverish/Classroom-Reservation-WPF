@@ -111,8 +111,6 @@ namespace ClassroomReservation.Main
             nowSelectedRow = -1;
             nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-            List<StatusItem> items = Server.ServerClient.reservationListDay(date);
-
             foreach(CustomTextBlock btn in buttons) {
                 if (btn != null) {
                     btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
@@ -121,15 +119,15 @@ namespace ClassroomReservation.Main
                 }
             }
 
-            for (int i = 0; i < items.Count; i++) {
-                //Console.WriteLine(items[i].classroom);
+            List<StatusItem> items = ServerClient.reservationListDay(date);
 
-                int row = Database.getInstance().GetRowByClassroom(items[i].classroom) + 2;
-                int column = items[i].classtime - 1;
+            foreach (StatusItem item in items) {
+                int row = Database.getInstance().GetRowByClassroom(item.classroom) + 2;
+                int column = item.classtime - 1;
 
                 CustomTextBlock btn = buttons[row, column];
-                btn.originColor = reservationColor;
-                btn.item = items[i];
+                btn.originColor = (item.type == 0) ? lectureColor : reservationColor;
+                btn.item = item;
             }
 
             ResetBackground();

@@ -114,9 +114,9 @@ namespace ClassroomReservation.Main
                 if (isUserMode)
                     Login();
                 else
-                    changeMode();
+                    changeMode(false);
             });
-			readExcelFileButton.Click += new RoutedEventHandler(readExcelFileButton_Click);
+			readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
 
             int year = DateTime.Today.Year;
             string halfYear = (DateTime.Today.Month <= 6) ? "상반기" : "하반기";
@@ -128,16 +128,12 @@ namespace ClassroomReservation.Main
             animationTimer.Interval = new TimeSpan(120);
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
-            button4.Click += new RoutedEventHandler((sender, e) => {
-                ReservationWindow window = new ReservationWindow();
-                window.onReservationSuccess = OnReservationSuccess;
-                window.ShowDialog();
-            });
+            reservateButton.Click += OnReservateButtonClicked;
 
-            button6.Click += new RoutedEventHandler((sender, e) => {
+            deleteReservationUserButton.Click += new RoutedEventHandler((sender, e) => {
                 (new PasswordForm((form, password) => {
                     if (ServerClient.reservationDeleteOne(nowSelectedItem.reservID, password)) {
-                        OnReservationSuccess(null);
+                        refresh();
                         form.Close();
                     } else {
 
@@ -194,10 +190,6 @@ namespace ClassroomReservation.Main
             });
             loginWin.LoginButton.Content = "로그인";
             loginWin.ShowDialog();
-        }
-
-        private void changeMode() {
-            changeMode(!isUserMode);
         }
 
         private void changeMode(bool isUserMode)
@@ -259,12 +251,7 @@ namespace ClassroomReservation.Main
 
 			e.Handled = true;
         }
-
-        private void readExcelFileButton_Click(object sender, RoutedEventArgs e)
-        {
-            //List<ReservationItem> items = ExcelReadClient.readExcel();
-            (new LoadLectureTableWindow()).ShowDialog();
-        }
+        
 
         private void onOneSelected(StatusItem item) {
             if (item != null) {
@@ -280,8 +267,14 @@ namespace ClassroomReservation.Main
             }
         }
 
-        private void OnReservationSuccess(ReservationItem item) {
-            refresh();
+
+        private void OnExcelReadButtonClicked(object sender, RoutedEventArgs e) {
+            LoadLectureTableWindow w = new LoadLectureTableWindow();
+            w.onLectureAddSuccess = (() => {
+                MessageBox.Show("강의 시간표 불러오기에 성공했습니다.", "강의 시간표 불러오기", MessageBoxButton.OK, MessageBoxImage.Information);
+                refresh();
+            });
+            w.ShowDialog();
         }
 
         private void OnHalfYearDeleteButtonClicked(object sender, RoutedEventArgs e) {
@@ -298,6 +291,13 @@ namespace ClassroomReservation.Main
                     MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+        }
+
+
+        private void OnReservateButtonClicked(object sender, RoutedEventArgs e) {
+            ReservationWindow window = new ReservationWindow();
+            window.onReservationSuccess = (item) => refresh();
+            window.ShowDialog();
         }
     }
 }
