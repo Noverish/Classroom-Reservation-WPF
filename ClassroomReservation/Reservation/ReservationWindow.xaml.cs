@@ -83,11 +83,11 @@ namespace ClassroomReservation.Reservation
             ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
 
             try {
-                ServerClient.MakeReservation(item);
+                ServerClient.reservationAdd(item);
 
                 onReservationSuccess?.Invoke(item);
                 Close();
-            } catch (ServerException ex) {
+            } catch (ServerResult ex) {
 
             }
         }

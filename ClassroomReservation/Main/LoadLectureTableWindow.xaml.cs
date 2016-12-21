@@ -38,7 +38,7 @@ namespace ClassroomReservation.Main {
         private void MakeLecture(object sender, RoutedEventArgs e) {
             if (datePicker.SelectedDate.HasValue) {
                 foreach (LectureItem item in items) {
-                    ServerClient.MakeLecture(item, datePicker.SelectedDate.Value);
+                    ServerClient.lectureAdd(item, datePicker.SelectedDate.Value);
                 }
                 Close();
             }

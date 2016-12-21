@@ -13,89 +13,31 @@ using Newtonsoft.Json.Converters;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://192.168.0.13/";
-        private const string makeReservationPage = "reserv_make_one.php";
-        private const string makeLecturePage = "lecture_add.php";
-        private const string getDayReservationPage = "reserv_get_day.php";
-        private const string deleteReservationOnePage = "reserv_delete_one.php";
-        private const string getClassroomListPage = "classroom_list.php";
+        private const string serverDomain = "http://10.16.16.101/api/";
 
-        public static void MakeReservation(ReservationItem reservation) {
-            try {
-                string url = serverDomain + makeReservationPage;
+        private const string reservationListDayUrl = "reservation_list_day.php";
+        private const string reservationAddUrl = "reservation_add.php";
+        private const string reservationDeleteOneUrl = "reservation_delete_one.php";
+        private const string reservationDeletePeriodUrl = "reservation_delete_period.php";
+        
+        private const string lectureAddUrl = "lecture_add.php";
 
-                string dataStr =
-                    "startDate=" + reservation.startDate.ToString("yyyy-MM-dd") +
-                    "&endDate=" + reservation.endDate.ToString("yyyy-MM-dd") +
-                    "&startClass=" + reservation.startClass +
-                    "&endClass=" + reservation.endClass +
-                    "&classroom=" + reservation.classroom +
-                    "&userName=" + reservation.userName +
-                    "&contact=" + reservation.contact +
-                    "&content=" + reservation.content +
-                    "&password=" + reservation.password;
+        private const string classroomListUrl = "classroom_list.php";
+        private const string classroomAddUrl = "classroom_add.php";
+        private const string classroomDeleteUrl = "classroom_delete.php";
 
-                //Console.WriteLine(dataStr);
-
-                connect(url, dataStr);
-            } catch (ServerException e) {
-                throw e;
-            }
-        }
-
-        public static void MakeLecture(LectureItem lecture, DateTime semesterStartDate) {
-            try {
-                string url = serverDomain + makeLecturePage;
-
-                DateTime semesterEndDate = semesterStartDate.AddDays((7 * 16) - 1);
-
-                string dataStr =
-                    "year=" + lecture.year +
-                    "&semester=" + lecture.semester +
-                    "&dayOfWeek=" + lecture.dayOfWeek +
-                    "&classtime=" + lecture.classtime +
-                    "&classroom=" + lecture.classroom +
-                    "&professor=" + lecture.professor +
-                    "&contact=" + lecture.contact +
-                    "&code=" + lecture.code +
-                    "&name=" + lecture.name +
-                    "&startDate=" + semesterStartDate.ToString("yyyy-MM-dd") +
-                    "&endDate=" + semesterEndDate.ToString("yyyy-MM-dd");
-
-                connect(url, dataStr);
-            } catch (ServerException e) {
-                throw e;
-            }
-        }
-
-        public static bool DeleteReservation(int reservID, string password) {
-            try {
-                string url = serverDomain + deleteReservationOnePage;
-                string dataStr = "reservID=" + reservID + "&password=" + password;
-
-                string result = connect(url, dataStr);
-
-                return result.Equals("1");
-            } catch (ServerException e) {
-                throw e;
-            }
-        }
-
-        public static List<StatusItem> GetDayReservation(DateTime datePara) {
+        
+        public static List<StatusItem> reservationListDay(DateTime datePara) {
             try {
                 List<StatusItem> items = new List<StatusItem>();
-                string url = serverDomain + getDayReservationPage;
+                string url = serverDomain + reservationListDayUrl;
 
                 string dataStr =
                     "date=" + datePara.ToString("yyyy-MM-dd");
 
-                string result = connect(url, dataStr);
-
-                //Console.WriteLine(date.ToString("yyyy-MM-dd") + " - " + result);
-
-                dynamic json = JsonConvert.DeserializeObject<ExpandoObject>(result, new ExpandoObjectConverter());
-
-                List<dynamic> array = json.data;
+                ServerResult result = connect(url, dataStr);
+                
+                List<dynamic> array = result.data;
                 
                 for (int i = 0; i < array.Count; i++) {
                     int reservID = Int32.Parse(array[i].ReservID);
@@ -113,20 +55,132 @@ namespace ClassroomReservation.Server {
                 }
 
                 return items;
-            } catch (ServerException e) {
+            } catch (ServerResult e) {
                 throw e;
             }
         }
 
-        public static string[] GetClassroomList() {
+        public static void reservationAdd(ReservationItem reservation) {
             try {
-                return connect(serverDomain + getClassroomListPage, "").Split('\n');
-            } catch (ServerException e) {
+                string url = serverDomain + reservationAddUrl;
+
+                string dataStr =
+                    "startDate=" + reservation.startDate.ToString("yyyy-MM-dd") +
+                    "&endDate=" + reservation.endDate.ToString("yyyy-MM-dd") +
+                    "&startClass=" + reservation.startClass +
+                    "&endClass=" + reservation.endClass +
+                    "&classroom=" + reservation.classroom +
+                    "&userName=" + reservation.userName +
+                    "&contact=" + reservation.contact +
+                    "&content=" + reservation.content +
+                    "&password=" + reservation.password;
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+        
+        public static bool reservationDeleteOne(int reservID, string password) {
+            try {
+                string url = serverDomain + reservationDeleteOneUrl;
+                string dataStr = "reservID=" + reservID + "&password=" + password;
+
+                ServerResult result = connect(url, dataStr);
+
+                if (result.res == 1)
+                    return true;
+                else
+                    return false;
+            } catch (ServerResult e) {
                 throw e;
             }
         }
 
-        public static string connect(string url, string dataStr) {
+        public static void reservationDeletePeriod(DateTime startDate, DateTime endDate, bool deleteLecture) {
+            try {
+                string url = serverDomain + reservationDeletePeriodUrl;
+                string dataStr = 
+                    "startDate=" + startDate.ToString("yyyy-MM-dd") + 
+                    "&endDate=" + endDate.ToString("yyyy-MM-dd") +
+                    "&deleteLecture=" + ((deleteLecture) ? 1 : 0);
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+
+        public static void lectureAdd(LectureItem lecture, DateTime semesterStartDate) {
+            try {
+                string url = serverDomain + lectureAddUrl;
+
+                DateTime semesterEndDate = semesterStartDate.AddDays((7 * 16) - 1);
+
+                string dataStr =
+                    "year=" + lecture.year +
+                    "&semester=" + lecture.semester +
+                    "&dayOfWeek=" + lecture.dayOfWeek +
+                    "&classtime=" + lecture.classtime +
+                    "&classroom=" + lecture.classroom +
+                    "&professor=" + lecture.professor +
+                    "&contact=" + lecture.contact +
+                    "&code=" + lecture.code +
+                    "&name=" + lecture.name +
+                    "&startDate=" + semesterStartDate.ToString("yyyy-MM-dd") +
+                    "&endDate=" + semesterEndDate.ToString("yyyy-MM-dd");
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+
+        public static string[] classroomList() {
+            try {
+                ServerResult result = connect(serverDomain + classroomListUrl, "");
+
+                List<dynamic> data = result.data;
+
+                string[] classrooms = new string[data.Count];
+
+                for (int i = 0; i < data.Count; i++)
+                    classrooms[i] = data[i].Classroom;
+
+                return classrooms;
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public static void classroomAdd(string classroom) {
+            try {
+                string url = serverDomain + classroomAddUrl;
+
+                string dataStr = "classroom=" + classroom;
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public static void classroomDelete(string classroom) {
+            try {
+                string url = serverDomain + classroomDeleteUrl;
+
+                string dataStr = "classroom=" + classroom;
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+        
+
+        public static ServerResult connect(string url, string dataStr) {
             try {
                 byte[] data = UTF8Encoding.UTF8.GetBytes(dataStr);
 
@@ -146,30 +200,45 @@ namespace ClassroomReservation.Server {
                 Stream respPostStream = httpResponse.GetResponseStream();
                 StreamReader readerPost = new StreamReader(respPostStream, Encoding.GetEncoding("UTF-8"), true);
 
-                string result = readerPost.ReadToEnd();
+                string resultStr = readerPost.ReadToEnd();
 
-                Console.WriteLine("result : " + result);
+                Console.WriteLine("result : " + resultStr);
 
-                return result;
+                ServerResult result = new ServerResult(resultStr);
+
+                if (result.res == 0)
+                    throw result;
+                else
+                    return result;
             } catch (Exception e) {
-                throw new ServerException(e);
+                throw new ServerResult(e);
             }
         }
     }
 
-    public class ServerException : Exception {
+    public class ServerResult : Exception {
         public int res { get; private set; }
         public string msg { get; private set; }
         public string query { get; private set; }
         public Exception exception { get; private set; }
+        public List<dynamic> data { get; private set; }
 
-        public ServerException() { }
+        public ServerResult() { }
 
-        public ServerException(Exception ex) {
+        public ServerResult(string result) {
+            dynamic json = JsonConvert.DeserializeObject<ExpandoObject>(result, new ExpandoObjectConverter());
+
+            this.res = Int32.Parse(json.res);
+            this.msg = json.msg;
+            this.query = json.query;
+            this.data = json.data;
+        }
+
+        public ServerResult(Exception ex) {
             this.exception = ex;
         }
 
-        public ServerException(int res, string msg, string query) {
+        public ServerResult(int res, string msg, string query) {
             this.res = res;
             this.msg = msg;
             this.query = query;

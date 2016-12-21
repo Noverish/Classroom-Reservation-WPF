@@ -22,7 +22,6 @@ using ClassroomReservation.Server;
 using System.Collections;
 using ClassroomReservation.Resource;
 using ClassroomReservation.Client;
-using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Main
 {
@@ -118,7 +117,14 @@ namespace ClassroomReservation.Main
                     changeMode();
             });
 			readExcelFileButton.Click += new RoutedEventHandler(readExcelFileButton_Click);
-            
+
+            int year = DateTime.Today.Year;
+            string halfYear = (DateTime.Today.Month <= 6) ? "상반기" : "하반기";
+            int start = (DateTime.Today.Month <= 6) ? 1 : 7;
+            int end = (DateTime.Today.Month <= 6) ? 6 : 12;
+            halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제",year, halfYear, start, end);
+            halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
+
             animationTimer.Interval = new TimeSpan(120);
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
@@ -130,7 +136,7 @@ namespace ClassroomReservation.Main
 
             button6.Click += new RoutedEventHandler((sender, e) => {
                 (new PasswordForm((form, password) => {
-                    if (ServerClient.DeleteReservation(nowSelectedItem.reservID, password)) {
+                    if (ServerClient.reservationDeleteOne(nowSelectedItem.reservID, password)) {
                         OnReservationSuccess(null);
                         form.Close();
                     } else {
@@ -140,18 +146,30 @@ namespace ClassroomReservation.Main
             });
         }
 
+        public void refresh() {
+            try {
+                int childrenNum = scrollViewContentPanel.Children.Count;
+
+                for (int i = 0; i < childrenNum; i++) {
+                    var child = scrollViewContentPanel.Children[i];
+                    ReservationStatusPerDay day = child as ReservationStatusPerDay;
+                    day.refresh();
+                }
+            } catch (Exception ex) {
+                MessageBox.Show("알 수 없는 오류로 새로고침에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void PasswordChange(object sender, RoutedEventArgs e)
         {
             PasswordForm signWin = new PasswordForm((window, password) => {
                 LoginClient.getInstance().onChangeSuccess = (() => {
-                    AlertWindow alert = new AlertWindow("성공적으로 변경 했습니다. 다시 로그인 해주세요.");
-                    alert.ShowDialog();
+                    MessageBox.Show("성공적으로 변경 했습니다. 다시 로그인 해주세요.", "비밀번호 변경 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                     changeMode(true);
                     window.Close();
                 });
                 LoginClient.getInstance().onChangeFailed = ((msg) => {
-                    AlertWindow alert = new AlertWindow("알 수 없는 오류가 발생해서 변경에 실패 했습니다. - " + msg);
-                    alert.ShowDialog();
+                    MessageBox.Show("알 수 없는 오류가 발생해서 변경에 실패 했습니다. - " + msg, "비밀번호 변경 실패", MessageBoxButton.OK, MessageBoxImage.Error);
                 });
                 LoginClient.getInstance().ChangeAccount(password);
             });
@@ -167,12 +185,10 @@ namespace ClassroomReservation.Main
                     window.Close();
                 });
                 LoginClient.getInstance().onPasswordWrong = (() => {
-                    AlertWindow alert = new AlertWindow("비밀번호가 다릅니다.");
-                    alert.ShowDialog();
+                    MessageBox.Show("비밀번호가 다릅니다.", "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
                 });
                 LoginClient.getInstance().onLoginError = ((msg) => {
-                    AlertWindow alert = new AlertWindow("알 수 없는 오류가 발생 했습니다. 최초 비밀번호로 로그인 해주세요. - " + msg);
-                    alert.ShowDialog();
+                    MessageBox.Show("알 수 없는 오류가 발생 했습니다. 최초 비밀번호로 로그인 해주세요. - " + msg, "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Error);
                 });
                 LoginClient.getInstance().Login(password);
             });
@@ -265,12 +281,22 @@ namespace ClassroomReservation.Main
         }
 
         private void OnReservationSuccess(ReservationItem item) {
-            int childrenNum = scrollViewContentPanel.Children.Count;
+            refresh();
+        }
 
-            for (int i = 0; i < childrenNum; i++) {
-                var child = scrollViewContentPanel.Children[i];
-                ReservationStatusPerDay day = child as ReservationStatusPerDay;
-                day.refresh();
+        private void OnHalfYearDeleteButtonClicked(object sender, RoutedEventArgs e) {
+            MessageBoxResult result = MessageBox.Show("정말로 삭제 하시겠습니까?", "", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.OK) {
+                try {
+                    int year = DateTime.Today.Year;
+                    DateTime startDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 1, 1) : new DateTime(year, 7, 1);
+                    DateTime endDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 6, 30) : new DateTime(year, 12, 31);
+                    ServerClient.reservationDeletePeriod(startDate, endDate, true);
+                    refresh();
+                    MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                } catch (Exception re) {
+                    MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

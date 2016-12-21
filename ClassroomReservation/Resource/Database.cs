@@ -72,7 +72,7 @@ namespace ClassroomReservation.Resource {
         }
 
         private void readClassroom() {
-            string[] lines = ServerClient.GetClassroomList();
+            string[] lines = ServerClient.classroomList();
             
             classroomTable = new Hashtable();
 

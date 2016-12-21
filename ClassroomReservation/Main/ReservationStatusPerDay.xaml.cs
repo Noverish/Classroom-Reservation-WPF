@@ -111,7 +111,7 @@ namespace ClassroomReservation.Main
             nowSelectedRow = -1;
             nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-            List<StatusItem> items = Server.ServerClient.GetDayReservation(date);
+            List<StatusItem> items = Server.ServerClient.reservationListDay(date);
 
             foreach(CustomTextBlock btn in buttons) {
                 if (btn != null) {

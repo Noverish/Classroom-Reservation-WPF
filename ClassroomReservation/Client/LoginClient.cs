@@ -4,7 +4,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
-using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Client {
     public delegate void OnLoginSuccess();

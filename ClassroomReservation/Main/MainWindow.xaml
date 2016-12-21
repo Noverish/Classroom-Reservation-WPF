@@ -48,16 +48,29 @@
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border DockPanel.Dock="Top" Grid.Row="0" Style="{StaticResource BorderStyle}">
-                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,8" FontSize="24"/>
+                        <Border Grid.Row="0" Style="{StaticResource BorderStyle}">
+                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,6" FontSize="24"/>
                         </Border>
-                        <Border DockPanel.Dock="Top" Grid.Row="1" Style="{StaticResource BorderStyle}">
-                            <Button Name="button2" Content="2016년 상반기(1월~6월>DB삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,4" FontSize="24"/>
+                        <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
+                            <Button Name="halfYearDeleteButton" Content="2016년 상반기(1월 ~ 6월) DB삭제" Style="{StaticResource ButtonStyle}" Margin="0,2,0,4" FontSize="24"/>
                         </Border>
-                        <Border DockPanel.Dock="Top" Grid.Row="2" Style="{StaticResource BorderStyle}">
-                            <Button Name="button1" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,8,0,0" FontSize="24"/>
+                        <Border Grid.Row="2" Style="{StaticResource BorderStyle}">
+                            <Button Name="selectPeriodDeleteButton" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,2" FontSize="24"/>
                         </Border>
+                        <Grid Grid.Row="3" Margin="0,6,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" Style="{StaticResource BorderStyle}">
+                                <Button Name="modifyClassroom" Content="강의실 추가/제거" Style="{StaticResource ButtonStyle}" Margin="0,0,3,0" FontSize="24"/>
+                            </Border>
+                            <Border Grid.Column="1" Style="{StaticResource BorderStyle}">
+                                <Button Name="modifyClasstime" Content="시간표 변경" Style="{StaticResource ButtonStyle}" Margin="3,0,0,0" FontSize="24"/>
+                            </Border>
+                        </Grid>
                     </Grid>
                 </Grid>
 

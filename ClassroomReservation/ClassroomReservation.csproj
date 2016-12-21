@@ -81,9 +81,6 @@
     <Compile Include="Reservation\TimeSelectControl.xaml.cs">
       <DependentUpon>TimeSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Other\AlertWindow.xaml.cs">
-      <DependentUpon>AlertWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Resource\Database.cs" />
     <Compile Include="Client\ExcelReadClient.cs" />
     <Compile Include="Server\LectureItem.cs" />
@@ -127,10 +124,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Reservation\TimeSelectControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Other\AlertWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -206,6 +199,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\logo_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Other\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
