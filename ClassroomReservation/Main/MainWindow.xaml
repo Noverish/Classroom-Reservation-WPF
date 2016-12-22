@@ -43,7 +43,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Image Name="leftbottomLogoImage" Source="/Resource/logo_big.png" Margin="60"/>
-                    <Grid Name="AdminButtonPanel" Grid.Column="0" Margin="60,10,30,10">
+                    <Grid Name="AdminButtonPanel" Grid.Column="0" Margin="60,10,30,10" Visibility="Hidden">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -54,7 +54,7 @@
                             <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,6" FontSize="24"/>
                         </Border>
                         <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
-                            <Button Name="halfYearDeleteButton" Content="2016년 상반기(1월 ~ 6월) DB삭제" Style="{StaticResource ButtonStyle}" Margin="0,2,0,4" FontSize="24"/>
+                            <Button Name="halfYearDeleteButton" Content="2016년 상반기(1월 ~ 6월) DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,2,0,4" FontSize="24"/>
                         </Border>
                         <Border Grid.Row="2" Style="{StaticResource BorderStyle}">
                             <Button Name="selectPeriodDeleteButton" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,2" FontSize="24"/>
@@ -65,10 +65,10 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource BorderStyle}">
-                                <Button Name="modifyClassroom" Content="강의실 추가/제거" Style="{StaticResource ButtonStyle}" Margin="0,0,3,0" FontSize="24"/>
+                                <Button Name="modifyClassroomButton" Content="강의실 추가/제거" Style="{StaticResource ButtonStyle}" Margin="0,0,3,0" FontSize="24"/>
                             </Border>
                             <Border Grid.Column="1" Style="{StaticResource BorderStyle}">
-                                <Button Name="modifyClasstime" Content="시간표 변경" Style="{StaticResource ButtonStyle}" Margin="3,0,0,0" FontSize="24"/>
+                                <Button Name="modifyClasstimeButton" Content="시간표 변경" Style="{StaticResource ButtonStyle}" Margin="3,0,0,0" FontSize="24"/>
                             </Border>
                         </Grid>
                     </Grid>
@@ -101,16 +101,16 @@
                                         <Label Name="label3" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Margin="5">
-                                        <TextBox Name="txtbox1" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="userNameTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="1" Margin="5">
-                                        <TextBox Name="txtbox2" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="contactTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="1" Margin="5">
-                                        <TextBox Name="txtbox3" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="contentTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="5">
-                                        <Button Name="button5" Content="정보 수정" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="20"/>
+                                        <Button Name="modifyReservationUserButton" Content="정보 수정" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="20"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="2" Margin="5">
                                         <Button Name="deleteReservationUserButton" Content="예약 삭제" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="20"/>
@@ -154,7 +154,7 @@
                     </Button>
                 </Border>
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}">
-                    <Button Name="Addid" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0">
+                    <Button Name="changePasswordButton" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0" Visibility="Hidden">
                         비밀번호 변경
                     </Button>
                 </Border>

@@ -43,11 +43,11 @@ namespace ClassroomReservation.Reservation
             InitializeComponent();
 
             Hashtable classTimeTable = Database.getInstance().classTimeTable;
-            for (int row = 0; row < classTimeTable.Count; row++) {
+            for (int time = 1; time <= classTimeTable.Count; time++) {
                 Label label = new Label();
-                label.Content = classTimeTable[row];
+                label.Content = classTimeTable[time];
 
-                Grid.SetRow(label, row);
+                Grid.SetRow(label, time - 1);
                 Grid.SetColumn(label, 0);
                 
                 mainGrid.Children.Add(label);

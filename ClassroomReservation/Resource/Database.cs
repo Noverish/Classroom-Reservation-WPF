@@ -56,19 +56,10 @@ namespace ClassroomReservation.Resource {
         }
 
         private void readClassTime() {
-            string[] lines;
-
             try {
-                lines = File.ReadAllLines(CLASS_TIME_PATH);
-            } catch (Exception ex) {
-                lines = defaultClassTime;
-                File.WriteAllLines(CLASS_TIME_PATH, lines);
-            }
-
-            classTimeTable = new Hashtable();
-
-            for (int i = 0; i < lines.Length; i++) {
-                classTimeTable.Add(i, lines[i]);
+                classTimeTable = ServerClient.classtimeList();
+            } catch (ServerResult e) {
+                throw e;
             }
         }
 
@@ -88,10 +79,7 @@ namespace ClassroomReservation.Resource {
                     }
                 }
             } catch (ServerResult e) {
-                MessageBoxResult r = MessageBox.Show("알 수 없는 오류가 발생했습니다. - " + e.exception.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
-                if (r == MessageBoxResult.OK) {
-                    Application.Current.Shutdown();
-                }
+                throw e;
             }
         }
 

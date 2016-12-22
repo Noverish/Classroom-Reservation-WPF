@@ -16,17 +16,20 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Main {
 
-    public delegate void OnLectureAddSuccess();
+    public delegate void OnLectureAdd(DateTime semesterStartDate, List<LectureItem> items);
 
     /// <summary>
     /// LoadLectureTableWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class LoadLectureTableWindow : Window {
-        public OnLectureAddSuccess onLectureAddSuccess { private get; set; }
+        private OnLectureAdd onLectureAddSuccess;
         private List<LectureItem> items;
+        private int semester;
 
-        public LoadLectureTableWindow() {
+        public LoadLectureTableWindow(OnLectureAdd onLectureAddSuccess) {
             InitializeComponent();
+
+            this.onLectureAddSuccess = onLectureAddSuccess;
 
             datePicker.SelectedDate = DateTime.Today;
 
@@ -41,13 +44,20 @@ namespace ClassroomReservation.Main {
 
         private void MakeLecture(object sender, RoutedEventArgs e) {
             if (datePicker.SelectedDate.HasValue) {
-                foreach (LectureItem item in items) {
-                    ServerClient.lectureAdd(item, datePicker.SelectedDate.Value);
-                }
-                Close();
+                DateTime start = datePicker.SelectedDate.Value;
 
-                onLectureAddSuccess?.Invoke();
+                if (start.Month != 3 && start.Month != 9) {
+                    MessageBoxResult r = MessageBox.Show("개강 날짜가 3월 또는 9월이 아닙니다. 진행하시겠습니까?", "개강 날짜 주의", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                    if (r != MessageBoxResult.OK) {
+                        return;
+                    }
+                }
+                
+                Close();
+                onLectureAddSuccess?.Invoke(start, items);
             }
         }
     }
 }
+
+                

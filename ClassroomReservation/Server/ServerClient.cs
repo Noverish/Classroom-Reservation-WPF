@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Dynamic;
 using Newtonsoft.Json.Converters;
+using System.Collections;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
@@ -19,6 +20,7 @@ namespace ClassroomReservation.Server {
         private const string reservationAddUrl = "reservation_add.php";
         private const string reservationDeleteOneUrl = "reservation_delete_one.php";
         private const string reservationDeletePeriodUrl = "reservation_delete_period.php";
+        private const string reservationModifyUrl = "reservation_modify.php";
         
         private const string lectureAddUrl = "lecture_add.php";
 
@@ -26,7 +28,10 @@ namespace ClassroomReservation.Server {
         private const string classroomAddUrl = "classroom_add.php";
         private const string classroomDeleteUrl = "classroom_delete.php";
 
-        
+        private const string classtimeListUrl = "classtime_list.php";
+
+
+
         public static List<StatusItem> reservationListDay(DateTime datePara) {
             try {
                 List<StatusItem> items = new List<StatusItem>();
@@ -88,10 +93,7 @@ namespace ClassroomReservation.Server {
 
                 ServerResult result = connect(url, dataStr);
 
-                if (result.res == 1)
-                    return true;
-                else
-                    return false;
+                return result.res == 1;
             } catch (ServerResult e) {
                 throw e;
             }
@@ -106,6 +108,24 @@ namespace ClassroomReservation.Server {
                     "&deleteLecture=" + ((deleteLecture) ? 1 : 0);
 
                 connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public static bool reservationModify(int reservID, string password, string userName, string contact, string content) {
+            try {
+                string url = serverDomain + reservationModifyUrl;
+                string dataStr =
+                    "reservID=" + reservID +
+                    "&password=" + password +
+                    "&userName=" + userName +
+                    "&contact=" + contact +
+                    "&content=" + content;
+
+                ServerResult result = connect(url, dataStr);
+
+                return result.res == 1;
             } catch (ServerResult e) {
                 throw e;
             }
@@ -178,6 +198,24 @@ namespace ClassroomReservation.Server {
                 throw e;
             }
         }
+
+
+        public static Hashtable classtimeList() {
+            try {
+                Hashtable table = new Hashtable();
+
+                ServerResult result = connect(serverDomain + classtimeListUrl, "");
+
+                List<dynamic> data = result.data;
+
+                for (int i = 0; i < data.Count; i++)
+                    table.Add(i + 1, data[i].Detail);
+
+                return table;
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
         
 
         public static ServerResult connect(string url, string dataStr) {
@@ -189,7 +227,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 3000;
+                httpWebRequest.Timeout = 1000;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);

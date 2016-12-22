@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ClassroomReservation.Server {
-    class LectureItem {
+    public class LectureItem {
         public int year { get; private set; }
         public int semester { get; private set; }
         public string dayOfWeek { get; private set; }

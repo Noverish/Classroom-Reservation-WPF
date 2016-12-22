@@ -33,11 +33,18 @@ namespace ClassroomReservation.Main
 
             this.callback = func;
 
+            Insert_Password.KeyDown += OnKeyDownHandler;
+            Insert_Password.Focus();
+
             LoginButton.Click += new RoutedEventHandler((sender, e) => {
                 callback?.Invoke(this, Insert_Password.Password);
             });
         }
 
-
+        private void OnKeyDownHandler(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Return) {
+                callback?.Invoke(this, Insert_Password.Password);
+            }
+        }
     }
 }

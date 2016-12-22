@@ -52,94 +52,89 @@ namespace ClassroomReservation.Main
 
             labelBorderBrush = new SolidColorBrush(labelBorderBrush.Color);
             labelBorderBrush.Opacity = 0.7;
-
-            Hashtable classroomTable = Database.getInstance().classroomTable;
-            CLASSROOM_NUM = classroomTable.Count;
-            Label nowBuildingLabel = null;
-            for (int row = 0; row < CLASSROOM_NUM; row++) {
-
-                //Add RowDefinition
-                RowDefinition rowDef = new RowDefinition();
-                rowDef.Height = new GridLength(1, GridUnitType.Star);
-                leftLabelsGrid.RowDefinitions.Add(rowDef);
-
-                //Get building name and classroom name
-                string classroomName = (classroomTable[row] as ClassroomItem).classroom;
-                string buildingName = (classroomTable[row] as ClassroomItem).building;
-
-                //Add label to Grid
-                Label classroomLabel = new Label();
-                classroomLabel.Content = classroomName;
-                classroomLabel.Background = (row % 2 == 0) ? backgroundEven : backgroundOdd;
-
-                Grid.SetRow(classroomLabel, row);
-                Grid.SetColumn(classroomLabel, 1);
-
-                leftLabelsGrid.Children.Add(classroomLabel);
-
-                //Adjust building label
-                if (nowBuildingLabel != null && nowBuildingLabel.Content.Equals(buildingName)) {
-                    Grid.SetRowSpan(nowBuildingLabel, Grid.GetRowSpan(nowBuildingLabel) + 1);
-                } else {
-                    Label buildingLabel = new Label();
-                    buildingLabel.Content = buildingName;
-                    buildingLabel.Style = Resources["LabelStyle"] as Style;
-                    buildingLabel.Margin = new Thickness { Top = 1, Bottom = 0, Left = 0, Right = 0 };
-
-                    Grid.SetRow(buildingLabel, row);
-                    Grid.SetColumn(buildingLabel, 0);
-                    Grid.SetRowSpan(buildingLabel, 1);
-
-                    nowBuildingLabel = buildingLabel;
-                    leftLabelsGrid.Children.Add(buildingLabel);
-                }
-            }
-
-            changeMode(true);
-
-            DateTime today = DateTime.Now;
-
-            for (int i = 0; i < 7; i++) {
-                if (today.AddDays(i).DayOfWeek != 0) {
-                    ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(today.AddDays(i));
-                    fileInputBox1.onOneSelected = onOneSelected;
-                    scrollViewContentPanel.Children.Add(fileInputBox1);
-                }
-            }
             
-            MainWindow_DatePicker.SelectedDate = today;
-            Addid.Click += new RoutedEventHandler(PasswordChange);
-            
-            ChangeModeButton.Click += new RoutedEventHandler((s,e) => {
-                if (isUserMode)
-                    Login();
-                else
-                    changeMode(false);
-            });
-			readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
-
-            int year = DateTime.Today.Year;
-            string halfYear = (DateTime.Today.Month <= 6) ? "상반기" : "하반기";
-            int start = (DateTime.Today.Month <= 6) ? 1 : 7;
-            int end = (DateTime.Today.Month <= 6) ? 6 : 12;
-            halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제",year, halfYear, start, end);
-            halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
-
             animationTimer.Interval = new TimeSpan(120);
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
 
-            reservateButton.Click += OnReservateButtonClicked;
+            try {
+                Hashtable classroomTable = Database.getInstance().classroomTable;
+                CLASSROOM_NUM = classroomTable.Count;
+                Label nowBuildingLabel = null;
+                for (int row = 0; row < CLASSROOM_NUM; row++) {
 
-            deleteReservationUserButton.Click += new RoutedEventHandler((sender, e) => {
-                (new PasswordForm((form, password) => {
-                    if (ServerClient.reservationDeleteOne(nowSelectedItem.reservID, password)) {
-                        refresh();
-                        form.Close();
+                    //Add RowDefinition
+                    RowDefinition rowDef = new RowDefinition();
+                    rowDef.Height = new GridLength(1, GridUnitType.Star);
+                    leftLabelsGrid.RowDefinitions.Add(rowDef);
+
+                    //Get building name and classroom name
+                    string classroomName = (classroomTable[row] as ClassroomItem).classroom;
+                    string buildingName = (classroomTable[row] as ClassroomItem).building;
+
+                    //Add label to Grid
+                    Label classroomLabel = new Label();
+                    classroomLabel.Content = classroomName;
+                    classroomLabel.Background = (row % 2 == 0) ? backgroundEven : backgroundOdd;
+
+                    Grid.SetRow(classroomLabel, row);
+                    Grid.SetColumn(classroomLabel, 1);
+
+                    leftLabelsGrid.Children.Add(classroomLabel);
+
+                    //Adjust building label
+                    if (nowBuildingLabel != null && nowBuildingLabel.Content.Equals(buildingName)) {
+                        Grid.SetRowSpan(nowBuildingLabel, Grid.GetRowSpan(nowBuildingLabel) + 1);
                     } else {
+                        Label buildingLabel = new Label();
+                        buildingLabel.Content = buildingName;
+                        buildingLabel.Style = Resources["LabelStyle"] as Style;
+                        buildingLabel.Margin = new Thickness { Top = 1, Bottom = 0, Left = 0, Right = 0 };
 
+                        Grid.SetRow(buildingLabel, row);
+                        Grid.SetColumn(buildingLabel, 0);
+                        Grid.SetRowSpan(buildingLabel, 1);
+
+                        nowBuildingLabel = buildingLabel;
+                        leftLabelsGrid.Children.Add(buildingLabel);
                     }
-                })).ShowDialog();
-            });
+                }
+
+                for (int i = 0; i < 7; i++) {
+                    if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
+                        ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
+                        fileInputBox1.onOneSelected = onOneSelected;
+                        scrollViewContentPanel.Children.Add(fileInputBox1);
+                    }
+                }
+
+                MainWindow_DatePicker.SelectedDate = DateTime.Now;
+                changePasswordButton.Click += new RoutedEventHandler(PasswordChange);
+                ChangeModeButton.Click += new RoutedEventHandler((s, e) => {
+                    if (isUserMode)
+                        Login();
+                    else
+                        changeMode(true);
+                });
+
+
+                readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
+                halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제", 
+                    DateTime.Today.Year, 
+                    ((DateTime.Today.Month <= 6) ? "상반기" : "하반기"), 
+                    ((DateTime.Today.Month <= 6) ? 1 : 7), 
+                    ((DateTime.Today.Month <= 6) ? 6 : 12));
+                halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
+                selectPeriodDeleteButton.Click += OnSelectPeriodDeleteButtonClicked;
+                modifyClassroomButton.Click += OnModifyClassroomButtonClicked;
+                modifyClasstimeButton.Click += OnModifyClasstimeButtonClicked;
+
+                modifyReservationUserButton.Click += OnReservationModifyButtonClicked;
+                deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
+                
+                reservateButton.Click += OnReservateButtonClicked;
+            } catch (ServerResult e) {
+                MessageBox.Show("서버에 접속 할 수 없습니다.", "서버 접속 불가", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         public void refresh() {
@@ -199,12 +194,12 @@ namespace ClassroomReservation.Main
             if(isUserMode)
             {
                 ChangeModeButton.Content = "관리자 모드로 변경";
-                Addid.Visibility = Visibility.Hidden;
+                changePasswordButton.Visibility = Visibility.Hidden;
                 AdminButtonPanel.Visibility = Visibility.Hidden;
                 leftbottomLogoImage.Visibility = Visibility.Visible;
             } else {
                 ChangeModeButton.Content = "일반 사용자 모드로 변경";
-                Addid.Visibility = Visibility.Visible;
+                changePasswordButton.Visibility = Visibility.Visible;
                 AdminButtonPanel.Visibility = Visibility.Visible;
                 leftbottomLogoImage.Visibility = Visibility.Hidden;
             }
@@ -256,22 +251,86 @@ namespace ClassroomReservation.Main
         private void onOneSelected(StatusItem item) {
             if (item != null) {
                 nowSelectedItem = item;
+                
+                userNameTextBox.Text = item.userName;
+                contactTextBox.Text = item.contact;
+                contentTextBox.Text = item.content;
 
-                txtbox1.Text = item.userName;
-                txtbox2.Text = item.contact;
-                txtbox3.Text = item.content;
+                if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
+                    userNameTextBox.IsReadOnly = false;
+                    contactTextBox.IsReadOnly = false;
+                    contentTextBox.IsReadOnly = false;
+                } else {
+                    userNameTextBox.IsReadOnly = true;
+                    contactTextBox.IsReadOnly = true;
+                    contentTextBox.IsReadOnly = true;
+                }
             } else {
-                txtbox1.Text = "";
-                txtbox2.Text = "";
-                txtbox3.Text = "";
+                userNameTextBox.Text = "";
+                contactTextBox.Text = "";
+                contentTextBox.Text = "";
+
+                userNameTextBox.IsReadOnly = true;
+                contactTextBox.IsReadOnly = true;
+                contentTextBox.IsReadOnly = true;
+            }
+        }
+
+        private void OnReservationModifyButtonClicked(object sender, RoutedEventArgs e) {
+            if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
+                (new PasswordForm((form, password) => {
+                    if (ServerClient.reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text)) {
+                        refresh();
+                        form.Close();
+                        MessageBox.Show("예약 정보 수정에 성공했습니다", "예약 수정 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                    } else {
+                        MessageBox.Show("비밀번호가 틀렸습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                })).ShowDialog();
+            } else {
+                MessageBox.Show("강의 정보는 관리자만 수정할 수 있습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void OnReservationDeleteButtonClicked(object sender, RoutedEventArgs e) {
+            if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
+                (new PasswordForm((form, password) => {
+                    if (ServerClient.reservationDeleteOne(nowSelectedItem.reservID, password)) {
+                        refresh();
+                        form.Close();
+                        MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                    } else {
+                        MessageBox.Show("비밀번호가 틀렸습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                })).ShowDialog();
+            } else {
+                MessageBox.Show("강의는 관리자만 삭제할 수 있습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
 
         private void OnExcelReadButtonClicked(object sender, RoutedEventArgs e) {
-            LoadLectureTableWindow w = new LoadLectureTableWindow();
-            w.onLectureAddSuccess = (() => {
-                MessageBox.Show("강의 시간표 불러오기에 성공했습니다.", "강의 시간표 불러오기", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadLectureTableWindow w = new LoadLectureTableWindow((date, items) => {
+                List<LectureItem> fails = new List<LectureItem>();
+
+                foreach (LectureItem item in items) {
+                    try {
+                        ServerClient.lectureAdd(item, date);
+                    } catch (ServerResult ex) {
+                        fails.Add(item);
+                    }
+                }
+
+                if (fails.Count == 0)
+                    MessageBox.Show("강의 시간표 불러오기에 성공했습니다.", "강의 시간표 불러오기", MessageBoxButton.OK, MessageBoxImage.Information);
+                else {
+                    string msg = "강의 시간표 불러오기에 실패했습니다.";
+
+                    foreach(LectureItem item in items) 
+                        msg += ("\n" + item.code + " - " + item.name);
+
+                    MessageBox.Show(msg, "강의 시간표 불러오기", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
                 refresh();
             });
             w.ShowDialog();
@@ -285,18 +344,42 @@ namespace ClassroomReservation.Main
                     DateTime startDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 1, 1) : new DateTime(year, 7, 1);
                     DateTime endDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 6, 30) : new DateTime(year, 12, 31);
                     ServerClient.reservationDeletePeriod(startDate, endDate, true);
-                    refresh();
                     MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 } catch (Exception re) {
                     MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+                refresh();
             }
+        }
+
+        private void OnSelectPeriodDeleteButtonClicked(object sender, RoutedEventArgs e) {
+            SelectPeriodSelectWindow w = new SelectPeriodSelectWindow((start, end) => {
+                try {
+                    ServerClient.reservationDeletePeriod(start, end, true);
+                    MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                } catch (ServerResult ex) {
+                    MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                refresh();
+            });
+            w.ShowDialog();
+        }
+
+        private void OnModifyClassroomButtonClicked(object sender, RoutedEventArgs e) {
+
+        }
+
+        private void OnModifyClasstimeButtonClicked(object sender, RoutedEventArgs e) {
+
         }
 
 
         private void OnReservateButtonClicked(object sender, RoutedEventArgs e) {
             ReservationWindow window = new ReservationWindow();
-            window.onReservationSuccess = (item) => refresh();
+            window.onReservationSuccess = (item) => {
+                refresh();
+                MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
             window.ShowDialog();
         }
     }

@@ -69,11 +69,11 @@
     <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Main\SelectPeriodSelectWindow.xaml.cs">
+      <DependentUpon>SelectPeriodSelectWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Reservation\ReservationWindow.xaml.cs">
       <DependentUpon>ReservationWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Main\LoginForm.xaml.cs">
-      <DependentUpon>LoginForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reservation\ClassroomSelectControl.xaml.cs">
       <DependentUpon>ClassroomSelectControl.xaml</DependentUpon>
@@ -111,11 +111,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Reservation\ReservationWindow.xaml">
+    <Page Include="Main\SelectPeriodSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\LoginForm.xaml">
+    <Page Include="Reservation\ReservationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

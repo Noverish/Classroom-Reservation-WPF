@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClassroomReservation.Server {
     public class StatusItem {
+        public const int LECTURE_TYPE = 0;
+        public const int RESERVATION_TYPE = 1;
+
         public int reservID { get; private set; }
         public int type { get; private set; }
         public DateTime date { get; private set; }
