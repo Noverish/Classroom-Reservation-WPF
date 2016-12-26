@@ -36,7 +36,10 @@ namespace ClassroomReservation.Server {
         private const string classroomDeleteUrl = "classroom_delete.php";
 
         private const string classtimeListUrl = "classtime_list.php";
-        
+        private const string classtimeAddUrl = "classtime_add.php";
+        private const string classtimeModifyUrl = "classtime_modify.php";
+        private const string classtimeDeleteUrl = "classtime_delete.php";
+
 
         public Hashtable classTimeTable { get; private set; }
         public List<string> classroomList { get; private set; }
@@ -237,6 +240,42 @@ namespace ClassroomReservation.Server {
 
                 for (int i = 0; i < data.Count; i++)
                     classTimeTable.Add(i + 1, data[i].Detail);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public void classtimeAdd(string classtime) {
+            try {
+                string url = serverDomain + classtimeAddUrl;
+
+                string dataStr = "classtime=" + classtime;
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public void classtimeModify(int time, string detail) {
+            try {
+                string url = serverDomain + classtimeModifyUrl;
+
+                string dataStr =
+                    "time=" + time +
+                    "&detail=" + detail;
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public void classtimeDelete() {
+            try {
+                string url = serverDomain + classtimeDeleteUrl;
+
+                connect(url, "");
             } catch (ServerResult e) {
                 throw e;
             }

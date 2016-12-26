@@ -23,8 +23,9 @@
         </Style>
     </UserControl.Resources>
     <Border BorderThickness="3, 3, 0, 3" BorderBrush="Black">
-        <Grid Name="mainGrid" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="450">
+        <Grid Name="mainGrid" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
+                <!--<ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -33,8 +34,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>-->
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -53,17 +53,7 @@
                 <RowDefinition Height="*"/>-->
             </Grid.RowDefinitions>
 
-            <Label Name="DateTextBlock" Content="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="10" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
-            <Label Content="1교시" Grid.Row="1" Grid.Column="0" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="2교시" Grid.Row="1" Grid.Column="1" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="3교시" Grid.Row="1" Grid.Column="2" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="4교시" Grid.Row="1" Grid.Column="3" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="5교시" Grid.Row="1" Grid.Column="4" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="6교시" Grid.Row="1" Grid.Column="5" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="7교시" Grid.Row="1" Grid.Column="6" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="8교시" Grid.Row="1" Grid.Column="7" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="9교시" Grid.Row="1" Grid.Column="8" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
-            <Label Content="10교시" Grid.Row="1" Grid.Column="9" Background="{StaticResource ResourceKey = BackgroundOfOddRow}"/>
+            <Label Name="DateTextBlock" Content="12월 31일 화요일" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1000" Background="{StaticResource ResourceKey = BackgroundOfEvenRow}"/>
         </Grid>
     </Border>
 </UserControl>

@@ -22,6 +22,7 @@ using ClassroomReservation.Server;
 using System.Collections;
 using ClassroomReservation.Resource;
 using ClassroomReservation.Client;
+using ClassroomReservation.Admin;
 
 namespace ClassroomReservation.Main
 {
@@ -328,7 +329,11 @@ namespace ClassroomReservation.Main
         }
 
         private void OnModifyClasstimeButtonClicked(object sender, RoutedEventArgs e) {
-
+            ClasstimeAddWindow window = new ClasstimeAddWindow();
+            window.onClasstimeModified = () => refresh();
+            window.onClasstimeAdded = () => refresh();
+            window.onClasstimeDeleted = () => refresh();
+            window.ShowDialog();
         }
 
 

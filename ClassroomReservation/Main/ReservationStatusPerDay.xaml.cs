@@ -56,10 +56,26 @@ namespace ClassroomReservation.Main
 
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
             DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
+            
+            //Add Classtime Label
+            for (int col = 0; col < TOTAL_COLUMN; col++) {
+                ColumnDefinition colDef = new ColumnDefinition();
+                colDef.Width = new GridLength(1, GridUnitType.Star);
+                mainGrid.ColumnDefinitions.Add(colDef);
+
+                Label classtimeLabel = new Label();
+                classtimeLabel.Content = (col + 1) + "교시";
+                classtimeLabel.Background = defaultColorOfOdd;
+                classtimeLabel.Width = 45;
+
+                Grid.SetRow(classtimeLabel, 1);
+                Grid.SetColumn(classtimeLabel, col);
+
+                mainGrid.Children.Add(classtimeLabel);
+            }
 
             for (int row = 2; row < TOTAL_ROW; row++)
             {
-                //Add RowDefinition
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.Height = new GridLength(1, GridUnitType.Star);
                 mainGrid.RowDefinitions.Add(rowDef);
@@ -90,7 +106,7 @@ namespace ClassroomReservation.Main
                     myBorder1.BorderBrush = Brushes.Gray;
                     if (col == 0)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
-                    else if (col == 9)
+                    else if (col == TOTAL_COLUMN - 1)
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 0 };
                     else
                         myBorder1.BorderThickness = new Thickness { Top = 0, Bottom = 0, Left = 0, Right = 1 };
