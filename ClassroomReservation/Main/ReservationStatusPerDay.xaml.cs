@@ -26,17 +26,16 @@ namespace ClassroomReservation.Main
     /// </summary>
     public partial class ReservationStatusPerDay : UserControl
     {
-        private static int TOTAL_COLUMN = Database.getInstance().classTimeTable.Count;
-        private static int TOTAL_ROW = Database.getInstance().classroomTable.Count + 2;
-
         public static ReservationStatusPerDay nowSelectedStatusControl { get; private set; }
         public static int[] nowSelectedColumn { get; private set; } = new int[2] { -1, -1 };
         private static int nowSelectedRow = -1;
         public static int NowSelectedRow { get { return nowSelectedRow - 2; } private set { nowSelectedRow = value; } }
         private bool mouseLeftButtonDown = false;
 
+        private int TOTAL_COLUMN;
+        private int TOTAL_ROW;
         public OnOneSelected onOneSelected { private get; set; }
-        private CustomTextBlock[,] buttons = new CustomTextBlock[TOTAL_ROW, TOTAL_COLUMN];
+        private CustomTextBlock[,] buttons;
         public DateTime date { get; private set; }
 
         private Brush defaultColorOfOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
@@ -51,6 +50,9 @@ namespace ClassroomReservation.Main
             InitializeComponent();
 
             this.date = date;
+            TOTAL_COLUMN = ServerClient.getInstance().classTimeTable.Count;
+            TOTAL_ROW = ServerClient.getInstance().classroomList.Count + 2;
+            buttons = new CustomTextBlock[TOTAL_ROW, TOTAL_COLUMN];
 
             CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
             DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
@@ -60,7 +62,7 @@ namespace ClassroomReservation.Main
                 //Add RowDefinition
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.Height = new GridLength(1, GridUnitType.Star);
-                wrapPanel.RowDefinitions.Add(rowDef);
+                mainGrid.RowDefinitions.Add(rowDef);
 
                 for (int col = 0; col < TOTAL_COLUMN; col++)
                 {
@@ -99,19 +101,15 @@ namespace ClassroomReservation.Main
                     Grid.SetRow(myBorder1, row);
                     Grid.SetColumn(myBorder1, col);
 
-                    wrapPanel.Children.Add(myBorder1);
+                    mainGrid.Children.Add(myBorder1);
                 }
             }
 
-            refresh();
-        }
-
-        public void refresh() {
             nowSelectedStatusControl = null;
             nowSelectedRow = -1;
             nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-            foreach(CustomTextBlock btn in buttons) {
+            foreach (CustomTextBlock btn in buttons) {
                 if (btn != null) {
                     btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
                     btn.Background = btn.originColor;
@@ -119,15 +117,17 @@ namespace ClassroomReservation.Main
                 }
             }
 
-            List<StatusItem> items = ServerClient.reservationListDay(date);
+            List<StatusItem> items = ServerClient.getInstance().reservationListDay(date);
 
             foreach (StatusItem item in items) {
-                int row = Database.getInstance().GetRowByClassroom(item.classroom) + 2;
+                int row = ServerClient.getInstance().GetRowByClassroom(item.classroom) + 2;
                 int column = item.classtime - 1;
 
-                CustomTextBlock btn = buttons[row, column];
-                btn.originColor = (item.type == 0) ? lectureColor : reservationColor;
-                btn.item = item;
+                if (row >= 2 && column >= 0) {
+                    CustomTextBlock btn = buttons[row, column];
+                    btn.originColor = (item.type == 0) ? lectureColor : reservationColor;
+                    btn.item = item;
+                }
             }
 
             ResetBackground();
@@ -172,7 +172,7 @@ namespace ClassroomReservation.Main
             if (Equals(nowSelectedStatusControl)) {
                 if (nowSelectedColumn[0] >= 0 && nowSelectedColumn[1] < TOTAL_COLUMN) {
                     for (int column = nowSelectedColumn[0]; column <= nowSelectedColumn[1]; column++) {
-                        (((wrapPanel.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == nowSelectedRow && Grid.GetColumn(e) == column)) as Border).Child as TextBlock).Background = selectColor;
+                        (((mainGrid.Children.Cast<UIElement>().First(e => Grid.GetRow(e) == nowSelectedRow && Grid.GetColumn(e) == column)) as Border).Child as TextBlock).Background = selectColor;
                     }
                 }
             }

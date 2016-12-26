@@ -23,7 +23,7 @@
         </Style>
     </UserControl.Resources>
     <Border BorderThickness="3, 3, 0, 3" BorderBrush="Black">
-        <Grid Name="wrapPanel" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="450">
+        <Grid Name="mainGrid" HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="450">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

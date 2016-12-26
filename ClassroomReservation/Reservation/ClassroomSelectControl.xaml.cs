@@ -1,4 +1,5 @@
 ﻿using ClassroomReservation.Resource;
+using ClassroomReservation.Server;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,8 +42,8 @@ namespace ClassroomReservation.Reservation {
         public ClassroomSelectControl() {
             InitializeComponent();
 
-            Hashtable classroomTable = Database.getInstance().classroomTable;
-            TOTAL_NUM = classroomTable.Count;
+            List<string> classroomList = ServerClient.getInstance().classroomList;
+            TOTAL_NUM = classroomList.Count;
             buttons = new ClassroomLabel[TOTAL_NUM];
             Label nowBuildingLabel = null;
             for (int row = 0; row < TOTAL_NUM; row++) {
@@ -53,8 +54,8 @@ namespace ClassroomReservation.Reservation {
                 mainGrid.RowDefinitions.Add(rowDef);
 
                 //Get building name and classroom name
-                string classroomName = (classroomTable[row] as ClassroomItem).classroom;
-                string buildingName = (classroomTable[row] as ClassroomItem).building;
+                string buildingName = (classroomList[row] as string).Split(':')[0];
+                string classroomName = (classroomList[row] as string).Split(':')[1];
 
                 //Add label to Grid
                 ClassroomLabel classroomLabel = new ClassroomLabel(buildingName, classroomName);

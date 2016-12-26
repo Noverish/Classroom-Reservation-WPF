@@ -83,7 +83,7 @@ namespace ClassroomReservation.Reservation
             ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
 
             try {
-                ServerClient.reservationAdd(item);
+                ServerClient.getInstance().reservationAdd(item);
 
                 onReservationSuccess?.Invoke(item);
                 Close();

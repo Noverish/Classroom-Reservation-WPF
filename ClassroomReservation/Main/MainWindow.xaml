@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassroomReservation"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1600"
+        Title="고려대학교 정보대학 강의실 예약" Height="900" Width="1600"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="HorizontalScrollViewerStyle" TargetType="ScrollViewer">

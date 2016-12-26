@@ -32,8 +32,6 @@ namespace ClassroomReservation.Main
     {
         private bool isUserMode = true;
 
-        private int CLASSROOM_NUM;
-
 		DispatcherTimer animationTimer = new DispatcherTimer();
 		private double reservationStatusPerDayWidth;
 		double delta = 0;
@@ -55,12 +53,43 @@ namespace ClassroomReservation.Main
             
             animationTimer.Interval = new TimeSpan(120);
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
-
+            
             try {
-                Hashtable classroomTable = Database.getInstance().classroomTable;
-                CLASSROOM_NUM = classroomTable.Count;
+                refresh();
+
+                MainWindow_DatePicker.SelectedDate = DateTime.Now;
+                changePasswordButton.Click += new RoutedEventHandler(OnPasswordChangeButtonClicked);
+                ChangeModeButton.Click += new RoutedEventHandler(OnChangeModeButtonClicked);
+
+                readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
+                halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제", 
+                    DateTime.Today.Year, 
+                    ((DateTime.Today.Month <= 6) ? "상반기" : "하반기"), 
+                    ((DateTime.Today.Month <= 6) ? 1 : 7), 
+                    ((DateTime.Today.Month <= 6) ? 6 : 12));
+                halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
+                selectPeriodDeleteButton.Click += OnSelectPeriodDeleteButtonClicked;
+                modifyClassroomButton.Click += OnModifyClassroomButtonClicked;
+                modifyClasstimeButton.Click += OnModifyClasstimeButtonClicked;
+
+                modifyReservationUserButton.Click += OnReservationModifyButtonClicked;
+                deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
+                
+                reservateButton.Click += OnReservateButtonClicked;
+            } catch (ServerResult e) {
+                MessageBox.Show("서버에 접속 할 수 없습니다.", "서버 접속 불가", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        public void refresh() {
+            try {
+                //remake leftLabelGrid
+                leftLabelsGrid.Children.Clear();
+                leftLabelsGrid.RowDefinitions.Clear();
+                List<string> classroomList = ServerClient.getInstance().classroomList;
                 Label nowBuildingLabel = null;
-                for (int row = 0; row < CLASSROOM_NUM; row++) {
+                for (int row = 0; row < classroomList.Count; row++) {
 
                     //Add RowDefinition
                     RowDefinition rowDef = new RowDefinition();
@@ -68,13 +97,15 @@ namespace ClassroomReservation.Main
                     leftLabelsGrid.RowDefinitions.Add(rowDef);
 
                     //Get building name and classroom name
-                    string classroomName = (classroomTable[row] as ClassroomItem).classroom;
-                    string buildingName = (classroomTable[row] as ClassroomItem).building;
+                    string buildingName = (classroomList[row] as string).Split(':')[0];
+                    string classroomName = (classroomList[row] as string).Split(':')[1];
 
                     //Add label to Grid
                     Label classroomLabel = new Label();
                     classroomLabel.Content = classroomName;
-                    classroomLabel.Background = (row % 2 == 0) ? backgroundEven : backgroundOdd;
+                    classroomLabel.Background = (row % 2 == 0) ? backgroundOdd : backgroundEven;
+                    classroomLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
+                    classroomLabel.VerticalContentAlignment = VerticalAlignment.Center;
 
                     Grid.SetRow(classroomLabel, row);
                     Grid.SetColumn(classroomLabel, 1);
@@ -99,59 +130,22 @@ namespace ClassroomReservation.Main
                     }
                 }
 
+                //remake reservationStatusControls
+                scrollViewContentPanel.Children.Clear();
                 for (int i = 0; i < 7; i++) {
                     if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
-                        ReservationStatusPerDay fileInputBox1 = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
-                        fileInputBox1.onOneSelected = onOneSelected;
-                        scrollViewContentPanel.Children.Add(fileInputBox1);
+                        ReservationStatusPerDay reservationStatusControl = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
+                        reservationStatusControl.onOneSelected = onOneSelected;
+                        scrollViewContentPanel.Children.Add(reservationStatusControl);
                     }
-                }
-
-                MainWindow_DatePicker.SelectedDate = DateTime.Now;
-                changePasswordButton.Click += new RoutedEventHandler(PasswordChange);
-                ChangeModeButton.Click += new RoutedEventHandler((s, e) => {
-                    if (isUserMode)
-                        Login();
-                    else
-                        changeMode(true);
-                });
-
-
-                readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
-                halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제", 
-                    DateTime.Today.Year, 
-                    ((DateTime.Today.Month <= 6) ? "상반기" : "하반기"), 
-                    ((DateTime.Today.Month <= 6) ? 1 : 7), 
-                    ((DateTime.Today.Month <= 6) ? 6 : 12));
-                halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
-                selectPeriodDeleteButton.Click += OnSelectPeriodDeleteButtonClicked;
-                modifyClassroomButton.Click += OnModifyClassroomButtonClicked;
-                modifyClasstimeButton.Click += OnModifyClasstimeButtonClicked;
-
-                modifyReservationUserButton.Click += OnReservationModifyButtonClicked;
-                deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
-                
-                reservateButton.Click += OnReservateButtonClicked;
-            } catch (ServerResult e) {
-                MessageBox.Show("서버에 접속 할 수 없습니다.", "서버 접속 불가", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        public void refresh() {
-            try {
-                int childrenNum = scrollViewContentPanel.Children.Count;
-
-                for (int i = 0; i < childrenNum; i++) {
-                    var child = scrollViewContentPanel.Children[i];
-                    ReservationStatusPerDay day = child as ReservationStatusPerDay;
-                    day.refresh();
                 }
             } catch (Exception ex) {
                 MessageBox.Show("알 수 없는 오류로 새로고침에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void PasswordChange(object sender, RoutedEventArgs e)
+
+        private void OnPasswordChangeButtonClicked(object sender, RoutedEventArgs e)
         {
             PasswordForm signWin = new PasswordForm((window, password) => {
                 LoginClient.getInstance().onChangeSuccess = (() => {
@@ -168,23 +162,26 @@ namespace ClassroomReservation.Main
             signWin.ShowDialog();
         }
 
-        private void Login()
-        {
-            PasswordForm loginWin = new PasswordForm((window, password) => {
-                LoginClient.getInstance().onLoginSuccess = (() => {
-                    changeMode(false);
-                    window.Close();
+        private void OnChangeModeButtonClicked(object sender, RoutedEventArgs e) {
+            if (isUserMode) {
+                PasswordForm loginWin = new PasswordForm((window, password) => {
+                    LoginClient.getInstance().onLoginSuccess = (() => {
+                        changeMode(false);
+                        window.Close();
+                    });
+                    LoginClient.getInstance().onPasswordWrong = (() => {
+                        MessageBox.Show("비밀번호가 다릅니다.", "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        window.passwordBox.Clear();
+                    });
+                    LoginClient.getInstance().onLoginError = ((msg) => {
+                        MessageBox.Show("알 수 없는 오류가 발생 했습니다. 최초 비밀번호로 로그인 해주세요. - " + msg, "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                    });
+                    LoginClient.getInstance().Login(password);
                 });
-                LoginClient.getInstance().onPasswordWrong = (() => {
-                    MessageBox.Show("비밀번호가 다릅니다.", "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
-                });
-                LoginClient.getInstance().onLoginError = ((msg) => {
-                    MessageBox.Show("알 수 없는 오류가 발생 했습니다. 최초 비밀번호로 로그인 해주세요. - " + msg, "로그인 실패", MessageBoxButton.OK, MessageBoxImage.Error);
-                });
-                LoginClient.getInstance().Login(password);
-            });
-            loginWin.LoginButton.Content = "로그인";
-            loginWin.ShowDialog();
+                loginWin.LoginButton.Content = "로그인";
+                loginWin.ShowDialog();
+            } else
+                changeMode(true);
         }
 
         private void changeMode(bool isUserMode)
@@ -205,49 +202,7 @@ namespace ClassroomReservation.Main
             }
         }
 
-        public static DependencyProperty HorizontalOffsetProperty =
-            DependencyProperty.RegisterAttached("HorizontalOffset",
-                                                typeof(double),
-                                                typeof(MainWindow),
-                                                new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
-
-        private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e)
-        {
-            ScrollViewer scrollViewer = target as ScrollViewer;
-
-            if (scrollViewer != null)
-            {
-                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-            }
-        }
-
-		void MyTimer_Tick(object sender, EventArgs e)
-		{
-			if(Math.Abs(delta) > reservationStatusPerDayWidth)
-			{
-				animationTimer.Stop();
-			}
-			else
-			{
-				delta += deltaDirection;
-				ScrollViewer.ScrollToHorizontalOffset(startPos + delta);
-			}
-		}
-
-		private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
-        {
-			ReservationStatusPerDay child = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
-			reservationStatusPerDayWidth = child.ActualWidth;
-
-			animationTimer.Start();
-			deltaDirection = (e.Delta < 0) ? 2 : -2;
-			delta = 0;
-			startPos = ScrollViewer.HorizontalOffset;
-
-			e.Handled = true;
-        }
         
-
         private void onOneSelected(StatusItem item) {
             if (item != null) {
                 nowSelectedItem = item;
@@ -279,7 +234,7 @@ namespace ClassroomReservation.Main
         private void OnReservationModifyButtonClicked(object sender, RoutedEventArgs e) {
             if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                 (new PasswordForm((form, password) => {
-                    if (ServerClient.reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text)) {
+                    if (ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text)) {
                         refresh();
                         form.Close();
                         MessageBox.Show("예약 정보 수정에 성공했습니다", "예약 수정 성공", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -295,7 +250,7 @@ namespace ClassroomReservation.Main
         private void OnReservationDeleteButtonClicked(object sender, RoutedEventArgs e) {
             if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                 (new PasswordForm((form, password) => {
-                    if (ServerClient.reservationDeleteOne(nowSelectedItem.reservID, password)) {
+                    if (ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, password)) {
                         refresh();
                         form.Close();
                         MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -315,7 +270,7 @@ namespace ClassroomReservation.Main
 
                 foreach (LectureItem item in items) {
                     try {
-                        ServerClient.lectureAdd(item, date);
+                        ServerClient.getInstance().lectureAdd(item, date);
                     } catch (ServerResult ex) {
                         fails.Add(item);
                     }
@@ -337,16 +292,16 @@ namespace ClassroomReservation.Main
         }
 
         private void OnHalfYearDeleteButtonClicked(object sender, RoutedEventArgs e) {
-            MessageBoxResult result = MessageBox.Show("정말로 삭제 하시겠습니까?", "", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("정말로 삭제 하시겠습니까?", "학기 삭제 확인", MessageBoxButton.OKCancel, MessageBoxImage.Question);
             if (result == MessageBoxResult.OK) {
                 try {
                     int year = DateTime.Today.Year;
                     DateTime startDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 1, 1) : new DateTime(year, 7, 1);
                     DateTime endDate = (DateTime.Today.Month <= 6) ? new DateTime(year, 6, 30) : new DateTime(year, 12, 31);
-                    ServerClient.reservationDeletePeriod(startDate, endDate, true);
-                    MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    ServerClient.getInstance().reservationDeletePeriod(startDate, endDate, true);
+                    MessageBox.Show("삭제에 성공 했습니다.", "학기 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                 } catch (Exception re) {
-                    MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "학기 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 refresh();
             }
@@ -355,7 +310,7 @@ namespace ClassroomReservation.Main
         private void OnSelectPeriodDeleteButtonClicked(object sender, RoutedEventArgs e) {
             SelectPeriodSelectWindow w = new SelectPeriodSelectWindow((start, end) => {
                 try {
-                    ServerClient.reservationDeletePeriod(start, end, true);
+                    ServerClient.getInstance().reservationDeletePeriod(start, end, true);
                     MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                 } catch (ServerResult ex) {
                     MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -366,7 +321,10 @@ namespace ClassroomReservation.Main
         }
 
         private void OnModifyClassroomButtonClicked(object sender, RoutedEventArgs e) {
-
+            ClassroomAddWindow window = new ClassroomAddWindow();
+            window.onClassroomAdd = (classroom) => refresh();
+            window.onClassroomDelete = (classroom) => refresh();
+            window.ShowDialog();
         }
 
         private void OnModifyClasstimeButtonClicked(object sender, RoutedEventArgs e) {
@@ -381,6 +339,42 @@ namespace ClassroomReservation.Main
                 MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
             };
             window.ShowDialog();
+        }
+
+
+        public static DependencyProperty HorizontalOffsetProperty =
+            DependencyProperty.RegisterAttached("HorizontalOffset",
+                                                typeof(double),
+                                                typeof(MainWindow),
+                                                new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
+
+        private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e) {
+            ScrollViewer scrollViewer = target as ScrollViewer;
+
+            if (scrollViewer != null) {
+                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
+            }
+        }
+
+        void MyTimer_Tick(object sender, EventArgs e) {
+            if (Math.Abs(delta) > reservationStatusPerDayWidth) {
+                animationTimer.Stop();
+            } else {
+                delta += deltaDirection;
+                ScrollViewer.ScrollToHorizontalOffset(startPos + delta);
+            }
+        }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e) {
+            ReservationStatusPerDay child = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
+            reservationStatusPerDayWidth = child.ActualWidth;
+
+            animationTimer.Start();
+            deltaDirection = (e.Delta < 0) ? 2 : -2;
+            delta = 0;
+            startPos = ScrollViewer.HorizontalOffset;
+
+            e.Handled = true;
         }
     }
 }

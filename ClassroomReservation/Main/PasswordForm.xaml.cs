@@ -21,7 +21,7 @@ namespace ClassroomReservation.Main
     /// Window1.xaml에 대한 상호 작용 논리
     /// </summary>
 
-    public delegate void OnPasswordInput(Window form, string password);
+    public delegate void OnPasswordInput(PasswordForm form, string password);
 
     public partial class PasswordForm : Window
     {
@@ -33,17 +33,17 @@ namespace ClassroomReservation.Main
 
             this.callback = func;
 
-            Insert_Password.KeyDown += OnKeyDownHandler;
-            Insert_Password.Focus();
+            passwordBox.KeyDown += OnKeyDownHandler;
+            passwordBox.Focus();
 
             LoginButton.Click += new RoutedEventHandler((sender, e) => {
-                callback?.Invoke(this, Insert_Password.Password);
+                callback?.Invoke(this, passwordBox.Password);
             });
         }
 
         private void OnKeyDownHandler(object sender, KeyEventArgs e) {
             if (e.Key == Key.Return) {
-                callback?.Invoke(this, Insert_Password.Password);
+                callback?.Invoke(this, passwordBox.Password);
             }
         }
     }

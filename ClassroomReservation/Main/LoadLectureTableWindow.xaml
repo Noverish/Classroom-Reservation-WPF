@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClassroomReservation.Main"
         mc:Ignorable="d"
-        Title="LoadLectureTableWindow" Height="360" Width="640"
+        Title="강의 시간표 불러오기" Height="360" Width="640"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
@@ -40,9 +40,9 @@
         <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Margin}" BorderThickness="1" BorderBrush="Black">
             <TextBlock Name="excelFileNameText" TextWrapping="Wrap" Padding="10"/>
         </Border>
-        <Button Name="excelSearchButton" Grid.Row="1" Grid.Column="2" Style="{StaticResource Margin}" FontSize="15" Background="{StaticResource ResourceKey = MainColor}">찾기</Button>
+        <Button Name="excelSearchButton" Grid.Row="1" Grid.Column="2" Style="{StaticResource Margin}" FontSize="15" Background="{StaticResource ResourceKey = MainColor}" Foreground="White">찾기</Button>
         <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
-            <Button Name="processButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="15" Margin="160,10,160,0" Background="{StaticResource ResourceKey = MainColor}">입력하기</Button>
+            <Button Name="processButton" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" FontSize="15" Margin="160,10,160,0" Background="{StaticResource ResourceKey = MainColor}" Foreground="White">입력하기</Button>
         </Grid>
     </Grid>
 </Window>

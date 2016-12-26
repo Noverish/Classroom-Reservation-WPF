@@ -1,4 +1,5 @@
 ﻿using ClassroomReservation.Resource;
+using ClassroomReservation.Server;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace ClassroomReservation.Reservation
         {
             InitializeComponent();
 
-            Hashtable classTimeTable = Database.getInstance().classTimeTable;
+            Hashtable classTimeTable = ServerClient.getInstance().classTimeTable;
             for (int time = 1; time <= classTimeTable.Count; time++) {
                 Label label = new Label();
                 label.Content = classTimeTable[time];

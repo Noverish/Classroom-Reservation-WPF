@@ -1,6 +1,7 @@
 ﻿using ClassroomReservation.Server;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -128,7 +129,7 @@ namespace ClassroomReservation.Resource {
                     string times = Regex.Match(matches[i].Value, "\\d(-\\d)?").Value;
                     string classroom = new Regex(" ").Replace(one.Remove(0, matches[i].Value.Length + 1), ":");
 
-                    if (Database.getInstance().GetRowByClassroom(classroom) < 0)
+                    if (ServerClient.getInstance().GetRowByClassroom(classroom) < 0)
                         continue;
 
                     times = (times.Contains("-")) ? times : times + "-" + times;

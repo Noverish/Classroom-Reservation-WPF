@@ -14,7 +14,14 @@ using System.Collections;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
-        private const string serverDomain = "http://10.4.0.250/api/";
+        private static ServerClient instance;
+        public static ServerClient getInstance() {
+            if (instance == null)
+                instance = new ServerClient();
+            return instance;
+        }
+
+        private const string serverDomain = "http://192.168.0.7/api/";
 
         private const string reservationListDayUrl = "reservation_list_day.php";
         private const string reservationAddUrl = "reservation_add.php";
@@ -29,10 +36,19 @@ namespace ClassroomReservation.Server {
         private const string classroomDeleteUrl = "classroom_delete.php";
 
         private const string classtimeListUrl = "classtime_list.php";
+        
+
+        public Hashtable classTimeTable { get; private set; }
+        public List<string> classroomList { get; private set; }
 
 
+        private ServerClient() {
+            reloadClassroomList();
+            reloadClasstimeList();
+        }
 
-        public static List<StatusItem> reservationListDay(DateTime datePara) {
+
+        public List<StatusItem> reservationListDay(DateTime datePara) {
             try {
                 List<StatusItem> items = new List<StatusItem>();
                 string url = serverDomain + reservationListDayUrl;
@@ -65,7 +81,7 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public static void reservationAdd(ReservationItem reservation) {
+        public void reservationAdd(ReservationItem reservation) {
             try {
                 string url = serverDomain + reservationAddUrl;
 
@@ -86,7 +102,7 @@ namespace ClassroomReservation.Server {
             }
         }
         
-        public static bool reservationDeleteOne(int reservID, string password) {
+        public bool reservationDeleteOne(int reservID, string password) {
             try {
                 string url = serverDomain + reservationDeleteOneUrl;
                 string dataStr = "reservID=" + reservID + "&password=" + password;
@@ -99,7 +115,7 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public static void reservationDeletePeriod(DateTime startDate, DateTime endDate, bool deleteLecture) {
+        public void reservationDeletePeriod(DateTime startDate, DateTime endDate, bool deleteLecture) {
             try {
                 string url = serverDomain + reservationDeletePeriodUrl;
                 string dataStr = 
@@ -113,7 +129,7 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public static bool reservationModify(int reservID, string password, string userName, string contact, string content) {
+        public bool reservationModify(int reservID, string password, string userName, string contact, string content) {
             try {
                 string url = serverDomain + reservationModifyUrl;
                 string dataStr =
@@ -132,7 +148,7 @@ namespace ClassroomReservation.Server {
         }
 
 
-        public static void lectureAdd(LectureItem lecture, DateTime semesterStartDate) {
+        public void lectureAdd(LectureItem lecture, DateTime semesterStartDate) {
             try {
                 string url = serverDomain + lectureAddUrl;
 
@@ -158,24 +174,24 @@ namespace ClassroomReservation.Server {
         }
 
 
-        public static string[] classroomList() {
+        public void reloadClassroomList() {
             try {
+                classroomList = new List<string>();
+
                 ServerResult result = connect(serverDomain + classroomListUrl, "");
 
                 List<dynamic> data = result.data;
 
-                string[] classrooms = new string[data.Count];
-
                 for (int i = 0; i < data.Count; i++)
-                    classrooms[i] = data[i].Classroom;
+                    classroomList.Add(data[i].Classroom);
 
-                return classrooms;
+                classroomList.Sort();
             } catch (ServerResult e) {
                 throw e;
             }
         }
 
-        public static void classroomAdd(string classroom) {
+        public void classroomAdd(string classroom) {
             try {
                 string url = serverDomain + classroomAddUrl;
 
@@ -187,7 +203,7 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public static void classroomDelete(string classroom) {
+        public void classroomDelete(string classroom) {
             try {
                 string url = serverDomain + classroomDeleteUrl;
 
@@ -199,26 +215,35 @@ namespace ClassroomReservation.Server {
             }
         }
 
+        public int GetRowByClassroom(string classroom) {
+            if (classroomList == null)
+                reloadClassroomList();
 
-        public static Hashtable classtimeList() {
+            for (int i = 0; i < classroomList.Count; i++) {
+                if ((classroomList[i] as string).Equals(classroom))
+                    return i;
+            }
+            return -1;
+        }
+
+
+        public void reloadClasstimeList() {
             try {
-                Hashtable table = new Hashtable();
+                classTimeTable = new Hashtable();
 
                 ServerResult result = connect(serverDomain + classtimeListUrl, "");
 
                 List<dynamic> data = result.data;
 
                 for (int i = 0; i < data.Count; i++)
-                    table.Add(i + 1, data[i].Detail);
-
-                return table;
+                    classTimeTable.Add(i + 1, data[i].Detail);
             } catch (ServerResult e) {
                 throw e;
             }
         }
         
 
-        public static ServerResult connect(string url, string dataStr) {
+        public ServerResult connect(string url, string dataStr) {
             try {
                 byte[] data = UTF8Encoding.UTF8.GetBytes(dataStr);
 

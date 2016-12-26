@@ -60,6 +60,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Client\LoginClient.cs" />
+    <Compile Include="Main\ClassroomAddWindow.xaml.cs">
+      <DependentUpon>ClassroomAddWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Main\LoadLectureTableWindow.xaml.cs">
       <DependentUpon>LoadLectureTableWindow.xaml</DependentUpon>
     </Compile>
@@ -81,12 +84,15 @@
     <Compile Include="Reservation\TimeSelectControl.xaml.cs">
       <DependentUpon>TimeSelectControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Resource\Database.cs" />
     <Compile Include="Client\ExcelReadClient.cs" />
     <Compile Include="Server\LectureItem.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\StatusItem.cs" />
+    <Page Include="Main\ClassroomAddWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Main\LoadLectureTableWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -158,12 +164,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\Background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\ClassTime.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resource\Classroom.txt" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="Microsoft.Office.Core">
