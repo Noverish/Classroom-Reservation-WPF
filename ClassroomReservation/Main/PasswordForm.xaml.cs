@@ -30,6 +30,7 @@ namespace ClassroomReservation.Main
         public PasswordForm(OnPasswordInput func)
         {
             InitializeComponent();
+            this.ShowInTaskbar = false;
 
             this.callback = func;
 

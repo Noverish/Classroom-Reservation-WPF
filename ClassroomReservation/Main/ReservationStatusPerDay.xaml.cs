@@ -125,14 +125,6 @@ namespace ClassroomReservation.Main
             nowSelectedRow = -1;
             nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-            foreach (CustomTextBlock btn in buttons) {
-                if (btn != null) {
-                    btn.originColor = (btn.row % 2 == 0) ? defaultColorOfOdd : defaultColorOfEven;
-                    btn.Background = btn.originColor;
-                    btn.item = null;
-                }
-            }
-
             List<StatusItem> items = ServerClient.getInstance().reservationListDay(date);
 
             foreach (StatusItem item in items) {

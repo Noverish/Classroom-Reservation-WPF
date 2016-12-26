@@ -20,7 +20,7 @@
         <SolidColorBrush x:Key="SubColor" Color="#7ABFA0"/>
         <SolidColorBrush x:Key="LabelBackground" Color="#FF789878"/>
         <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="#22FFFFFF"/>
-        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#22AAAAAA"/>
+        <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#22888888"/>
         <SolidColorBrush x:Key="HoverColor" Color="#f65314"/>
         <SolidColorBrush x:Key="SelectedColor" Color="#00a1f1"/>
         <SolidColorBrush x:Key="ReservationColor" Color="#CAD6FF"/>

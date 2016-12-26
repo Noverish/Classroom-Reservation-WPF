@@ -104,7 +104,7 @@ namespace ClassroomReservation.Main
                     //Add label to Grid
                     Label classroomLabel = new Label();
                     classroomLabel.Content = classroomName;
-                    classroomLabel.Background = (row % 2 == 0) ? backgroundOdd : backgroundEven;
+                    classroomLabel.Background = (row % 2 == 0) ? backgroundEven : backgroundOdd;
                     classroomLabel.HorizontalContentAlignment = HorizontalAlignment.Center;
                     classroomLabel.VerticalContentAlignment = VerticalAlignment.Center;
 
@@ -266,7 +266,7 @@ namespace ClassroomReservation.Main
 
 
         private void OnExcelReadButtonClicked(object sender, RoutedEventArgs e) {
-            LoadLectureTableWindow w = new LoadLectureTableWindow((date, items) => {
+            LoadLectureTableWindow window = new LoadLectureTableWindow((date, items) => {
                 List<LectureItem> fails = new List<LectureItem>();
 
                 foreach (LectureItem item in items) {
@@ -289,7 +289,8 @@ namespace ClassroomReservation.Main
                 }
                 refresh();
             });
-            w.ShowDialog();
+            window.ShowInTaskbar = false;
+            window.ShowDialog();
         }
 
         private void OnHalfYearDeleteButtonClicked(object sender, RoutedEventArgs e) {
@@ -309,7 +310,7 @@ namespace ClassroomReservation.Main
         }
 
         private void OnSelectPeriodDeleteButtonClicked(object sender, RoutedEventArgs e) {
-            SelectPeriodSelectWindow w = new SelectPeriodSelectWindow((start, end) => {
+            SelectPeriodSelectWindow window = new SelectPeriodSelectWindow((start, end) => {
                 try {
                     ServerClient.getInstance().reservationDeletePeriod(start, end, true);
                     MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -318,13 +319,15 @@ namespace ClassroomReservation.Main
                 }
                 refresh();
             });
-            w.ShowDialog();
+            window.ShowInTaskbar = false;
+            window.ShowDialog();
         }
 
         private void OnModifyClassroomButtonClicked(object sender, RoutedEventArgs e) {
             ClassroomAddWindow window = new ClassroomAddWindow();
             window.onClassroomAdd = (classroom) => refresh();
             window.onClassroomDelete = (classroom) => refresh();
+            window.ShowInTaskbar = false;
             window.ShowDialog();
         }
 
@@ -333,6 +336,7 @@ namespace ClassroomReservation.Main
             window.onClasstimeModified = () => refresh();
             window.onClasstimeAdded = () => refresh();
             window.onClasstimeDeleted = () => refresh();
+            window.ShowInTaskbar = false;
             window.ShowDialog();
         }
 
@@ -343,6 +347,7 @@ namespace ClassroomReservation.Main
                 refresh();
                 MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
             };
+            window.ShowInTaskbar = false;
             window.ShowDialog();
         }
 
