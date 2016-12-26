@@ -60,10 +60,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Client\LoginClient.cs" />
-    <Compile Include="Main\ClassroomAddWindow.xaml.cs">
+    <Compile Include="Admin\ClassroomAddWindow.xaml.cs">
       <DependentUpon>ClassroomAddWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\LoadLectureTableWindow.xaml.cs">
+    <Compile Include="Admin\LoadLectureTableWindow.xaml.cs">
       <DependentUpon>LoadLectureTableWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Main\PasswordForm.xaml.cs">
@@ -72,7 +72,7 @@
     <Compile Include="Main\ReservationStatusPerDay.xaml.cs">
       <DependentUpon>ReservationStatusPerDay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Main\SelectPeriodSelectWindow.xaml.cs">
+    <Compile Include="Admin\SelectPeriodSelectWindow.xaml.cs">
       <DependentUpon>SelectPeriodSelectWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Reservation\ReservationWindow.xaml.cs">
@@ -89,11 +89,11 @@
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\StatusItem.cs" />
-    <Page Include="Main\ClassroomAddWindow.xaml">
+    <Page Include="Admin\ClassroomAddWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\LoadLectureTableWindow.xaml">
+    <Page Include="Admin\LoadLectureTableWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -117,7 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Main\SelectPeriodSelectWindow.xaml">
+    <Page Include="Admin\SelectPeriodSelectWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
