@@ -240,6 +240,18 @@ namespace ClassroomReservation.Main
             }
         }
 
+        public static bool IsSelectedAlreadyOccupied() {
+            if (nowSelectedStatusControl != null) {
+                foreach (int col in nowSelectedColumn) {
+                    if (nowSelectedStatusControl.buttons[nowSelectedRow, col].item != null) {
+                        return true;
+                    }
+                }
+            }
+            
+            return false;
+        }
+
         public class CustomTextBlock : TextBlock {
             public int row { get; set; }
             public int column { get; set; }

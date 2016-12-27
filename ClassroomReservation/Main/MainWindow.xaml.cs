@@ -342,13 +342,17 @@ namespace ClassroomReservation.Main
 
 
         private void OnReservateButtonClicked(object sender, RoutedEventArgs e) {
-            ReservationWindow window = new ReservationWindow();
-            window.onReservationSuccess = (item) => {
-                refresh();
-                MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-            };
-            window.ShowInTaskbar = false;
-            window.ShowDialog();
+            if (ReservationStatusPerDay.IsSelectedAlreadyOccupied()) {
+                MessageBox.Show("이미 예약 되어 있습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            } else {
+                ReservationWindow window = new ReservationWindow();
+                window.onReservationSuccess = (item) => {
+                    refresh();
+                    MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                };
+                window.ShowInTaskbar = false;
+                window.ShowDialog();
+            }
         }
 
 
