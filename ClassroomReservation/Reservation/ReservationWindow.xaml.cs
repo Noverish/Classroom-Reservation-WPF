@@ -103,6 +103,12 @@ namespace ClassroomReservation.Reservation
         private void OnTimeSelectChanged(int[] nowSelectedTime, bool isDataChanged) {
             if (isDataChanged) {
                 classroomSelectControl.ResetSelection();
+                classroomSelectControl.selectiveEnable(ServerClient.getInstance().checkClassroomStatusByClasstime(
+                    calendar.SelectedDates[0], 
+                    calendar.SelectedDates[calendar.SelectedDates.Count - 1], 
+                    nowSelectedTime[0], 
+                    nowSelectedTime[1]
+                ));
                 EnableInputUserData(false);
             } else {
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
@@ -113,6 +119,11 @@ namespace ClassroomReservation.Reservation
         private void OnClassroomSelectChanged(string nowSelectedClassroom, bool isDataChanged) {
             if (isDataChanged) {
                 timeSelectControl.ResetSelection();
+                timeSelectControl.selectiveEnable(ServerClient.getInstance().checkClasstimeStatusByClassrom(
+                    calendar.SelectedDates[0],
+                    calendar.SelectedDates[calendar.SelectedDates.Count - 1],
+                    nowSelectedClassroom
+                ));
                 EnableInputUserData(false);
             } else {
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())

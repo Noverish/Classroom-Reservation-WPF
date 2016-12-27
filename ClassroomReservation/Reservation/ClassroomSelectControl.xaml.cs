@@ -33,6 +33,7 @@ namespace ClassroomReservation.Reservation {
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
+        private SolidColorBrush disableOverlap = (SolidColorBrush)Application.Current.FindResource("DisableOverlap");
 
         private Label beforeSelected;
         private ClassroomLabel nowSelected;
@@ -120,6 +121,13 @@ namespace ClassroomReservation.Reservation {
             nowSelected.Background = selectedColor;
         }
 
+        public void selectiveEnable(bool[] list) {
+            for (int i = 0; i < list.Length; i++) {
+                if (!list[i]) {
+                    buttons[i].Background = disableOverlap;
+                }
+            }
+        }
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e) {
             nowSelected = sender as ClassroomLabel;

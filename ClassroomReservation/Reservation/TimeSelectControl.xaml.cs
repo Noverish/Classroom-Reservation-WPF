@@ -29,7 +29,7 @@ namespace ClassroomReservation.Reservation
 
         public OnTimeSelectChanged onTimeSelectChanged { set; private get; }
 
-        private IEnumerable<Label> buttons;
+        private Label[] buttons;
         private int[] beforeSelectedTime = new int[2];
         private int[] nowSelectedTime = new int[2];
         private bool mouseLeftButtonDown = false;
@@ -38,25 +38,27 @@ namespace ClassroomReservation.Reservation
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
-        
+        private SolidColorBrush disableOverlap = (SolidColorBrush)Application.Current.FindResource("DisableOverlap");
+
         public TimeSelectControl()
         {
             InitializeComponent();
 
             Hashtable classTimeTable = ServerClient.getInstance().classTimeTable;
+            buttons = new Label[classTimeTable.Count];
             for (int time = 1; time <= classTimeTable.Count; time++) {
                 Label label = new Label();
                 label.Content = classTimeTable[time];
 
                 Grid.SetRow(label, time - 1);
                 Grid.SetColumn(label, 0);
-                
+
+                buttons[time - 1] = label;
                 mainGrid.Children.Add(label);
             }
 
             beforeSelectedTime[0] = beforeSelectedTime[1] = -2;
             nowSelectedTime[0] = nowSelectedTime[1] = -2;
-            buttons = mainGrid.Children.OfType<Label>();
 
             ResetBackground();
 
@@ -100,6 +102,14 @@ namespace ClassroomReservation.Reservation
             enable(true);
             nowSelectedTime = (int[])selectedTimeRow.Clone();
             SetSelectByRow(nowSelectedTime[0], nowSelectedTime[1]);
+        }
+
+        public void selectiveEnable(bool[] list) {
+            for (int i = 0; i < list.Length; i++) {
+                if (!list[i]) {
+                    buttons[i].Background = disableOverlap;
+                }
+            }
         }
 
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)

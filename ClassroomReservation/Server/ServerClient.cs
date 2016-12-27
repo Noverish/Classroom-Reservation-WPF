@@ -43,6 +43,7 @@ namespace ClassroomReservation.Server {
 
         public Hashtable classTimeTable { get; private set; }
         public List<string> classroomList { get; private set; }
+        private List<StatusItem> status;
 
 
         private ServerClient() {
@@ -77,6 +78,8 @@ namespace ClassroomReservation.Server {
 
                     items.Add(item);
                 }
+
+                status = items;
 
                 return items;
             } catch (ServerResult e) {
@@ -150,12 +153,32 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public bool[] checkClassroomStatusByClasstime(DateTime startDate, DateTime endDate, int starTime, int endTime) {
-            return null;
+        public bool[] checkClassroomStatusByClasstime(DateTime startDate, DateTime endDate, int startTime, int endTime) {
+            bool[] answer = Enumerable.Repeat(true, classroomList.Count).ToArray();
+
+            foreach (StatusItem item in status) {
+                if (startDate <= item.date && item.date <= endDate) {
+                    if (startTime <= item.classtime && item.classtime <= endTime) {
+                        answer[GetRowByClassroom(item.classroom)] = false;
+                    }
+                }
+            }
+
+            return answer;
         }
 
-        public bool[] checkClasstimeStatusByClassrom(DateTime startDate, DateTime endDate, int classroomRow) {
-            return null;
+        public bool[] checkClasstimeStatusByClassrom(DateTime startDate, DateTime endDate, string classroom) {
+            bool[] answer = Enumerable.Repeat(true, classTimeTable.Count).ToArray();
+
+            foreach (StatusItem item in status) {
+                if (startDate <= item.date && item.date <= endDate) {
+                    if (item.classroom.Equals(classroom)) {
+                        answer[item.classtime - 1] = false;
+                    }
+                }
+            }
+
+            return answer;
         }
 
 
