@@ -314,6 +314,7 @@ namespace ClassroomReservation.Main
                 try {
                     ServerClient.getInstance().reservationDeletePeriod(start, end, true);
                     MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    refresh();
                 } catch (ServerResult ex) {
                     MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }

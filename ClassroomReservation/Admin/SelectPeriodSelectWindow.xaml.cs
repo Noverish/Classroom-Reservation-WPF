@@ -30,9 +30,10 @@ namespace ClassroomReservation.Main {
             endDate.SelectedDate = DateTime.Now;
 
             deleteButton.Click += new RoutedEventHandler((o,s) => {
-                if (DateTime.Compare(startDate.SelectedDate.Value, endDate.SelectedDate.Value) <= 0)
+                if (DateTime.Compare(startDate.SelectedDate.Value, endDate.SelectedDate.Value) <= 0) {
+                    Close();
                     onSelectPeriodDelete?.Invoke(startDate.SelectedDate.Value, endDate.SelectedDate.Value);
-                else
+                } else
                     MessageBox.Show("끝 날짜가 시작 날짜 보다 빠릅니다. 다시 선택해 주세요", "선택 오류", MessageBoxButton.OK, MessageBoxImage.Warning);
             });
         }
