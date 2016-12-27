@@ -28,8 +28,7 @@ namespace ClassroomReservation.Main
     {
         public static ReservationStatusPerDay nowSelectedStatusControl { get; private set; }
         public static int[] nowSelectedColumn { get; private set; } = new int[2] { -1, -1 };
-        private static int nowSelectedRow = -1;
-        public static int NowSelectedRow { get { return nowSelectedRow - 2; } private set { nowSelectedRow = value; } }
+        public static int nowSelectedRow { get; private set; } = -1;
         private bool mouseLeftButtonDown = false;
 
         private int TOTAL_COLUMN;
@@ -86,13 +85,11 @@ namespace ClassroomReservation.Main
                     newBtn.row = row;
                     newBtn.column = col;
 
-                    if (row % 2 == 0) {
-                        newBtn.Background = defaultColorOfEven;
+                    if (row % 2 == 0) 
                         newBtn.originColor = defaultColorOfEven;
-                    } else {
-                        newBtn.Background = defaultColorOfOdd;
+                    else 
                         newBtn.originColor = defaultColorOfOdd;
-                    }
+                    
                     newBtn.VerticalAlignment = VerticalAlignment.Stretch;
                     newBtn.HorizontalAlignment = HorizontalAlignment.Stretch;
 
@@ -125,20 +122,24 @@ namespace ClassroomReservation.Main
             nowSelectedRow = -1;
             nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
 
-            List<StatusItem> items = ServerClient.getInstance().reservationListDay(date);
+            ResetBackground();
+        }
 
-            foreach (StatusItem item in items) {
-                int row = ServerClient.getInstance().GetRowByClassroom(item.classroom) + 2;
-                int column = item.classtime - 1;
+        public void putData(int row, int col, StatusItem item) {
+            var button = buttons[row, col];
+            button.item = item;
+            button.originColor = (item.type == StatusItem.LECTURE_TYPE) ? lectureColor : reservationColor;
+            button.Background = button.originColor;
+        }
 
-                if (row >= 2 && column >= 0) {
-                    CustomTextBlock btn = buttons[row, column];
-                    btn.originColor = (item.type == 0) ? lectureColor : reservationColor;
-                    btn.item = item;
+        public void clear() {
+            foreach (CustomTextBlock btn in buttons) {
+                if (btn != null) {
+                    btn.originColor = (btn.row % 2 == 0) ? defaultColorOfEven : defaultColorOfOdd;
+                    btn.Background = btn.originColor;
+                    btn.item = null;
                 }
             }
-
-            ResetBackground();
         }
 
         private void onMouseDown(object sender, RoutedEventArgs e)
@@ -232,6 +233,7 @@ namespace ClassroomReservation.Main
             nowSelectedColumn[0] = startColumn;
             nowSelectedColumn[1] = endColumn;
         }
+
 
         private void ResetBackground() {
             foreach (CustomTextBlock btn in buttons) {

@@ -23,7 +23,7 @@ namespace ClassroomReservation.Server {
 
         private const string serverDomain = "http://192.168.0.7/api/";
 
-        private const string reservationListDayUrl = "reservation_list_day.php";
+        private const string reservationListWeekUrl = "reservation_list_week.php";
         private const string reservationAddUrl = "reservation_add.php";
         private const string reservationDeleteOneUrl = "reservation_delete_one.php";
         private const string reservationDeletePeriodUrl = "reservation_delete_period.php";
@@ -51,10 +51,10 @@ namespace ClassroomReservation.Server {
         }
 
 
-        public List<StatusItem> reservationListDay(DateTime datePara) {
+        public List<StatusItem> reservationListWeek(DateTime datePara) {
             try {
                 List<StatusItem> items = new List<StatusItem>();
-                string url = serverDomain + reservationListDayUrl;
+                string url = serverDomain + reservationListWeekUrl;
 
                 string dataStr =
                     "date=" + datePara.ToString("yyyy-MM-dd");
@@ -148,6 +148,14 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+        }
+
+        public bool[] checkClassroomStatusByClasstime(DateTime startDate, DateTime endDate, int starTime, int endTime) {
+            return null;
+        }
+
+        public bool[] checkClasstimeStatusByClassrom(DateTime startDate, DateTime endDate, int classroomRow) {
+            return null;
         }
 
 

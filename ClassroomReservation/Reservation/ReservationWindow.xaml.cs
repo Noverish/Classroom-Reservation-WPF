@@ -46,7 +46,7 @@ namespace ClassroomReservation.Reservation
             try {
                 DateTime selectedDate = ReservationStatusPerDay.nowSelectedStatusControl.date;
                 int[] selectedClasstimeRow = ReservationStatusPerDay.nowSelectedColumn;
-                int selectedClassroomRow = ReservationStatusPerDay.NowSelectedRow;
+                int selectedClassroomRow = ReservationStatusPerDay.nowSelectedRow - 2;
 
                 calendar.SelectedDate = selectedDate;
                 timeSelectControl.SetSelectedTime(selectedClasstimeRow);

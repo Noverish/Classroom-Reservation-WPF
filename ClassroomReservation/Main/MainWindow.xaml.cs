@@ -56,6 +56,14 @@ namespace ClassroomReservation.Main
             animationTimer.Tick += new EventHandler(MyTimer_Tick);
             
             try {
+                for (int i = 0; i < 7; i++) {
+                    if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
+                        var view = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
+                        view.onOneSelected = onOneSelected;
+                        scrollViewContentPanel.Children.Add(view);
+                    }
+                }
+
                 refresh();
 
                 MainWindow_DatePicker.SelectedDate = DateTime.Now;
@@ -130,14 +138,15 @@ namespace ClassroomReservation.Main
                         leftLabelsGrid.Children.Add(buildingLabel);
                     }
                 }
-
+                
                 //remake reservationStatusControls
-                scrollViewContentPanel.Children.Clear();
-                for (int i = 0; i < 7; i++) {
-                    if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
-                        ReservationStatusPerDay reservationStatusControl = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
-                        reservationStatusControl.onOneSelected = onOneSelected;
-                        scrollViewContentPanel.Children.Add(reservationStatusControl);
+                List<StatusItem> items = ServerClient.getInstance().reservationListWeek(DateTime.Now);
+                var views = scrollViewContentPanel.Children;
+                foreach (StatusItem item in items) {
+                    foreach (ReservationStatusPerDay view in views) {
+                        if (view.date.Day == item.date.Day) {
+                            view.putData(ServerClient.getInstance().GetRowByClassroom(item.classroom) + 2, item.classtime - 1, item);
+                        }
                     }
                 }
             } catch (Exception ex) {
