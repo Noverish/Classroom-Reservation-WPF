@@ -1,4 +1,5 @@
 ﻿using ClassroomReservation.Main;
+using ClassroomReservation.Other;
 using ClassroomReservation.Resource;
 using ClassroomReservation.Server;
 using System;
@@ -77,12 +78,20 @@ namespace ClassroomReservation.Reservation
                 MessageBox.Show("강의실을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (nameTextBox.Text.Equals(""))
                 MessageBox.Show("이름을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (Essential.hasSpecialChar(nameTextBox.Text))
+                MessageBox.Show("이름에 특수문자(\" \' ; : \\ / + = * # |)를 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (numberTextBox.Text.Equals(""))
                 MessageBox.Show("연락처를 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (Essential.hasSpecialChar(numberTextBox.Text))
+                MessageBox.Show("연락처에 특수문자(\" \' ; : \\ / + = * # |)를 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (contentTextBox.Text.Equals(""))
                 MessageBox.Show("예약 내용을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (Essential.hasSpecialChar(contentTextBox.Text))
+                MessageBox.Show("예약 내용에 특수문자(\" \' ; : \\ / + = * # |)를 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (passwordTextBox.Text.Equals(""))
                 MessageBox.Show("비밀번호을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (Essential.hasSpecialChar(passwordTextBox.Text))
+                MessageBox.Show("비밀번호에 특수문자(\" \' ; : \\ / + = * # |)를 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else {
                 DateTime startDate = calendar.SelectedDates[0];
                 DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
