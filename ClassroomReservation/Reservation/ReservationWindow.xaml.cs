@@ -69,25 +69,52 @@ namespace ClassroomReservation.Reservation
         }
 
         private void Reserve(object sender, RoutedEventArgs e) {
-            DateTime startDate = calendar.SelectedDates[0];
-            DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
-            int[] time = timeSelectControl.GetSelectedTime();
-            string classroom = classroomSelectControl.GetSelectedClassroom();
+            if (calendar.SelectedDate == null)
+                MessageBox.Show("날짜를 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (!timeSelectControl.HasSeletedTime())
+                MessageBox.Show("시간을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (!classroomSelectControl.HasSelectedClassroom())
+                MessageBox.Show("강의실을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (nameTextBox.Text.Equals(""))
+                MessageBox.Show("이름을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (numberTextBox.Text.Equals(""))
+                MessageBox.Show("연락처를 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (contentTextBox.Text.Equals(""))
+                MessageBox.Show("예약 내용을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (passwordTextBox.Text.Equals(""))
+                MessageBox.Show("비밀번호을 선택해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else {
+                DateTime startDate = calendar.SelectedDates[0];
+                DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
+                int[] time = timeSelectControl.GetSelectedTime();
+                string classroom = classroomSelectControl.GetSelectedClassroom();
 
-            string name = nameTextBox.Text;
-            string contact = numberTextBox.Text;
-            string content = contentTextBox.Text;
-            string password = passwordTextBox.Text;
+                string name = nameTextBox.Text;
+                string contact = numberTextBox.Text;
+                string content = contentTextBox.Text;
+                string password = passwordTextBox.Text;
 
-            ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
+                string check = String.Format("날짜 : {0} ~ {1}\n시간 : {2}교시 ~ {3}교시\n강의실 : {4}\n이 맞습니까?",
+                    startDate.ToString("yyyy-MM-dd"),
+                    endDate.ToString("yyyy-MM-dd"),
+                    time[0],
+                    time[1],
+                    classroom.Replace(':', ' ')
+                );
 
-            try {
-                ServerClient.getInstance().reservationAdd(item);
+                MessageBoxResult result = MessageBox.Show(check, "예약 하기", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                if (result == MessageBoxResult.Yes) {
+                    ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
 
-                onReservationSuccess?.Invoke(item);
-                Close();
-            } catch (ServerResult ex) {
+                    try {
+                        ServerClient.getInstance().reservationAdd(item);
 
+                        onReservationSuccess?.Invoke(item);
+                        Close();
+                    } catch (ServerResult ex) {
+                        MessageBox.Show("알 수 없는 오류가 발생해서 예약에 실패했습니다.", "예약 하기", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
 
