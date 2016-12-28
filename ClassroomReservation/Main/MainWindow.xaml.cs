@@ -32,12 +32,7 @@ namespace ClassroomReservation.Main
     public partial class MainWindow : Window
     {
         private bool isUserMode = true;
-
-		DispatcherTimer animationTimer = new DispatcherTimer();
-		private double reservationStatusPerDayWidth;
-		double delta = 0;
-		int deltaDirection = 1;
-		double startPos;
+        private int scrollSpeed = 7;
 
         private StatusItem nowSelectedItem;
 
@@ -51,9 +46,6 @@ namespace ClassroomReservation.Main
 
             labelBorderBrush = new SolidColorBrush(labelBorderBrush.Color);
             labelBorderBrush.Opacity = 0.7;
-            
-            animationTimer.Interval = new TimeSpan(120);
-            animationTimer.Tick += new EventHandler(MyTimer_Tick);
             
             try {
                 for (int i = 0; i < 7; i++) {
@@ -365,39 +357,14 @@ namespace ClassroomReservation.Main
         }
 
 
-        public static DependencyProperty HorizontalOffsetProperty =
-            DependencyProperty.RegisterAttached("HorizontalOffset",
-                                                typeof(double),
-                                                typeof(MainWindow),
-                                                new UIPropertyMetadata(0.0, OnHorizontalOffsetChanged));
-
-        private static void OnHorizontalOffsetChanged(DependencyObject target, DependencyPropertyChangedEventArgs e) {
-            ScrollViewer scrollViewer = target as ScrollViewer;
-
-            if (scrollViewer != null) {
-                scrollViewer.ScrollToHorizontalOffset((double)e.NewValue);
-            }
-        }
-
-        void MyTimer_Tick(object sender, EventArgs e) {
-            if (Math.Abs(delta) > reservationStatusPerDayWidth) {
-                animationTimer.Stop();
-            } else {
-                delta += deltaDirection;
-                ScrollViewer.ScrollToHorizontalOffset(startPos + delta);
-            }
-        }
-
         private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e) {
-            ReservationStatusPerDay child = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().FirstOrDefault();
-            reservationStatusPerDayWidth = child.ActualWidth;
-
-            animationTimer.Start();
-            deltaDirection = (e.Delta < 0) ? 2 : -2;
-            delta = 0;
-            startPos = ScrollViewer.HorizontalOffset;
-
-            e.Handled = true;
+            ScrollViewer scrollviewer = sender as ScrollViewer;
+            for (int i = 0; i < scrollSpeed; i++) {
+                if (e.Delta > 0)
+                    scrollviewer.LineLeft();
+                else
+                    scrollviewer.LineRight();
+            }
         }
     }
 }
