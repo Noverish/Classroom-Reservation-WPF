@@ -40,7 +40,6 @@ namespace ClassroomReservation.Main
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private SolidColorBrush labelBorderBrush = (SolidColorBrush)Application.Current.FindResource("MainColor");
 
-
         public MainWindow() {
             InitializeComponent();
 
@@ -133,8 +132,10 @@ namespace ClassroomReservation.Main
                 //remake reservationStatusControls
                 List<StatusItem> items = ServerClient.getInstance().reservationListWeek(DateTime.Now);
                 var views = scrollViewContentPanel.Children;
-                foreach (StatusItem item in items) {
-                    foreach (ReservationStatusPerDay view in views) {
+                foreach (ReservationStatusPerDay view in views) {
+                    view.clear();
+                    view.rearrangeGrid();
+                    foreach (StatusItem item in items) {
                         if (view.date.Day == item.date.Day) {
                             view.putData(ServerClient.getInstance().GetRowByClassroom(item.classroom) + 2, item.classtime - 1, item);
                         }

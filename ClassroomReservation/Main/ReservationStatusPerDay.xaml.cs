@@ -49,14 +49,27 @@ namespace ClassroomReservation.Main
             InitializeComponent();
 
             this.date = date;
+
+            CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
+            DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
+
+            rearrangeGrid();
+
+            nowSelectedStatusControl = null;
+            nowSelectedRow = -1;
+            nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
+
+            ResetBackground();
+        }
+
+        public void rearrangeGrid() {
             TOTAL_COLUMN = ServerClient.getInstance().classTimeTable.Count;
             TOTAL_ROW = ServerClient.getInstance().classroomList.Count + 2;
             buttons = new CustomTextBlock[TOTAL_ROW, TOTAL_COLUMN];
 
-            CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
-            DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
-            
+            mainGrid.Children.RemoveRange(1, mainGrid.Children.Count - 1);
             //Add Classtime Label
+            mainGrid.ColumnDefinitions.Clear();
             for (int col = 0; col < TOTAL_COLUMN; col++) {
                 ColumnDefinition colDef = new ColumnDefinition();
                 colDef.Width = new GridLength(1, GridUnitType.Star);
@@ -73,23 +86,26 @@ namespace ClassroomReservation.Main
                 mainGrid.Children.Add(classtimeLabel);
             }
 
-            for (int row = 2; row < TOTAL_ROW; row++)
-            {
+            if (mainGrid.RowDefinitions.Count > 2)
+                mainGrid.RowDefinitions.RemoveRange(2, mainGrid.RowDefinitions.Count - 2);
+            for (int row = 2; row < TOTAL_ROW; row++) {
                 RowDefinition rowDef = new RowDefinition();
                 rowDef.Height = new GridLength(1, GridUnitType.Star);
                 mainGrid.RowDefinitions.Add(rowDef);
 
-                for (int col = 0; col < TOTAL_COLUMN; col++)
-                {
+                for (int col = 0; col < TOTAL_COLUMN; col++) {
                     CustomTextBlock newBtn = new CustomTextBlock();
                     newBtn.row = row;
                     newBtn.column = col;
 
-                    if (row % 2 == 0) 
+                    if (row % 2 == 0) {
                         newBtn.originColor = defaultColorOfEven;
-                    else 
+                        newBtn.Background = defaultColorOfEven;
+                    } else {
                         newBtn.originColor = defaultColorOfOdd;
-                    
+                        newBtn.Background = defaultColorOfOdd;
+                    }
+
                     newBtn.VerticalAlignment = VerticalAlignment.Stretch;
                     newBtn.HorizontalAlignment = HorizontalAlignment.Stretch;
 
@@ -117,12 +133,6 @@ namespace ClassroomReservation.Main
                     mainGrid.Children.Add(myBorder1);
                 }
             }
-
-            nowSelectedStatusControl = null;
-            nowSelectedRow = -1;
-            nowSelectedColumn[0] = nowSelectedColumn[1] = -1;
-
-            ResetBackground();
         }
 
         public void putData(int row, int col, StatusItem item) {
