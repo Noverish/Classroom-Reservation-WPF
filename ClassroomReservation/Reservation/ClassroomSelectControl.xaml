@@ -15,11 +15,16 @@
             <Setter Property="Background" Value="White" />
         </Style>
         <Style BasedOn="{StaticResource labelStyle}" TargetType="asdf:ClassroomLabel"/>
+        <Style TargetType="Rectangle">
+            <Setter Property="Fill" Value="{StaticResource ResourceKey = DisableOverlap}"/>
+            <Setter Property="Visibility" Value="Hidden" />
+            <Setter Property="Panel.ZIndex" Value="1"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
         <Rectangle Name="overlapRectangle" Fill="{StaticResource ResourceKey = DisableOverlap}" Panel.ZIndex="1" Visibility="Hidden"/>
         <Grid Name="mainGrid">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>-->
                 <!--<RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -32,7 +37,7 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>-->
-            </Grid.RowDefinitions>
+            <!--</Grid.RowDefinitions>-->
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="3*"/>

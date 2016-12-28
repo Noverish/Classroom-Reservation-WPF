@@ -28,7 +28,8 @@ namespace ClassroomReservation.Reservation {
         private int TOTAL_NUM;
 
         private ClassroomLabel[] buttons;
-        
+        private Rectangle[] overlaps;
+
         private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("SelectedColor");
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
@@ -46,6 +47,7 @@ namespace ClassroomReservation.Reservation {
             List<string> classroomList = ServerClient.getInstance().classroomList;
             TOTAL_NUM = classroomList.Count;
             buttons = new ClassroomLabel[TOTAL_NUM];
+            overlaps = new Rectangle[TOTAL_NUM];
             Label nowBuildingLabel = null;
             for (int row = 0; row < TOTAL_NUM; row++) {
 
@@ -88,6 +90,14 @@ namespace ClassroomReservation.Reservation {
                     nowBuildingLabel = buildingLabel;
                     mainGrid.Children.Add(buildingLabel);
                 }
+
+                Rectangle overlap = new Rectangle();
+
+                Grid.SetRow(overlap, row);
+                Grid.SetColumn(overlap, 1);
+
+                overlaps[row] = overlap;
+                mainGrid.Children.Add(overlap);
             }
 
             ResetBackground();
@@ -123,9 +133,11 @@ namespace ClassroomReservation.Reservation {
 
         public void selectiveEnable(bool[] list) {
             for (int i = 0; i < list.Length; i++) {
-                if (!list[i]) {
-                    buttons[i].Background = disableOverlap;
-                }
+                if (list[i])
+                    overlaps[i].Visibility = Visibility.Hidden;
+                else
+                    overlaps[i].Visibility = Visibility.Visible;
+
             }
         }
 

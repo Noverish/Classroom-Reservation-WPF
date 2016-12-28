@@ -30,6 +30,7 @@ namespace ClassroomReservation.Reservation
         public OnTimeSelectChanged onTimeSelectChanged { set; private get; }
 
         private Label[] buttons;
+        private Rectangle[] overlaps;
         private int[] beforeSelectedTime = new int[2];
         private int[] nowSelectedTime = new int[2];
         private bool mouseLeftButtonDown = false;
@@ -46,7 +47,14 @@ namespace ClassroomReservation.Reservation
 
             Hashtable classTimeTable = ServerClient.getInstance().classTimeTable;
             buttons = new Label[classTimeTable.Count];
+            overlaps = new Rectangle[classTimeTable.Count];
             for (int time = 1; time <= classTimeTable.Count; time++) {
+
+                //Add RowDefinition
+                RowDefinition rowDef = new RowDefinition();
+                rowDef.Height = new GridLength(1, GridUnitType.Star);
+                mainGrid.RowDefinitions.Add(rowDef);
+
                 Label label = new Label();
                 label.Content = classTimeTable[time];
 
@@ -55,6 +63,14 @@ namespace ClassroomReservation.Reservation
 
                 buttons[time - 1] = label;
                 mainGrid.Children.Add(label);
+
+                Rectangle overlap = new Rectangle();
+
+                Grid.SetRow(overlap, time - 1);
+                Grid.SetColumn(overlap, 0);
+
+                overlaps[time - 1] = overlap;
+                mainGrid.Children.Add(overlap);
             }
 
             beforeSelectedTime[0] = beforeSelectedTime[1] = -2;
@@ -106,9 +122,11 @@ namespace ClassroomReservation.Reservation
 
         public void selectiveEnable(bool[] list) {
             for (int i = 0; i < list.Length; i++) {
-                if (!list[i]) {
-                    buttons[i].Background = disableOverlap;
-                }
+                if (list[i])
+                    overlaps[i].Visibility = Visibility.Hidden;
+                else
+                    overlaps[i].Visibility = Visibility.Visible;
+                
             }
         }
 
@@ -195,8 +213,7 @@ namespace ClassroomReservation.Reservation
             ResetBackground();
 
             for (int i = fromRow; i <= toRow; i++) {
-                Label item = mainGrid.Children.Cast<Label>().First(e => Grid.GetRow(e) == i && Grid.GetColumn(e) == 0);
-                item.Background = selectedColor;
+                buttons[i].Background = selectedColor;
             }
         }
 

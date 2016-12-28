@@ -13,11 +13,17 @@
             <Setter Property="VerticalContentAlignment" Value="Center" />
             <Setter Property="Background" Value="White" />
         </Style>
+        <Style TargetType="Rectangle">
+            <Setter Property="Fill" Value="{StaticResource ResourceKey = DisableOverlap}"/>
+            <Setter Property="Visibility" Value="Hidden" />
+            <Setter Property="Panel.ZIndex" Value="1"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
-        <Rectangle Name="overlapRectangle" Fill="{StaticResource ResourceKey = DisableOverlap}" Panel.ZIndex="1" Visibility="Hidden"/>
+        <Rectangle Name="overlapRectangle"/>
         <Grid Name="mainGrid">
-            <Grid.RowDefinitions>
+            <!--<Grid.RowDefinitions>-->
+                <!--<RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
@@ -26,12 +32,11 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
+                <RowDefinition Height="*"/>-->
+            <!--</Grid.RowDefinitions>-->
+            <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>-->
 
             <!--<Label Name="time1" Grid.Row="0" Grid.Column="0" Content="1교시-9:00AM~10:15AM"/>
             <Label Name="time2" Grid.Row="1" Grid.Column="0" Content="2교시-10:30AM~11:45AM"/>
