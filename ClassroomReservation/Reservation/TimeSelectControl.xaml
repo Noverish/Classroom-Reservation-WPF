@@ -20,7 +20,6 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Rectangle Name="overlapRectangle"/>
         <Grid Name="mainGrid">
             <!--<Grid.RowDefinitions>-->
                 <!--<RowDefinition Height="*"/>

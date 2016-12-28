@@ -22,7 +22,6 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Rectangle Name="overlapRectangle" Fill="{StaticResource ResourceKey = DisableOverlap}" Panel.ZIndex="1" Visibility="Hidden"/>
         <Grid Name="mainGrid">
             <!--<Grid.RowDefinitions>-->
                 <!--<RowDefinition Height="*"/>

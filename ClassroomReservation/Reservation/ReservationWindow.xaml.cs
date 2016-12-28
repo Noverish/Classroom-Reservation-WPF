@@ -29,16 +29,15 @@ namespace ClassroomReservation.Reservation
 
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
             calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
+            calendar.SelectedDate = DateTime.Now;
 
             calendar.PreviewMouseUp += new MouseButtonEventHandler((sender, e) => Mouse.Capture(null));
 
             OK_Button.Click += new RoutedEventHandler(Reserve);
             Cancel_Button.Click += new RoutedEventHandler((sender, e) => this.Close());
-
-            timeSelectControl.enable(false);
+            
             timeSelectControl.onTimeSelectChanged = OnTimeSelectChanged;
-
-            classroomSelectControl.enable(false);
+            
             classroomSelectControl.onClassroomSelectChanged = OnClassroomSelectChanged;
 
             EnableInputUserData(false);

@@ -90,10 +90,8 @@ namespace ClassroomReservation.Reservation
 
 
         public void enable(bool enable) {
-            if (enable)
-                overlapRectangle.Visibility = Visibility.Hidden;
-            else
-                overlapRectangle.Visibility = Visibility.Visible;
+            foreach (Rectangle overlap in overlaps)
+                overlap.Visibility = (enable) ? Visibility.Hidden : Visibility.Visible;
         }
 
         public void ResetSelection() {
