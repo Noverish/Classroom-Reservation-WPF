@@ -48,7 +48,7 @@ namespace ClassroomReservation.Reservation {
             TOTAL_NUM = classroomList.Count;
             buttons = new ClassroomLabel[TOTAL_NUM];
             overlaps = new Rectangle[TOTAL_NUM];
-            Label nowBuildingLabel = null;
+            Border nowBuildingLabelBorder = null;
             for (int row = 0; row < TOTAL_NUM; row++) {
 
                 //Add RowDefinition
@@ -75,20 +75,23 @@ namespace ClassroomReservation.Reservation {
                 mainGrid.Children.Add(classroomLabel);
 
                 //Adjust building label
-                if (nowBuildingLabel != null && nowBuildingLabel.Content.Equals(buildingName)) {
-                    Grid.SetRowSpan(nowBuildingLabel, Grid.GetRowSpan(nowBuildingLabel) + 1);
+                if (nowBuildingLabelBorder != null && (nowBuildingLabelBorder.Child as Label).Content.Equals(buildingName)) {
+                    Grid.SetRowSpan(nowBuildingLabelBorder, Grid.GetRowSpan(nowBuildingLabelBorder) + 1);
                 } else {
                     Label buildingLabel = new Label();
-                    buildingLabel.HorizontalAlignment = HorizontalAlignment.Center;
-                    buildingLabel.VerticalAlignment = VerticalAlignment.Center;
                     buildingLabel.Content = buildingName;
+                    buildingLabel.Style = Resources["buildingLableStyle"] as Style;
+                    
+                    Border border = new Border();
+                    border.Style = Resources["buildingBorderStyle"] as Style;
+                    border.Child = buildingLabel;
 
-                    Grid.SetRow(buildingLabel, row);
-                    Grid.SetColumn(buildingLabel, 0);
-                    Grid.SetRowSpan(buildingLabel, 1);
+                    Grid.SetRow(border, row);
+                    Grid.SetColumn(border, 0);
+                    Grid.SetRowSpan(border, 1);
 
-                    nowBuildingLabel = buildingLabel;
-                    mainGrid.Children.Add(buildingLabel);
+                    nowBuildingLabelBorder = border;
+                    mainGrid.Children.Add(border);
                 }
 
                 Rectangle overlap = new Rectangle();

@@ -128,7 +128,6 @@ namespace ClassroomReservation.Main
                         Label buildingLabel = new Label();
                         buildingLabel.Content = buildingName;
                         buildingLabel.Style = Resources["LabelStyle"] as Style;
-                        buildingLabel.Margin = new Thickness { Top = 1, Bottom = 0, Left = 0, Right = 0 };
 
                         Grid.SetRow(buildingLabel, row);
                         Grid.SetColumn(buildingLabel, 0);

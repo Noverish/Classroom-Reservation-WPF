@@ -56,7 +56,12 @@ namespace ClassroomReservation.Reservation
                 mainGrid.RowDefinitions.Add(rowDef);
 
                 Label label = new Label();
-                label.Content = classTimeTable[time];
+                label.Content = time + "교시 - " + classTimeTable[time];
+                label.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
+                label.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
+                label.MouseEnter += new MouseEventHandler(OnMouseEnter);
+                label.MouseLeave += new MouseEventHandler(OnMouseLeave);
+                label.MouseMove += new MouseEventHandler(OnMouseMove);
 
                 Grid.SetRow(label, time - 1);
                 Grid.SetColumn(label, 0);
@@ -77,15 +82,6 @@ namespace ClassroomReservation.Reservation
             nowSelectedTime[0] = nowSelectedTime[1] = -2;
 
             ResetBackground();
-
-            foreach (Label btn in buttons)
-            {
-                btn.MouseLeftButtonDown += new MouseButtonEventHandler(OnMouseLeftButtonDown);
-                btn.MouseLeftButtonUp += new MouseButtonEventHandler(OnMouseLeftButtonUp);
-                btn.MouseEnter += new MouseEventHandler(OnMouseEnter);
-                btn.MouseLeave += new MouseEventHandler(OnMouseLeave);
-                btn.MouseMove += new MouseEventHandler(OnMouseMove);
-            }
         }
 
 
