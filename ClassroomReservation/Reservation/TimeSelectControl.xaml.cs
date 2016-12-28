@@ -207,8 +207,14 @@ namespace ClassroomReservation.Reservation
             if (toRow > CLASS_NUM - 1)
                 toRow = CLASS_NUM - 1;
 
-            nowSelectedTime[0] = fromRow;
-            nowSelectedTime[1] = toRow;
+            List<int> selectable = new List<int>();
+            for (int i = fromRow; i <= toRow; i++) {
+                if (overlaps[i].Visibility == Visibility.Hidden)
+                    selectable.Add(i);
+            }
+
+            nowSelectedTime[0] = fromRow = selectable.First<int>();
+            nowSelectedTime[1] = toRow = selectable.Last<int>();
 
             ResetBackground();
 

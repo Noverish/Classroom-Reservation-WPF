@@ -139,6 +139,7 @@ namespace ClassroomReservation.Reservation {
             }
         }
 
+
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e) {
             nowSelected = sender as ClassroomLabel;
 
@@ -159,7 +160,7 @@ namespace ClassroomReservation.Reservation {
         }
 
         private void OnMouseEnter(object sender, RoutedEventArgs e) {
-            if (mouseLeftButtonDown) { } else {
+            if (!mouseLeftButtonDown) {
                 if (previousColor >= 0 && previousColor % 2 == 0 && buttons[previousColor].Background != selectedColor) {
                     buttons[previousColor].Background = backgroundOdd;
                 } else if (previousColor >= 0 && previousColor % 2 == 1 && buttons[previousColor].Background != selectedColor) {
