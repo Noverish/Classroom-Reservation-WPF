@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 
 namespace ClassroomReservation.Reservation
 {
-    public delegate void OnTimeSelectChanged(int[] nowSelectedTime, bool isDataChanged);
+    public delegate void OnTimeSelectChanged(int[] nowSelectedTime, bool hasBeforeSelect);
 
     /// <summary>
     /// TimeSelectControl.xaml에 대한 상호 작용 논리
@@ -128,6 +128,7 @@ namespace ClassroomReservation.Reservation
             }
         }
 
+
         private void OnMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             ResetBackground();
@@ -147,7 +148,8 @@ namespace ClassroomReservation.Reservation
 
             Mouse.Capture(null);
 
-            onTimeSelectChanged?.Invoke(GetSelectedTime(), (beforeSelectedTime[0] >= 0 && beforeSelectedTime[1] >= 0) && !beforeSelectedTime.SequenceEqual(nowSelectedTime));
+            if(!beforeSelectedTime.SequenceEqual(nowSelectedTime))
+                onTimeSelectChanged?.Invoke(GetSelectedTime(), (beforeSelectedTime[0] >= 0 && beforeSelectedTime[1] >= 0));
 
             beforeSelectedTime = (int[])nowSelectedTime.Clone();
         }

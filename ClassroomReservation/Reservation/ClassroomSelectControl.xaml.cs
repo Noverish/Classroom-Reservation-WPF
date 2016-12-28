@@ -152,7 +152,9 @@ namespace ClassroomReservation.Reservation {
         private void OnMouseLeftButtonUp(object sender, RoutedEventArgs e) {
             mouseLeftButtonDown = false;
 
-            onClassroomSelectChanged?.Invoke(nowSelected.GetFullName(), beforeSelected != null && beforeSelected != nowSelected);
+            if(beforeSelected != nowSelected)
+                onClassroomSelectChanged?.Invoke(nowSelected.GetFullName(), beforeSelected != null);
+
             beforeSelected = nowSelected;
         }
 

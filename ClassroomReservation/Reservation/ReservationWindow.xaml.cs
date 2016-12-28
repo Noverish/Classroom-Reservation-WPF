@@ -99,15 +99,17 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        private void OnTimeSelectChanged(int[] nowSelectedTime, bool isDataChanged) {
-            if (isDataChanged) {
-                classroomSelectControl.ResetSelection();
-                classroomSelectControl.selectiveEnable(ServerClient.getInstance().checkClassroomStatusByClasstime(
-                    calendar.SelectedDates[0], 
-                    calendar.SelectedDates[calendar.SelectedDates.Count - 1], 
-                    nowSelectedTime[0], 
+        private void OnTimeSelectChanged(int[] nowSelectedTime, bool hasBeforeSelect) {
+            classroomSelectControl.selectiveEnable(ServerClient.getInstance().checkClassroomStatusByClasstime(
+                    calendar.SelectedDates[0],
+                    calendar.SelectedDates[calendar.SelectedDates.Count - 1],
+                    nowSelectedTime[0],
                     nowSelectedTime[1]
-                ));
+            ));
+
+            if (hasBeforeSelect) {
+                timeSelectControl.enable(true);
+                classroomSelectControl.ResetSelection();
                 EnableInputUserData(false);
             } else {
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
@@ -115,14 +117,16 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        private void OnClassroomSelectChanged(string nowSelectedClassroom, bool isDataChanged) {
-            if (isDataChanged) {
-                timeSelectControl.ResetSelection();
-                timeSelectControl.selectiveEnable(ServerClient.getInstance().checkClasstimeStatusByClassrom(
+        private void OnClassroomSelectChanged(string nowSelectedClassroom, bool hasBeforeSelect) {
+            timeSelectControl.selectiveEnable(ServerClient.getInstance().checkClasstimeStatusByClassrom(
                     calendar.SelectedDates[0],
                     calendar.SelectedDates[calendar.SelectedDates.Count - 1],
                     nowSelectedClassroom
-                ));
+            ));
+
+            if (hasBeforeSelect) {
+                classroomSelectControl.enable(true);
+                timeSelectControl.ResetSelection();
                 EnableInputUserData(false);
             } else {
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
