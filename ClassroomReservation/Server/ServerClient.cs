@@ -30,6 +30,7 @@ namespace ClassroomReservation.Server {
         private const string reservationModifyUrl = "reservation_modify.php";
         
         private const string lectureAddUrl = "lecture_add.php";
+        private const string lectureDeleteUrl = "lecture_delete.php";
 
         private const string classroomListUrl = "classroom_list.php";
         private const string classroomAddUrl = "classroom_add.php";
@@ -204,6 +205,18 @@ namespace ClassroomReservation.Server {
                     "&name=" + lecture.name +
                     "&startDate=" + semesterStartDate.ToString("yyyy-MM-dd") +
                     "&endDate=" + semesterEndDate.ToString("yyyy-MM-dd");
+
+                connect(url, dataStr);
+            } catch (ServerResult e) {
+                throw e;
+            }
+        }
+
+        public void lectureDelete(int lectureID) {
+            try {
+                string url = serverDomain + lectureDeleteUrl;
+
+                string dataStr = "lectureID=" + lectureID;
 
                 connect(url, dataStr);
             } catch (ServerResult e) {

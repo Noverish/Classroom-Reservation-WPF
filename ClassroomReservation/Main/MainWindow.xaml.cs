@@ -234,22 +234,22 @@ namespace ClassroomReservation.Main
         }
 
         private void OnReservationModifyButtonClicked(object sender, RoutedEventArgs e) {
-            if (isUserMode) {
-                if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
-                    (new PasswordForm((form, password) => {
-                        if (ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text, isUserMode)) {
-                            refresh();
-                            form.Close();
-                            MessageBox.Show("예약 정보 수정에 성공했습니다", "예약 수정 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                        } else {
-                            MessageBox.Show("비밀번호가 틀렸습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    })).ShowDialog();
+            try {
+                if (isUserMode) {
+                    if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
+                        (new PasswordForm((form, password) => {
+                            if (ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text, isUserMode)) {
+                                refresh();
+                                form.Close();
+                                MessageBox.Show("예약 정보 수정에 성공했습니다", "예약 수정 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            } else {
+                                MessageBox.Show("비밀번호가 틀렸습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        })).ShowDialog();
+                    } else {
+                        MessageBox.Show("강의 정보는 관리자만 수정할 수 있습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 } else {
-                    MessageBox.Show("강의 정보는 관리자만 수정할 수 있습니다", "예약 수정 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            } else {
-                try {
                     if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                         ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, "", userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text, isUserMode);
                         refresh();
@@ -257,39 +257,41 @@ namespace ClassroomReservation.Main
                     } else {
                         MessageBox.Show("강의는 수정 할 수 없습니다.", "강의 수정", MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
-                } catch (ServerResult ex) {
-                    MessageBox.Show("알 수 없는 오류가 발생해서 예약 수정에 실패했습니다.", "예약 수정", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            } catch (ServerResult ex) {
+                MessageBox.Show("알 수 없는 오류가 발생해서 예약 수정에 실패했습니다.", "예약 수정", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void OnReservationDeleteButtonClicked(object sender, RoutedEventArgs e) {
-            if (isUserMode) {
-                if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
-                    (new PasswordForm((form, password) => {
-                        if (ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, password, isUserMode)) {
-                            refresh();
-                            form.Close();
-                            MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                        } else {
-                            MessageBox.Show("비밀번호가 틀렸습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                    })).ShowDialog();
+            try {
+                if (isUserMode) {
+                    if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
+                        (new PasswordForm((form, password) => {
+                            if (ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, password, isUserMode)) {
+                                refresh();
+                                form.Close();
+                                MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            } else {
+                                MessageBox.Show("비밀번호가 틀렸습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                        })).ShowDialog();
+                    } else {
+                        MessageBox.Show("강의는 관리자만 삭제할 수 있습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
                 } else {
-                    MessageBox.Show("강의는 관리자만 삭제할 수 있습니다", "예약 삭제 실패", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            } else {
-                try {
                     if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                         ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, "", isUserMode);
                         refresh();
                         MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                     } else {
-                        MessageBox.Show("강의는 삭제 할 수 없습니다.", "강의 삭제", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        ServerClient.getInstance().lectureDelete(nowSelectedItem.reservID);
+                        refresh();
+                        MessageBox.Show("강의 삭제에 성공했습니다", "강의 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
                     }
-                } catch (ServerResult ex) {
-                    MessageBox.Show("알 수 없는 오류가 발생해서 예약 삭제에 실패했습니다.", "예약 삭제", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
+            } catch (ServerResult ex) {
+                MessageBox.Show("알 수 없는 오류가 발생해서 삭제에 실패했습니다.", "삭제", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
