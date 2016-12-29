@@ -91,6 +91,7 @@
       <DependentUpon>TimeSelectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Client\ExcelReadClient.cs" />
+    <Compile Include="Server\DummyServerClient.cs" />
     <Compile Include="Server\LectureItem.cs" />
     <Compile Include="Server\ReservationItem.cs" />
     <Compile Include="Server\ServerClient.cs" />

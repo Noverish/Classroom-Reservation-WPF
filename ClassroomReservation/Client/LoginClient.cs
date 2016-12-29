@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Collections;
 using System.Runtime.Serialization.Formatters.Binary;
+using ClassroomReservation.Server;
 
 namespace ClassroomReservation.Client {
     public delegate void OnLoginSuccess();
@@ -54,6 +55,7 @@ namespace ClassroomReservation.Client {
             try {
                 Write(EncryptString(password, KEY));
                 onChangeSuccess?.Invoke();
+                DummyServerClient.encode(password);
                 return true;
             } catch (Exception e) {
                 onChangeFailed?.Invoke(e.Message);
