@@ -27,5 +27,15 @@ namespace ClassroomReservation.Server {
             this.content = content;
             this.password = password;
         }
+
+        public override string ToString() {
+            return String.Format("날짜 : {0} ~ {1}\n시간 : {2}교시 ~ {3}교시\n강의실 : {4}\n",
+                    startDate.ToString("yyyy-MM-dd"),
+                    endDate.ToString("yyyy-MM-dd"),
+                    startClass,
+                    endClass,
+                    classroom.Replace(':', ' ')
+                );
+        }
     }
 }

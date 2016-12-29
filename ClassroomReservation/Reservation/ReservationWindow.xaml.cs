@@ -102,19 +102,11 @@ namespace ClassroomReservation.Reservation
                 string contact = numberTextBox.Text;
                 string content = contentTextBox.Text;
                 string password = passwordTextBox.Text;
-
-                string check = String.Format("날짜 : {0} ~ {1}\n시간 : {2}교시 ~ {3}교시\n강의실 : {4}\n이 맞습니까?",
-                    startDate.ToString("yyyy-MM-dd"),
-                    endDate.ToString("yyyy-MM-dd"),
-                    time[0],
-                    time[1],
-                    classroom.Replace(':', ' ')
-                );
-
-                MessageBoxResult result = MessageBox.Show(check, "예약 하기", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                
+                ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
+                
+                MessageBoxResult result = MessageBox.Show(item.ToString() + "이 맞습니까?", "예약 하기", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (result == MessageBoxResult.Yes) {
-                    ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
-
                     try {
                         ServerClient.getInstance().reservationAdd(item);
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClassroomReservation.Other;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,6 +27,15 @@ namespace ClassroomReservation.Server {
             this.contact = contact;
             this.code = code;
             this.name = name;
+        }
+
+        public override string ToString() {
+            return String.Format("날짜 : {0}년 {1}학기\n교수 : {5}\n강의 : {6}\n",
+                year,
+                semester,
+                professor,
+                name
+            );
         }
     }
 }

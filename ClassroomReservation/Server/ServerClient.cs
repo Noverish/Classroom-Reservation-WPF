@@ -108,10 +108,13 @@ namespace ClassroomReservation.Server {
             }
         }
         
-        public bool reservationDeleteOne(int reservID, string password) {
+        public bool reservationDeleteOne(int reservID, string password, bool isUserMode) {
             try {
                 string url = serverDomain + reservationDeleteOneUrl;
-                string dataStr = "reservID=" + reservID + "&password=" + password;
+                string dataStr = 
+                    "reservID=" + reservID + 
+                    "&password=" + password + 
+                    "&isUserMode=" + (isUserMode ? 1 : 0);
 
                 ServerResult result = connect(url, dataStr);
 
@@ -135,7 +138,7 @@ namespace ClassroomReservation.Server {
             }
         }
 
-        public bool reservationModify(int reservID, string password, string userName, string contact, string content) {
+        public bool reservationModify(int reservID, string password, string userName, string contact, string content, bool isUserMode) {
             try {
                 string url = serverDomain + reservationModifyUrl;
                 string dataStr =
@@ -143,7 +146,8 @@ namespace ClassroomReservation.Server {
                     "&password=" + password +
                     "&userName=" + userName +
                     "&contact=" + contact +
-                    "&content=" + content;
+                    "&content=" + content + 
+                    "&isUserMode=" + (isUserMode ? 1 : 0);
 
                 ServerResult result = connect(url, dataStr);
 
