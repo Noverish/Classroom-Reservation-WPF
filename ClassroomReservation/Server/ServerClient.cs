@@ -21,7 +21,7 @@ namespace ClassroomReservation.Server {
             return instance;
         }
 
-        private const string serverDomain = "http://192.168.0.7/api/";
+        private const string serverDomain = "http://noverish.me/api/cs_reservation/";
 
         private const string reservationListWeekUrl = "reservation_list_week.php";
         private const string reservationAddUrl = "reservation_add.php";
