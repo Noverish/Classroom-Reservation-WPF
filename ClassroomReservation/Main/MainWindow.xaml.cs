@@ -325,7 +325,7 @@ namespace ClassroomReservation.Main
         }
 
         private void OnHalfYearDeleteButtonClicked(object sender, RoutedEventArgs e) {
-            MessageBoxResult result = MessageBox.Show("정말로 삭제 하시겠습니까?", "학기 삭제 확인", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("정말로 삭제 하시겠습니까?\n모든 강의와 예약이 삭제 됩니다.", "학기 삭제 확인", MessageBoxButton.OKCancel, MessageBoxImage.Question);
             if (result == MessageBoxResult.OK) {
                 try {
                     int year = DateTime.Today.Year;
@@ -342,14 +342,19 @@ namespace ClassroomReservation.Main
 
         private void OnSelectPeriodDeleteButtonClicked(object sender, RoutedEventArgs e) {
             SelectPeriodSelectWindow window = new SelectPeriodSelectWindow((start, end) => {
-                try {
-                    ServerClient.getInstance().reservationDeletePeriod(start, end, true);
-                    MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBoxResult result = MessageBox.Show("선택한 기간에 포함된 강의도 삭제 할까요?\n(강의가 삭제되면 선택되지 않았던 기간에서도 삭제 됩니다)", "기간 삭제 확인", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Cancel) {
+                    MessageBox.Show("취소되었습니다", "삭제 취소", MessageBoxButton.OK, MessageBoxImage.Information);
+                } else {
+                    try {
+                        ServerClient.getInstance().reservationDeletePeriod(start, end, result == MessageBoxResult.Yes);
+                        MessageBox.Show("삭제에 성공 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        refresh();
+                    } catch (ServerResult ex) {
+                        MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                     refresh();
-                } catch (ServerResult ex) {
-                    MessageBox.Show("알 수 없는 오류로 삭제에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                refresh();
             });
             window.ShowInTaskbar = false;
             window.ShowDialog();
