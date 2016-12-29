@@ -81,6 +81,12 @@ namespace ClassroomReservation.Main {
         private void OnDeleteButtonClicked(object sender, RoutedEventArgs e) {
             try {
                 ListBoxItem item = listBox.ItemContainerGenerator.ContainerFromItem(listBox.SelectedItem) as ListBoxItem;
+
+                if (item == null) {
+                    MessageBox.Show("강의실을 선택해 주세요", "강의실 삭제", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 string classroom = item.Content.ToString();
                 ServerClient.getInstance().classroomDelete(classroom);
                 MessageBox.Show("강의실 삭제에 성공했습니다.", "강의실 삭제", MessageBoxButton.OK, MessageBoxImage.Information);
