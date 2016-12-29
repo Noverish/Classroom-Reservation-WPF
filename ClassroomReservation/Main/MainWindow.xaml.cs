@@ -23,6 +23,7 @@ using System.Collections;
 using ClassroomReservation.Resource;
 using ClassroomReservation.Client;
 using ClassroomReservation.Admin;
+using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Main
 {
@@ -57,6 +58,9 @@ namespace ClassroomReservation.Main
 
                 refresh();
 
+                leftTopLogoHover.MouseLeftButtonDown += (o, s) => (new About()).ShowDialog();
+                leftTopLogo.MouseEnter += (o, s) => leftTopLogo.Visibility = Visibility.Hidden;
+                leftTopLogoHover.MouseLeave += (o, s) => leftTopLogo.Visibility = Visibility.Visible;
                 MainWindow_DatePicker.SelectedDate = DateTime.Now;
                 changePasswordButton.Click += new RoutedEventHandler(OnPasswordChangeButtonClicked);
                 ChangeModeButton.Click += new RoutedEventHandler(OnChangeModeButtonClicked);

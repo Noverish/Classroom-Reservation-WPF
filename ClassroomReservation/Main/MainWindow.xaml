@@ -131,7 +131,8 @@
         <Border DockPanel.Dock="Left" Width="160">
             <DockPanel Name="dockpanel4">
                 <Grid DockPanel.Dock="Top" Height="115">
-                    <Image Source="/Resource/logo_small.png" Margin="15"/>
+                    <Image Name="leftTopLogoHover" Source="/Resource/logo_small_hover.png" Margin="15"/>
+                    <Image Name="leftTopLogo" Source="/Resource/logo_small.png" Margin="15"/>
                 </Grid>
 
                 <Border DockPanel.Dock="Bottom" Height="18"/>
