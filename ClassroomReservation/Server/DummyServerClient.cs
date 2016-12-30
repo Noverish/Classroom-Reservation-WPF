@@ -19,7 +19,7 @@ namespace ClassroomReservation.Server {
                 httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
                 httpWebRequest.Method = "POST";
                 httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 1000;
+                httpWebRequest.Timeout = 5000;
 
                 Stream requestStream = httpWebRequest.GetRequestStream();
                 requestStream.Write(data, 0, data.Length);
