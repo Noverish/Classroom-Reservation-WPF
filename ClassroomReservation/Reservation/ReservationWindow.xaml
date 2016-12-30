@@ -91,7 +91,7 @@
                 <TextBox Name="nameTextBox" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White"/>
                 <TextBox Name="numberTextBox" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White"/>
                 <TextBox Name="contentTextBox" Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderBrush="White"/>
-                <TextBox Name="passwordTextBox" Grid.Row="5" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White"/>
+                <PasswordBox Name="passwordTextBox" Grid.Row="5" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White"/>
                 <Button Name="Cancel_Button" Content="취소하기" Grid.Row="10" Grid.Column="0" Style="{StaticResource ResourceKey = controlButtonStyle}"/>
                 <Button Name="OK_Button" Content="확인하기" Grid.Row="10" Grid.Column="2" Style="{StaticResource ResourceKey = controlButtonStyle}"/>
             </Grid>

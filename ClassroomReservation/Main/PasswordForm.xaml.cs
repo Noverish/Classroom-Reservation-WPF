@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Security.Cryptography;
 using System.Reflection;
+using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Main
 {
@@ -38,7 +39,11 @@ namespace ClassroomReservation.Main
             passwordBox.Focus();
 
             LoginButton.Click += new RoutedEventHandler((sender, e) => {
-                callback?.Invoke(this, passwordBox.Password);
+                if (Essential.hasKorean(passwordBox.Password))
+                    MessageBox.Show("비밀번호에 한글을 넣을 수 없습니다", "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                else {
+                    callback?.Invoke(this, passwordBox.Password);
+                }
             });
         }
 

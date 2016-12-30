@@ -95,12 +95,14 @@ namespace ClassroomReservation.Reservation
                 MessageBox.Show("예약 내용은 1000자를 넘을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else if (Essential.hasSpecialChar(contentTextBox.Text))
                 MessageBox.Show("예약 내용에 특수문자(\" \' ; : \\ / + = * # |)및 query구문(union, select 등)을 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
-            else if (passwordTextBox.Text.Equals(""))
+            else if (passwordTextBox.Password.Equals(""))
                 MessageBox.Show("비밀번호을 입력해 주세요", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
-            else if (passwordTextBox.Text.Length > 100)
+            else if (passwordTextBox.Password.Length > 100)
                 MessageBox.Show("비밀번호는 100자를 넘을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
-            else if (Essential.hasSpecialChar(passwordTextBox.Text))
+            else if (Essential.hasSpecialChar(passwordTextBox.Password))
                 MessageBox.Show("비밀번호에 특수문자(\" \' ; : \\ / + = * # |)및 query구문(union, select 등)을 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            else if (Essential.hasKorean(passwordTextBox.Password))
+                MessageBox.Show("비밀번호에 한글을 넣을 수 없습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             else {
                 DateTime startDate = calendar.SelectedDates[0];
                 DateTime endDate = calendar.SelectedDates[calendar.SelectedDates.Count - 1];
@@ -110,7 +112,7 @@ namespace ClassroomReservation.Reservation
                 string name = nameTextBox.Text;
                 string contact = numberTextBox.Text;
                 string content = contentTextBox.Text;
-                string password = LoginClient.EncryptString(passwordTextBox.Text);
+                string password = LoginClient.EncryptString(passwordTextBox.Password);
                 
                 ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
                 
