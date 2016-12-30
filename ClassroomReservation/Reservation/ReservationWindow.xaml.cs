@@ -1,4 +1,5 @@
-﻿using ClassroomReservation.Main;
+﻿using ClassroomReservation.Client;
+using ClassroomReservation.Main;
 using ClassroomReservation.Other;
 using ClassroomReservation.Resource;
 using ClassroomReservation.Server;
@@ -101,7 +102,7 @@ namespace ClassroomReservation.Reservation
                 string name = nameTextBox.Text;
                 string contact = numberTextBox.Text;
                 string content = contentTextBox.Text;
-                string password = passwordTextBox.Text;
+                string password = LoginClient.EncryptString(passwordTextBox.Text);
                 
                 ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
                 

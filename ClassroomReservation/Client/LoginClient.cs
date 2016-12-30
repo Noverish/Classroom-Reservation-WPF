@@ -76,6 +76,14 @@ namespace ClassroomReservation.Client {
             fs.Close();
         }
 
+        public static string EncryptString(string plainText) {
+            return EncryptString(plainText, KEY);
+        }
+
+        public static string DecryptString(string encryptedText) {
+            return DecryptString(encryptedText, KEY);
+        }
+
         public static string EncryptString(string plainText, string key) {
             // Rihndael class를 선언하고, 초기화 합니다
             RijndaelManaged RijndaelCipher = new RijndaelManaged();

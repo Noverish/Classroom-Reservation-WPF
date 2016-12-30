@@ -243,7 +243,7 @@ namespace ClassroomReservation.Main
                 if (isUserMode) {
                     if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                         (new PasswordForm((form, password) => {
-                            if (ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, password, userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text, isUserMode)) {
+                            if (ServerClient.getInstance().reservationModify(nowSelectedItem.reservID, LoginClient.EncryptString(password), userNameTextBox.Text, contactTextBox.Text, contentTextBox.Text, isUserMode)) {
                                 refresh();
                                 form.Close();
                                 MessageBox.Show("예약 정보 수정에 성공했습니다", "예약 수정 성공", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -273,7 +273,7 @@ namespace ClassroomReservation.Main
                 if (isUserMode) {
                     if (nowSelectedItem.type == StatusItem.RESERVATION_TYPE) {
                         (new PasswordForm((form, password) => {
-                            if (ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, password, isUserMode)) {
+                            if (ServerClient.getInstance().reservationDeleteOne(nowSelectedItem.reservID, LoginClient.EncryptString(password), isUserMode)) {
                                 refresh();
                                 form.Close();
                                 MessageBox.Show("예약 삭제에 성공했습니다", "예약 삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
