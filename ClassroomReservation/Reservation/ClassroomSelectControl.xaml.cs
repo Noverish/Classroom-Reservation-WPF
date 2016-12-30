@@ -30,7 +30,7 @@ namespace ClassroomReservation.Reservation {
         private ClassroomLabel[] buttons;
         private Rectangle[] overlaps;
 
-        private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("SelectedColor");
+        private SolidColorBrush selectedColor = (SolidColorBrush)Application.Current.FindResource("SelectedColorInReservationWindow");
         private SolidColorBrush hoverColor = (SolidColorBrush)Application.Current.FindResource("HoverColor");
         private SolidColorBrush backgroundEven = (SolidColorBrush)Application.Current.FindResource("BackgroundOfEvenRow");
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
