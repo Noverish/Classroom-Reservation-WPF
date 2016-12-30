@@ -394,7 +394,11 @@ namespace ClassroomReservation.Main
                     ReservationWindow window = new ReservationWindow();
                     window.onReservationSuccess = (item) => {
                         refresh();
-                        MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                        if (item.classroom.Contains("과도관")) {
+                            MessageBox.Show("예약에 성공했습니다\n꼭 예약 종이에 도장을 받아가 주세요", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                        } else {
+                            MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
                     };
                     window.ShowInTaskbar = false;
                     window.ShowDialog();
