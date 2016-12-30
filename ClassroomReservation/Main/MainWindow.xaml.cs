@@ -384,16 +384,23 @@ namespace ClassroomReservation.Main
 
 
         private void OnReservateButtonClicked(object sender, RoutedEventArgs e) {
-            if (ReservationStatusPerDay.IsSelectedAlreadyOccupied()) {
-                MessageBox.Show("이미 예약 되어 있습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+            DateTime start = new DateTime(1970, 1, 1, 9, 0, 0);
+            DateTime end = new DateTime(1970, 1, 1, 17, 30, 0);
+
+            if (start.TimeOfDay <= DateTime.Now.TimeOfDay && DateTime.Now.TimeOfDay <= end.TimeOfDay) {
+                if (ReservationStatusPerDay.IsSelectedAlreadyOccupied()) {
+                    MessageBox.Show("이미 예약 되어 있습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
+                } else {
+                    ReservationWindow window = new ReservationWindow();
+                    window.onReservationSuccess = (item) => {
+                        refresh();
+                        MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                    };
+                    window.ShowInTaskbar = false;
+                    window.ShowDialog();
+                }
             } else {
-                ReservationWindow window = new ReservationWindow();
-                window.onReservationSuccess = (item) => {
-                    refresh();
-                    MessageBox.Show("예약에 성공했습니다", "예약 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                };
-                window.ShowInTaskbar = false;
-                window.ShowDialog();
+                MessageBox.Show("강의실 예약은 아침 9시 부터 오후 5시 반 까지만 가능합니다.", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
