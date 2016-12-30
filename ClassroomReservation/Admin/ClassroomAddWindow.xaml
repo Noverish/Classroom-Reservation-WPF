@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ClassroomReservation.Main"
         mc:Ignorable="d"
         Title="강의실 관리" SizeToContent="Height" Width="300"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Border Padding="20">
         <StackPanel Orientation="Vertical">
             <Grid>

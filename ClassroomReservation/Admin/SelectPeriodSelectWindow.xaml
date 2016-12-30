@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:ClassroomReservation.Main"
         mc:Ignorable="d"
         Title="선택 기간 DB 삭제" Height="360" Width="640"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Window.Resources>
         <Style x:Key="LabelStyle" TargetType="Label">
             <Setter Property="Background" Value="{StaticResource ResourceKey = MainColor}"/>
