@@ -22,7 +22,7 @@ namespace ClassroomReservation.Client {
             return instance;
         }
 
-        private const string DEFAULT_PASSWORD = "1q2w3e4r!!";
+        private const string DEFAULT_PASSWORD = "1234";
         private const string KEY = "8V11o88lAXpBE0uNzSTuzHiczNFEdwf2usM0Zkpxh0wQ3rzjCIcSBRkvU183h2Uu";
         private const string PATH = @"Login.bin";
         private BinaryFormatter binformatter = new BinaryFormatter();
