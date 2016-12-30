@@ -17,7 +17,8 @@
         <sys:String x:Key="strHelloWorld">Hello, world!</sys:String>
 
         <SolidColorBrush x:Key="MainColor" Color="#74A0BF"/>
-        <SolidColorBrush x:Key="SubColor" Color="#7ABFA0"/>
+        <SolidColorBrush x:Key="SubColor" Color="#88BCE0"/>
+        <SolidColorBrush x:Key="SubColor2" Color="#7ABFA0"/>
         <SolidColorBrush x:Key="Color1" Color="#7277CC"/>
         <SolidColorBrush x:Key="Color2" Color="#7796D6"/>
         <SolidColorBrush x:Key="Color3" Color="#77C8D6"/>
@@ -25,10 +26,12 @@
         <SolidColorBrush x:Key="LabelBackground" Color="#FF789878"/>
         <SolidColorBrush x:Key="BackgroundOfEvenRow" Color="#22FFFFFF"/>
         <SolidColorBrush x:Key="BackgroundOfOddRow" Color="#22888888"/>
-        <SolidColorBrush x:Key="HoverColor" Color="#f65314"/>
+        <SolidColorBrush x:Key="HoverColor" Color="#98DDFF"/>
+        <SolidColorBrush x:Key="HoverColor2" Color="#f65314"/>
         <SolidColorBrush x:Key="SelectedColor" Color="#00a1f1"/>
-        <SolidColorBrush x:Key="ReservationColor" Color="#CAD6FF"/>
-        <SolidColorBrush x:Key="LectureColor" Color="#778D99"/>
+        <SolidColorBrush x:Key="ReservationColor" Color="#BF1819"/>
+        <SolidColorBrush x:Key="LectureColor" Color="#4F5E66"/>
+        <SolidColorBrush x:Key="LectureColor2" Color="#778D99"/>
 
         <SolidColorBrush x:Key="Crimson" Color="#980021"/>
         <SolidColorBrush x:Key="MicrosoftRed" Color="#f65314"/>
