@@ -22,7 +22,7 @@
             <Setter Property="BorderThickness" Value="0, 1, 0, 1"></Setter>
         </Style>
     </UserControl.Resources>
-    <Border BorderThickness="3, 3, 0, 3" BorderBrush="Black">
+    <Border Name="mainBorder" BorderThickness="3, 0, 0, 0" BorderBrush="Black">
         <Grid Name="mainGrid" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <!--<ColumnDefinition Width="*"/>

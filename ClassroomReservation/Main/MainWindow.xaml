@@ -165,7 +165,7 @@
                 </Viewbox>
             </DockPanel>
         </Border>
-        <Border>
+        <Border BorderThickness="3" BorderBrush="Black">
             <ScrollViewer Name="ScrollViewer" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled"
                           PreviewMouseWheel="ScrollViewer_PreviewMouseWheel">
                 <StackPanel Orientation="Horizontal" Name="scrollViewContentPanel"/>

@@ -52,6 +52,7 @@ namespace ClassroomReservation.Main
                     if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
                         var view = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
                         view.onOneSelected = onOneSelected;
+                        if (i == 0) view.mainBorder.BorderThickness = new Thickness(0);
                         scrollViewContentPanel.Children.Add(view);
                     }
                 }
