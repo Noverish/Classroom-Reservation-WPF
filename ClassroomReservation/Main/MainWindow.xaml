@@ -78,7 +78,7 @@
                 <DockPanel Name="infoPanel" Grid.Column="1" Margin="30,10,30,10" >
                     <Border Style="{StaticResource BorderStyle}">
                         <Grid Background="{StaticResource ResourceKey = MainColor}">
-                            <DockPanel Name="dockpanel_in" Margin="20">
+                            <DockPanel Name="dockpanel_in" Margin="10">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="2*"/>
@@ -102,19 +102,19 @@
                                         <Label Name="label3" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Margin="5">
-                                        <TextBox Name="userNameTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="userNameTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="1" Margin="5">
-                                        <TextBox Name="contactTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="contactTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="1" Margin="5">
-                                        <TextBox Name="contentTextBox" TextWrapping="WrapWithOverflow" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="contentTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Margin="5">
-                                        <Button Name="modifyReservationUserButton" Content="정보 수정" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="20"/>
+                                        <Button Name="modifyReservationUserButton" Content="정보 수정" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="16"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="2" Margin="5">
-                                        <Button Name="deleteReservationUserButton" Content="예약 삭제" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="20"/>
+                                        <Button Name="deleteReservationUserButton" Content="예약 삭제" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" BorderThickness="0" Foreground="White" FontSize="16"/>
                                     </Border>
                                 </Grid>
                             </DockPanel>
@@ -123,7 +123,7 @@
                 </DockPanel>
 
                 <Border Grid.Column="2" Style="{StaticResource BorderStyle}">
-                    <Button Name="reservateButton" Content="예약하러 가기" Style="{StaticResource ButtonStyle}" Margin="30,10,60,10" FontSize="36"/>
+                    <Button Name="reservateButton" Content="예약하러 가기" Style="{StaticResource ButtonStyle}" Margin="30,10,60,10" FontSize="30"/>
                 </Border>
             </Grid>
         </Border>

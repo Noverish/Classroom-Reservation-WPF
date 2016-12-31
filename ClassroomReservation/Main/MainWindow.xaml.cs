@@ -81,8 +81,6 @@ namespace ClassroomReservation.Main
                 deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
                 
                 reservateButton.Click += OnReservateButtonClicked;
-
-                UpdateLayout();
                 
                 var ele1 = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().First().DateTextBlock;
                 ele1.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
