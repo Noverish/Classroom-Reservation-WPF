@@ -81,16 +81,10 @@ namespace ClassroomReservation.Main
                 deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
                 
                 reservateButton.Click += OnReservateButtonClicked;
-                
-                var ele1 = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().First().DateTextBlock;
-                ele1.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                double height1 = ele1.DesiredSize.Height;
 
-                var ele2 = topDockPanel;
-                ele2.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
-                double height2 = ele2.DesiredSize.Height;
+                topLeftLogoResize();
 
-                leftTopLayout.Height = height1 * 2 + height2;
+                this.SizeChanged += (s, e) => topLeftLogoResize();
             } catch (ServerResult e) {
                 MessageBox.Show("서버에 접속 할 수 없습니다.", "서버 접속 불가", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -159,6 +153,29 @@ namespace ClassroomReservation.Main
             } catch (Exception ex) {
                 MessageBox.Show("알 수 없는 오류로 새로고침에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private void topLeftLogoResize() {
+            double height1, height2;
+            var ele1 = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().First().DateTextBlock;
+            var ele2 = topDockPanel;
+
+            if (ele1.ActualHeight == 0) {
+                ele1.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                height1 = ele1.DesiredSize.Height;
+            } else {
+                height1 = ele1.ActualHeight;
+            }
+
+
+            if (ele2.ActualHeight == 0) {
+                ele2.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                height2 = ele2.DesiredSize.Height;
+            } else {
+                height2 = ele2.ActualHeight;
+            }
+
+            leftTopLayout.Height = height1 * 2 + height2 + 3;
         }
 
 

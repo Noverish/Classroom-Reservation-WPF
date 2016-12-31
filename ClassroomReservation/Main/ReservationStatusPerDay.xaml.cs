@@ -78,7 +78,8 @@ namespace ClassroomReservation.Main
                 Label classtimeLabel = new Label();
                 classtimeLabel.Content = (col + 1) + "교시";
                 classtimeLabel.Background = defaultColorOfOdd;
-                classtimeLabel.Width = 45;
+                classtimeLabel.Width = 40;
+                classtimeLabel.FontSize = 10;
 
                 Grid.SetRow(classtimeLabel, 1);
                 Grid.SetColumn(classtimeLabel, col);

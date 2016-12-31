@@ -35,7 +35,7 @@
         <DockPanel.Background>
             <ImageBrush ImageSource="/Resource/Background.png"/>
         </DockPanel.Background>
-        <Border DockPanel.Dock="Bottom" Height="240" Margin="0,10,0,0">
+        <Border DockPanel.Dock="Bottom" Height="220" Margin="0,10,0,0">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -52,13 +52,13 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" Style="{StaticResource BorderStyle}">
-                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,6" FontSize="24"/>
+                            <Button Name="readExcelFileButton" Content="강의 시간표 불러오기" Style="{StaticResource ButtonStyle}" Margin="0,0,0,6" FontSize="18"/>
                         </Border>
                         <Border Grid.Row="1" Style="{StaticResource BorderStyle}">
-                            <Button Name="halfYearDeleteButton" Content="2016년 상반기(1월 ~ 6월) DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,2,0,4" FontSize="24"/>
+                            <Button Name="halfYearDeleteButton" Content="2016년 상반기(1월 ~ 6월) DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,2,0,4" FontSize="18"/>
                         </Border>
                         <Border Grid.Row="2" Style="{StaticResource BorderStyle}">
-                            <Button Name="selectPeriodDeleteButton" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,2" FontSize="24"/>
+                            <Button Name="selectPeriodDeleteButton" Content="선택 기간 DB 삭제" Style="{StaticResource ButtonStyle}" Margin="0,4,0,2" FontSize="18"/>
                         </Border>
                         <Grid Grid.Row="3" Margin="0,6,0,0">
                             <Grid.ColumnDefinitions>
@@ -66,10 +66,10 @@
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Border Grid.Column="0" Style="{StaticResource BorderStyle}">
-                                <Button Name="modifyClassroomButton" Content="강의실 추가/제거" Style="{StaticResource ButtonStyle}" Margin="0,0,3,0" FontSize="24"/>
+                                <Button Name="modifyClassroomButton" Content="강의실 추가/제거" Style="{StaticResource ButtonStyle}" Margin="0,0,3,0" FontSize="18"/>
                             </Border>
                             <Border Grid.Column="1" Style="{StaticResource BorderStyle}">
-                                <Button Name="modifyClasstimeButton" Content="시간표 변경" Style="{StaticResource ButtonStyle}" Margin="3,0,0,0" FontSize="24"/>
+                                <Button Name="modifyClasstimeButton" Content="시간표 변경" Style="{StaticResource ButtonStyle}" Margin="3,0,0,0" FontSize="18"/>
                             </Border>
                         </Grid>
                     </Grid>
@@ -92,20 +92,19 @@
                                     </Grid.RowDefinitions>
 
                                     <Border>
-                                        
-                                        <Label Name="label1" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">이름</Label>
+                                        <Label Name="label1" Grid.Row="0" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5" FontSize="11">이름</Label>
                                     </Border>
                                     <Border Grid.Row="1">
-                                        <Label Name="label2" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">연락처</Label>
+                                        <Label Name="label2" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5" FontSize="11">연락처</Label>
                                     </Border>
                                     <Border Grid.Row="2">
-                                        <Label Name="label3" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5">대관 내용</Label>
+                                        <Label Name="label3" Background="{StaticResource ResourceKey = SubColor}" Foreground="White" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="5" FontSize="11">대관 내용</Label>
                                     </Border>
                                     <Border Grid.Row="0" Grid.Column="1" Margin="5">
-                                        <TextBox Name="userNameTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="userNameTextBox" VerticalContentAlignment="Center" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="1" Grid.Column="1" Margin="5">
-                                        <TextBox Name="contactTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
+                                        <TextBox Name="contactTextBox" VerticalContentAlignment="Center" Padding="4" IsReadOnly="True"/>
                                     </Border>
                                     <Border Grid.Row="2" Grid.Column="1" Margin="5">
                                         <TextBox Name="contentTextBox" TextWrapping="Wrap" Padding="4" IsReadOnly="True"/>
@@ -145,7 +144,7 @@
             </DockPanel>
         </Border>
 
-        <Border Name="topDockPanel" DockPanel.Dock="Top" Height="43">
+        <Border Name="topDockPanel" DockPanel.Dock="Top" Height="35">
             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}" >
                     <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0" Width="250">

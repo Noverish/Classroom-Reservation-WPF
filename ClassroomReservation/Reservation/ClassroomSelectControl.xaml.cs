@@ -49,6 +49,7 @@ namespace ClassroomReservation.Reservation {
             buttons = new ClassroomLabel[TOTAL_NUM];
             overlaps = new Rectangle[TOTAL_NUM];
             Border nowBuildingLabelBorder = null;
+            int buildingLabelOrder = 0;
             for (int row = 0; row < TOTAL_NUM; row++) {
 
                 //Add RowDefinition
@@ -81,6 +82,7 @@ namespace ClassroomReservation.Reservation {
                     Label buildingLabel = new Label();
                     buildingLabel.Content = buildingName;
                     buildingLabel.Style = Resources["buildingLableStyle"] as Style;
+                    buildingLabel.Background = (buildingLabelOrder++ % 2 == 0) ? backgroundEven : backgroundOdd;
                     
                     Border border = new Border();
                     border.Style = Resources["buildingBorderStyle"] as Style;

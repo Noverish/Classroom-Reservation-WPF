@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:reservation="clr-namespace:ClassroomReservation.Reservation"
         mc:Ignorable="d"
-        Title="고려대학교 정보대학 강의실 예약" Height="768" Width="1366"
+        Title="고려대학교 정보대학 강의실 예약" Height="720" Width="1280"
         WindowState="Normal" ResizeMode="CanMinimize"
         WindowStartupLocation="CenterScreen">
     <Window.Resources>
@@ -88,10 +88,10 @@
                 <Label Name="info_name3" Content="대관 내용" Grid.Row="2" Grid.RowSpan="3" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Name="info_name4" Content="비밀번호" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 <Label Name="info_name5" Content="비밀번호는 정보 수정 및 예약 취소에 사용됩니다." Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                <TextBox Name="nameTextBox" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap"/>
-                <TextBox Name="numberTextBox" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap"/>
-                <TextBox Name="contentTextBox" Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap"/>
-                <PasswordBox Name="passwordTextBox" Grid.Row="5" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White"/>
+                <TextBox Name="nameTextBox" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap" Padding="4" />
+                <TextBox Name="numberTextBox" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap" Padding="4" />
+                <TextBox Name="contentTextBox" Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Grid.ColumnSpan="2" BorderBrush="White" TextWrapping="Wrap" Padding="4" />
+                <PasswordBox Name="passwordTextBox" Grid.Row="5" Grid.Column="1" Grid.RowSpan="1" Grid.ColumnSpan="2" BorderBrush="White" Padding="4" />
                 <Button Name="Cancel_Button" Content="취소하기" Grid.Row="10" Grid.Column="0" Style="{StaticResource ResourceKey = controlButtonStyle}"/>
                 <Button Name="OK_Button" Content="확인하기" Grid.Row="10" Grid.Column="2" Style="{StaticResource ResourceKey = controlButtonStyle}"/>
             </Grid>
