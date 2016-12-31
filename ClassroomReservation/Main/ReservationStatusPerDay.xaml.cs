@@ -255,7 +255,7 @@ namespace ClassroomReservation.Main
 
         public static bool IsSelectedAlreadyOccupied() {
             if (nowSelectedStatusControl != null) {
-                foreach (int col in nowSelectedColumn) {
+                for(int col = nowSelectedColumn[0]; col <= nowSelectedColumn[1]; col++) {
                     if (nowSelectedStatusControl.buttons[nowSelectedRow, col].item != null) {
                         return true;
                     }
