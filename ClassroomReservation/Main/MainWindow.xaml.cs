@@ -81,6 +81,18 @@ namespace ClassroomReservation.Main
                 deleteReservationUserButton.Click += OnReservationDeleteButtonClicked;
                 
                 reservateButton.Click += OnReservateButtonClicked;
+
+                UpdateLayout();
+                
+                var ele1 = scrollViewContentPanel.Children.OfType<ReservationStatusPerDay>().First().DateTextBlock;
+                ele1.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                double height1 = ele1.DesiredSize.Height;
+
+                var ele2 = topDockPanel;
+                ele2.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+                double height2 = ele2.DesiredSize.Height;
+
+                leftTopLayout.Height = height1 * 2 + height2;
             } catch (ServerResult e) {
                 MessageBox.Show("서버에 접속 할 수 없습니다.", "서버 접속 불가", MessageBoxButton.OK, MessageBoxImage.Error);
             }
