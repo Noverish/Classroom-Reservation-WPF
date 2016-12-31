@@ -352,7 +352,7 @@ namespace ClassroomReservation.Server {
 
                 string resultStr = readerPost.ReadToEnd();
 
-                Console.WriteLine("result : " + resultStr);
+                //Console.WriteLine("result : " + resultStr);
 
                 ServerResult result = new ServerResult(resultStr);
 
