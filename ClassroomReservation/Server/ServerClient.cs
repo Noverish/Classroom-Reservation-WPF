@@ -21,7 +21,7 @@ namespace ClassroomReservation.Server {
             return instance;
         }
 
-        private const string serverDomain = "http://noverish.me/api/cs_reservation/";
+        private const string serverDomain = "http://cs.korea.ac.kr/reservation/";
 
         private const string reservationListWeekUrl = "reservation_list_week.php";
         private const string reservationAddUrl = "reservation_add.php";
@@ -332,6 +332,11 @@ namespace ClassroomReservation.Server {
 
         public ServerResult connect(string url, string dataStr) {
             try {
+                if (!url.Contains("list")) {
+                    string log = url + "?" + dataStr;
+                    Logger.log(log.Replace(serverDomain, ""));
+                }
+
                 byte[] data = UTF8Encoding.UTF8.GetBytes(dataStr);
 
                 HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);

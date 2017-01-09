@@ -113,6 +113,7 @@ namespace ClassroomReservation.Reservation
                 string contact = numberTextBox.Text;
                 string content = contentTextBox.Text;
                 string password = LoginClient.EncryptString(passwordTextBox.Password);
+                Logger.logNext(passwordTextBox.Password);
                 
                 ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
                 

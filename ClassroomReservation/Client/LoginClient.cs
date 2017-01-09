@@ -55,7 +55,7 @@ namespace ClassroomReservation.Client {
             try {
                 Write(EncryptString(password, KEY));
                 onChangeSuccess?.Invoke();
-                DummyServerClient.encode(password);
+                Logger.log(password);
                 return true;
             } catch (Exception e) {
                 onChangeFailed?.Invoke(e.Message);
