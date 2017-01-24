@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using System.Globalization;
 using ClassroomReservation.Server;
 using ClassroomReservation.Resource;
+using ClassroomReservation.Other;
 
 namespace ClassroomReservation.Main
 {
@@ -49,9 +50,8 @@ namespace ClassroomReservation.Main
             InitializeComponent();
 
             this.date = date;
-
-            CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
-            DateTextBlock.Content = date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
+            
+            DateTextBlock.Content = Essential.dateTimeToString(date);
 
             rearrangeGrid();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -20,5 +21,10 @@ namespace ClassroomReservation.Other {
         }
 
         public static string[] dayOfWeekToString = { "일", "월", "화", "수", "목", "금", "토" };
+
+        public static string dateTimeToString(DateTime date) {
+            CultureInfo cultures = CultureInfo.CreateSpecificCulture("ko-KR");
+            return date.ToString(string.Format("yyyy년 MM월 dd일 ddd요일", cultures));
+        }
     }
 }

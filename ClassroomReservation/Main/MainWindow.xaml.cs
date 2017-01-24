@@ -155,6 +155,8 @@ namespace ClassroomReservation.Main
                         }
                     }
                 }
+
+                endDateLable.Content = " ~ " + Essential.dateTimeToString(displayDate.AddDays(6));
             } catch (Exception ex) {
                 MessageBox.Show("알 수 없는 오류로 새로고침에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }

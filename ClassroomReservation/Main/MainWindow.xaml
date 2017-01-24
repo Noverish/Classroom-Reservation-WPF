@@ -160,6 +160,7 @@
                 <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">
                     <DatePicker Name="MainWindow_DatePicker" SelectedDateFormat="Long"/>
                 </Viewbox>
+                <Label Name="endDateLable" FontSize="15" VerticalContentAlignment="Bottom"/>
             </DockPanel>
         </Border>
         <Border BorderThickness="3" BorderBrush="Black">
