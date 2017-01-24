@@ -46,7 +46,6 @@ namespace ClassroomReservation.Server {
         public List<string> classroomList { get; private set; }
         private List<StatusItem> status;
 
-
         private ServerClient() {
             reloadClassroomList();
             reloadClasstimeList();
@@ -159,6 +158,7 @@ namespace ClassroomReservation.Server {
         }
 
         public bool[] checkClassroomStatusByClasstime(DateTime startDate, DateTime endDate, int startTime, int endTime) {
+            reservationListWeek(startDate);
             bool[] answer = Enumerable.Repeat(true, classroomList.Count).ToArray();
 
             foreach (StatusItem item in status) {
@@ -173,6 +173,7 @@ namespace ClassroomReservation.Server {
         }
 
         public bool[] checkClasstimeStatusByClassrom(DateTime startDate, DateTime endDate, string classroom) {
+            reservationListWeek(startDate);
             bool[] answer = Enumerable.Repeat(true, classTimeTable.Count).ToArray();
 
             foreach (StatusItem item in status) {
