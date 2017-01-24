@@ -41,36 +41,30 @@ namespace ClassroomReservation.Main
         private SolidColorBrush backgroundOdd = (SolidColorBrush)Application.Current.FindResource("BackgroundOfOddRow");
         private SolidColorBrush labelBorderBrush = (SolidColorBrush)Application.Current.FindResource("MainColor");
 
+        private DateTime displayDate = DateTime.Now;
+
         public MainWindow() {
             InitializeComponent();
 
             labelBorderBrush = new SolidColorBrush(labelBorderBrush.Color);
             labelBorderBrush.Opacity = 0.7;
-            
-            try {
-                for (int i = 0; i < 7; i++) {
-                    if (DateTime.Now.AddDays(i).DayOfWeek != 0) {
-                        var view = new ReservationStatusPerDay(DateTime.Now.AddDays(i));
-                        view.onOneSelected = onOneSelected;
-                        if (i == 0) view.mainBorder.BorderThickness = new Thickness(0);
-                        scrollViewContentPanel.Children.Add(view);
-                    }
-                }
 
+            try {
                 refresh();
 
                 leftTopLogoHover.MouseLeftButtonDown += (o, s) => (new About()).ShowDialog();
                 leftTopLogo.MouseEnter += (o, s) => leftTopLogo.Visibility = Visibility.Hidden;
                 leftTopLogoHover.MouseLeave += (o, s) => leftTopLogo.Visibility = Visibility.Visible;
-                MainWindow_DatePicker.SelectedDate = DateTime.Now;
+                MainWindow_DatePicker.SelectedDate = displayDate;
+                MainWindow_DatePicker.SelectedDateChanged += DatePickerSelectedDateChanged;
                 changePasswordButton.Click += new RoutedEventHandler(OnPasswordChangeButtonClicked);
                 ChangeModeButton.Click += new RoutedEventHandler(OnChangeModeButtonClicked);
 
                 readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
-                halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제", 
-                    DateTime.Today.Year, 
-                    ((DateTime.Today.Month <= 6) ? "상반기" : "하반기"), 
-                    ((DateTime.Today.Month <= 6) ? 1 : 7), 
+                halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제",
+                    DateTime.Today.Year,
+                    ((DateTime.Today.Month <= 6) ? "상반기" : "하반기"),
+                    ((DateTime.Today.Month <= 6) ? 1 : 7),
                     ((DateTime.Today.Month <= 6) ? 6 : 12));
                 halfYearDeleteButton.Click += OnHalfYearDeleteButtonClicked;
                 selectPeriodDeleteButton.Click += OnSelectPeriodDeleteButtonClicked;
@@ -93,6 +87,16 @@ namespace ClassroomReservation.Main
 
         public void refresh() {
             try {
+                scrollViewContentPanel.Children.Clear();
+                for (int i = 0; i < 7; i++) {
+                    if (displayDate.AddDays(i).DayOfWeek != 0) {
+                        var view = new ReservationStatusPerDay(displayDate.AddDays(i));
+                        view.onOneSelected = onOneSelected;
+                        if (i == 0) view.mainBorder.BorderThickness = new Thickness(0);
+                        scrollViewContentPanel.Children.Add(view);
+                    }
+                }
+
                 //remake leftLabelGrid
                 leftLabelsGrid.Children.Clear();
                 leftLabelsGrid.RowDefinitions.Clear();
@@ -137,9 +141,9 @@ namespace ClassroomReservation.Main
                         leftLabelsGrid.Children.Add(buildingLabel);
                     }
                 }
-                
+
                 //remake reservationStatusControls
-                List<StatusItem> items = ServerClient.getInstance().reservationListWeek(DateTime.Now);
+                List<StatusItem> items = ServerClient.getInstance().reservationListWeek(displayDate);
                 var views = scrollViewContentPanel.Children;
                 foreach (ReservationStatusPerDay view in views) {
                     view.clear();
@@ -443,6 +447,16 @@ namespace ClassroomReservation.Main
                     scrollviewer.LineLeft();
                 else
                     scrollviewer.LineRight();
+            }
+        }
+
+        private void DatePickerSelectedDateChanged(object sender, SelectionChangedEventArgs e) {
+            var picker = sender as DatePicker;
+            
+            DateTime? date = picker.SelectedDate;
+            if (date.HasValue) {
+                displayDate = date.Value;
+                refresh();
             }
         }
     }

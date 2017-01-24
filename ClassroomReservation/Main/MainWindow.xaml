@@ -157,7 +157,7 @@
                     </Button>
                 </Border>
                 <Viewbox DockPanel.Dock="Left" VerticalAlignment="Stretch" HorizontalAlignment="Left">
-                    <DatePicker Name="MainWindow_DatePicker" SelectedDateFormat="Long" Visibility="Hidden"/>
+                    <DatePicker Name="MainWindow_DatePicker" SelectedDateFormat="Long"/>
                 </Viewbox>
             </DockPanel>
         </Border>
