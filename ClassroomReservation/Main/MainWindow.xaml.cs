@@ -58,7 +58,8 @@ namespace ClassroomReservation.Main
                 MainWindow_DatePicker.SelectedDate = displayDate;
                 MainWindow_DatePicker.SelectedDateChanged += DatePickerSelectedDateChanged;
                 changePasswordButton.Click += new RoutedEventHandler(OnPasswordChangeButtonClicked);
-                ChangeModeButton.Click += new RoutedEventHandler(OnChangeModeButtonClicked);
+                changeModeToUserModeButton.Click += OnChangeModeButtonClicked;
+                ChangeModeButton.MouseLeftButtonDown += OnChangeModeButtonClicked;
 
                 readExcelFileButton.Click += new RoutedEventHandler(OnExcelReadButtonClicked);
                 halfYearDeleteButton.Content = String.Format("{0}년 {1}({2}월 ~ {3}월) DB 삭제",
@@ -228,12 +229,14 @@ namespace ClassroomReservation.Main
 
             if(isUserMode)
             {
-                ChangeModeButton.Content = "관리자 모드로 변경";
+                ChangeModeButton.Visibility = Visibility.Visible;
+                changeModeToUserModeButton.Visibility = Visibility.Hidden;
                 changePasswordButton.Visibility = Visibility.Hidden;
                 AdminButtonPanel.Visibility = Visibility.Hidden;
                 leftbottomLogoImage.Visibility = Visibility.Visible;
             } else {
-                ChangeModeButton.Content = "일반 사용자 모드로 변경";
+                ChangeModeButton.Visibility = Visibility.Hidden;
+                changeModeToUserModeButton.Visibility = Visibility.Visible;
                 changePasswordButton.Visibility = Visibility.Visible;
                 AdminButtonPanel.Visibility = Visibility.Visible;
                 leftbottomLogoImage.Visibility = Visibility.Hidden;

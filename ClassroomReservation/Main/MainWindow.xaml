@@ -44,6 +44,7 @@
                 </Grid.ColumnDefinitions>
                 <Grid>
                     <Image Name="leftbottomLogoImage" Source="/Resource/logo_big.png" Margin="20, 0, 0, 0"/>
+                    <Rectangle Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="25,0,0,0" Width="40" Height="110" Fill="Transparent"/>
                     <Grid Name="AdminButtonPanel" Grid.Column="0" Margin="60,10,30,10" Visibility="Hidden">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
@@ -147,8 +148,8 @@
         <Border Name="topDockPanel" DockPanel.Dock="Top" Height="35">
             <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch" >
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}" >
-                    <Button Name="ChangeModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0" Width="250">
-                        관리자 모드로 변경
+                    <Button Name="changeModeToUserModeButton" VerticalAlignment="Center" HorizontalAlignment="Right" Style="{StaticResource ResourceKey=ButtonStyle}" FontSize="20" Margin="0,0,50,0" Width="250" Visibility="Hidden">
+                        일반 사용자 모드로 변경
                     </Button>
                 </Border>
                 <Border DockPanel.Dock="Right" Style="{StaticResource BorderStyle}">
