@@ -25,12 +25,14 @@ namespace ClassroomReservation.Reservation
     {
         public OnReservationSuccess onReservationSuccess { set; private get; }
 
-        public ReservationWindow()
+        public ReservationWindow(bool isUserMode)
         {
             InitializeComponent();
 
-            calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
-            calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
+            if (isUserMode) {
+                calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.MinValue, DateTime.Today.AddDays(-1)));
+                calendar.BlackoutDates.Add(new CalendarDateRange(DateTime.Today.AddDays(7), DateTime.MaxValue));
+            }
             calendar.SelectedDate = DateTime.Now;
 
             calendar.PreviewMouseUp += new MouseButtonEventHandler((sender, e) => Mouse.Capture(null));

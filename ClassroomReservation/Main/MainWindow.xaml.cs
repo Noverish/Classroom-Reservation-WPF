@@ -422,7 +422,7 @@ namespace ClassroomReservation.Main
                 if (ReservationStatusPerDay.IsSelectedAlreadyOccupied()) {
                     MessageBox.Show("이미 예약 되어 있습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
                 } else {
-                    ReservationWindow window = new ReservationWindow();
+                    ReservationWindow window = new ReservationWindow(isUserMode);
                     window.onReservationSuccess = (item) => {
                         refresh();
                         if (item.classroom.Contains("과도관")) {
