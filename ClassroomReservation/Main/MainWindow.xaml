@@ -43,7 +43,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid>
-                    <Image Name="leftbottomLogoImage" Source="/Resource/logo_big.png" Margin="60"/>
+                    <Image Name="leftbottomLogoImage" Source="/Resource/logo_big.png" Margin="20, 0, 0, 0"/>
                     <Grid Name="AdminButtonPanel" Grid.Column="0" Margin="60,10,30,10" Visibility="Hidden">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
