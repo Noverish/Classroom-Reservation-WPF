@@ -130,6 +130,7 @@ namespace ClassroomReservation.Reservation {
 
         public void SetSelectedClassroom(int classroomRow) {
             enable(true);
+            beforeSelected = new ClassroomLabel("","");
             nowSelected = buttons[classroomRow];
             nowSelected.Background = selectedColor;
         }

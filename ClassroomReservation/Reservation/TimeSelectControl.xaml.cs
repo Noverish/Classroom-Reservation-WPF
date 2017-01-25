@@ -110,6 +110,7 @@ namespace ClassroomReservation.Reservation
 
         public void SetSelectedTime(int[] selectedTimeRow) {
             enable(true);
+            beforeSelectedTime = new int[]{ -1, -1};
             nowSelectedTime = (int[])selectedTimeRow.Clone();
             SetSelectByRow(nowSelectedTime[0], nowSelectedTime[1]);
         }
