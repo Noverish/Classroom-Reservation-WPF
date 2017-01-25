@@ -237,6 +237,12 @@
   <ItemGroup>
     <Resource Include="icon_final.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoadingIndicators.WPF\LoadingIndicators.WPF.csproj">
+      <Project>{e49229cc-d702-478f-90e0-6e1a284272f6}</Project>
+      <Name>LoadingIndicators.WPF</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

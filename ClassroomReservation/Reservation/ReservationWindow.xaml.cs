@@ -121,14 +121,16 @@ namespace ClassroomReservation.Reservation
                 
                 MessageBoxResult result = MessageBox.Show(item.ToString() + "이 맞습니까?", "예약 하기", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (result == MessageBoxResult.Yes) {
-                    try {
-                        ServerClient.getInstance().reservationAdd(item);
-
-                        onReservationSuccess?.Invoke(item);
-                        Close();
-                    } catch (ServerResult ex) {
-                        MessageBox.Show("알 수 없는 오류가 발생해서 예약에 실패했습니다.", "예약 하기", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    overlapAll.Visibility = Visibility.Visible;
+                    //try {
+                    //    ServerClient.getInstance().reservationAdd(item);
+                    //    overlapAll.Visibility = Visibility.Hidden;
+                    //    onReservationSuccess?.Invoke(item);
+                    //    Close();
+                    //} catch (ServerResult ex) {
+                    //    overlapAll.Visibility = Visibility.Hidden;
+                    //    MessageBox.Show("알 수 없는 오류가 발생해서 예약에 실패했습니다.", "예약 하기", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //}
                 }
             }
         }
