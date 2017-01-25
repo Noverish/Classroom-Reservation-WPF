@@ -162,7 +162,7 @@ namespace ClassroomReservation.Server {
             bool[] answer = Enumerable.Repeat(true, classroomList.Count).ToArray();
 
             foreach (StatusItem item in status) {
-                if (startDate <= item.date && item.date <= endDate) {
+                if (startDate.Date <= item.date.Date && item.date.Date <= endDate.Date) {
                     if (startTime <= item.classtime && item.classtime <= endTime) {
                         answer[GetRowByClassroom(item.classroom)] = false;
                     }
@@ -177,7 +177,7 @@ namespace ClassroomReservation.Server {
             bool[] answer = Enumerable.Repeat(true, classTimeTable.Count).ToArray();
 
             foreach (StatusItem item in status) {
-                if (startDate <= item.date && item.date <= endDate) {
+                if (startDate.Date <= item.date.Date && item.date.Date <= endDate.Date) {
                     if (item.classroom.Equals(classroom)) {
                         answer[item.classtime - 1] = false;
                     }

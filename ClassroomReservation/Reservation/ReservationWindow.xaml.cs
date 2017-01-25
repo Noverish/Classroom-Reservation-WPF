@@ -161,15 +161,27 @@ namespace ClassroomReservation.Reservation
             }
         }
 
-        private void OnTimeSelectChanged(int[] nowSelectedTime, bool hasBeforeSelect) {
-            classroomSelectControl.selectiveEnable(ServerClient.getInstance().checkClassroomStatusByClasstime(
+        private void onTimeSelectChangeBackground(object sender, DoWorkEventArgs e) {
+            Tuple<int[], bool> data = (Tuple<int[], bool>) e.Argument;
+            
+            int[] nowSelectedTime = data.Item1;
+            bool hasBeforeSelect = data.Item2;
+            
+            bool[] result = ServerClient.getInstance().checkClassroomStatusByClasstime(
                     calendar.SelectedDates[0],
                     calendar.SelectedDates[calendar.SelectedDates.Count - 1],
                     nowSelectedTime[0],
                     nowSelectedTime[1]
-            ));
+            );
 
-            if (hasBeforeSelect) {
+            e.Result = new Tuple<bool[], bool>(result, hasBeforeSelect);
+        }
+
+        private void onTimeSelectChangeResult(object sender, RunWorkerCompletedEventArgs e) {
+            Tuple<bool[], bool> result = (Tuple<bool[], bool>)e.Result;
+            classroomSelectControl.selectiveEnable(result.Item1);
+
+            if (result.Item2) {
                 timeSelectControl.enable(true);
                 classroomSelectControl.ResetSelection();
                 EnableInputUserData(false);
@@ -177,16 +189,36 @@ namespace ClassroomReservation.Reservation
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
                     EnableInputUserData(true);
             }
+            overlapAll.Visibility = Visibility.Hidden;
         }
 
-        private void OnClassroomSelectChanged(string nowSelectedClassroom, bool hasBeforeSelect) {
-            timeSelectControl.selectiveEnable(ServerClient.getInstance().checkClasstimeStatusByClassrom(
+        private void OnTimeSelectChanged(int[] nowSelectedTime, bool hasBeforeSelect) {
+            overlapAll.Visibility = Visibility.Visible;
+            BackgroundWorker _backgroundWorker = new BackgroundWorker();
+            _backgroundWorker.DoWork += onTimeSelectChangeBackground;
+            _backgroundWorker.RunWorkerCompleted += onTimeSelectChangeResult;
+            _backgroundWorker.RunWorkerAsync(new Tuple<int[], bool>(nowSelectedTime, hasBeforeSelect));
+        }
+
+        private void onClassroomSelectChangeBackground(object sender, DoWorkEventArgs e) {
+            Tuple<string, bool> data = (Tuple < string, bool>) e.Argument;
+            string nowSelectedClassroom = data.Item1;
+            bool hasBeforeSelect = data.Item2;
+
+            bool[] result = ServerClient.getInstance().checkClasstimeStatusByClassrom(
                     calendar.SelectedDates[0],
                     calendar.SelectedDates[calendar.SelectedDates.Count - 1],
                     nowSelectedClassroom
-            ));
+            );
+            
+            e.Result = new Tuple<bool[], bool>(result, hasBeforeSelect);
+        }
 
-            if (hasBeforeSelect) {
+        private void onClassroomSelectChangeResult(object sender, RunWorkerCompletedEventArgs e) {
+            Tuple<bool[], bool> result = (Tuple<bool[], bool>)e.Result;
+            timeSelectControl.selectiveEnable(result.Item1);
+
+            if (result.Item2) {
                 classroomSelectControl.enable(true);
                 timeSelectControl.ResetSelection();
                 EnableInputUserData(false);
@@ -194,8 +226,15 @@ namespace ClassroomReservation.Reservation
                 if (classroomSelectControl.HasSelectedClassroom() && timeSelectControl.HasSeletedTime())
                     EnableInputUserData(true);
             }
+            overlapAll.Visibility = Visibility.Hidden;
         }
 
-        //MouseLeftButtonDown="onMouseLeftBtnDown" MouseEnter="onMouseEnter" MouseLeftButtonUp="OnMouseLeftBtnUp"
+        private void OnClassroomSelectChanged(string nowSelectedClassroom, bool hasBeforeSelect) {
+            overlapAll.Visibility = Visibility.Visible;
+            BackgroundWorker _backgroundWorker = new BackgroundWorker();
+            _backgroundWorker.DoWork += onClassroomSelectChangeBackground;
+            _backgroundWorker.RunWorkerCompleted += onClassroomSelectChangeResult;
+            _backgroundWorker.RunWorkerAsync(new Tuple<string, bool>(nowSelectedClassroom, hasBeforeSelect));
+        }
     }
 }
