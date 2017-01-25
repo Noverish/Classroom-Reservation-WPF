@@ -5,6 +5,7 @@ using ClassroomReservation.Resource;
 using ClassroomReservation.Server;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,21 +118,38 @@ namespace ClassroomReservation.Reservation
                 string password = LoginClient.EncryptString(passwordTextBox.Password);
                 Logger.logNext(passwordTextBox.Password);
                 
-                ReservationItem item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
+                item = new ReservationItem(startDate, endDate, time[0], time[1], classroom, name, contact, content, password);
                 
                 MessageBoxResult result = MessageBox.Show(item.ToString() + "이 맞습니까?", "예약 하기", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (result == MessageBoxResult.Yes) {
                     overlapAll.Visibility = Visibility.Visible;
-                    //try {
-                    //    ServerClient.getInstance().reservationAdd(item);
-                    //    overlapAll.Visibility = Visibility.Hidden;
-                    //    onReservationSuccess?.Invoke(item);
-                    //    Close();
-                    //} catch (ServerResult ex) {
-                    //    overlapAll.Visibility = Visibility.Hidden;
-                    //    MessageBox.Show("알 수 없는 오류가 발생해서 예약에 실패했습니다.", "예약 하기", MessageBoxButton.OK, MessageBoxImage.Error);
-                    //}
+                    BackgroundWorker _backgroundWorker = new BackgroundWorker();
+                    _backgroundWorker.DoWork += _backgroundWorker_DoWork;
+                    _backgroundWorker.RunWorkerCompleted += _backgroundWorker_RunWorkerCompleted;
+                    _backgroundWorker.RunWorkerAsync();
                 }
+            }
+        }
+
+        private ReservationItem item;
+
+        private void _backgroundWorker_DoWork(object sender, DoWorkEventArgs e) {
+            try {
+                ServerClient.getInstance().reservationAdd(item);
+                e.Result = true;
+            } catch (ServerResult ex) {
+                e.Result = false;
+            }
+        }
+
+        void _backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            overlapAll.Visibility = Visibility.Hidden;
+            bool success = (bool) e.Result;
+            if (success) {
+                onReservationSuccess?.Invoke(item);
+                Close();
+            } else {
+                MessageBox.Show("알 수 없는 오류가 발생해서 예약에 실패했습니다.", "예약 하기", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
