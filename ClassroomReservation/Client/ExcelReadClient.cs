@@ -107,8 +107,12 @@ namespace ClassroomReservation.Resource {
                 string tmp = (new Regex("\\s+").Replace(row[7], " "));
                 string dayOfWeekList = "", classtimeList = "", classroomList = "";
 
+                if (professor.Equals("강재우")) {
+                    int a = 0;
+                }
+
                 List<Match> matches = new List<Match>();
-                foreach (Match m in Regex.Matches(tmp, "\\S[(]\\d(-\\d)?[)]"))
+                foreach (Match m in Regex.Matches(tmp, "\\S[(]\\d{1,2}(-\\d{1,2})?[)]"))
                     if (m.Success)
                         matches.Add(m);
                     else
@@ -118,7 +122,10 @@ namespace ClassroomReservation.Resource {
                     string one;
 
                     if (i != matches.Count - 1) {
-                        one = tmp.Substring(matches[i].Index, matches[i + 1].Index);
+                        int tmp1 = matches[i].Index;
+                        int tmp2 = matches[i + 1].Index;
+                        int tmp3 = tmp.Length;
+                        one = tmp.Substring(tmp1, tmp2 - tmp1);
                     } else {
                         one = tmp.Substring(matches[i].Index);
                     }
@@ -126,7 +133,7 @@ namespace ClassroomReservation.Resource {
                     one = one.Trim();
 
                     string day = one.ToCharArray()[0].ToString();
-                    string times = Regex.Match(matches[i].Value, "\\d(-\\d)?").Value;
+                    string times = Regex.Match(matches[i].Value, "\\d{1,2}(-\\d{1,2})?").Value;
                     string classroom = new Regex(" ").Replace(one.Remove(0, matches[i].Value.Length + 1), ":");
 
                     if (ServerClient.getInstance().GetRowByClassroom(classroom) < 0)
