@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using System.Dynamic;
 using Newtonsoft.Json.Converters;
 using System.Collections;
+using System.Reflection;
 
 namespace ClassroomReservation.Server {
     class ServerClient {
@@ -41,6 +42,30 @@ namespace ClassroomReservation.Server {
         private const string classtimeModifyUrl = "classtime_modify.php";
         private const string classtimeDeleteUrl = "classtime_delete.php";
 
+        private string RESERVATION_FILE_PATH = "reservation.csv";
+        private string STATUS_FILE_PATH = "status.csv";
+        private string LECTURE_FILE_PATH = "lecture.csv";
+
+        private const int RESERVATION_ID = 0;
+        private const int RESERVATION_START_DATE = 1;
+        private const int RESERVATION_END_DATE = 2;
+        private const int RESERVATION_START_CLASS = 3;
+        private const int RESERVATION_END_CLASS = 4;
+        private const int RESERVATION_CLASSROOM = 5;
+        private const int RESERVATION_USER_NAME = 6;
+        private const int RESERVATION_CONTACT = 7;
+        private const int RESERVATION_CONTENT = 8;
+        private const int RESERVATION_PASSWORD = 9;
+
+        private const int STATUS_ID = 0;
+        private const int STATUS_RESERV_ID = 1;
+        private const int STATUS_TYPE = 2;
+        private const int STATUS_DATE= 3;
+        private const int STATUS_CLASSTIEM = 4;
+        private const int STATUS_CLASSROOM = 5;
+        private const int STATUS_USER_NAME = 6;
+        private const int STATUS_CONTACT = 7;
+        private const int STATUS_CONTENT = 8;
 
         public Hashtable classTimeTable { get; private set; }
         public List<string> classroomList { get; private set; }
@@ -49,10 +74,48 @@ namespace ClassroomReservation.Server {
         private ServerClient() {
             reloadClassroomList();
             reloadClasstimeList();
+            RESERVATION_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), RESERVATION_FILE_PATH);
+            STATUS_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), STATUS_FILE_PATH);
+            LECTURE_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), LECTURE_FILE_PATH);
+            createCSVFileIfNotExist(RESERVATION_FILE_PATH);
+            createCSVFileIfNotExist(STATUS_FILE_PATH);
+            createCSVFileIfNotExist(LECTURE_FILE_PATH);
         }
 
+        private void createCSVFileIfNotExist(string filePath) {
+            if (!File.Exists(filePath)) {
+                File.Create(filePath);
+            }
+        }
 
         public List<StatusItem> reservationListWeek(DateTime datePara) {
+            List<StatusItem> items = new List<StatusItem>();
+
+            var statusReader = new StreamReader(STATUS_FILE_PATH);
+            var statusIdToInsert = -1;
+            while (!statusReader.EndOfStream) {
+                var line = statusReader.ReadLine();
+                var values = line.Split(',');
+
+                int reservID = Int32.Parse(values[1]);
+                int type = Int32.Parse(values[2]);
+                DateTime date = Convert.ToDateTime(values[3]);
+                int classtime = Int32.Parse(values[4]);
+                string classroom = values[5];
+                string userName = values[6];
+                string contact = values[7];
+                string content = values[8];
+
+                StatusItem item = new StatusItem(reservID, type, date, classtime, classroom, userName, contact, content);
+
+                items.Add(item);
+            }
+            statusIdToInsert += 1;
+            statusReader.Close();
+
+            status = items;
+            return items;
+            /*
             try {
                 List<StatusItem> items = new List<StatusItem>();
                 string url = serverDomain + reservationListWeekUrl;
@@ -85,9 +148,54 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public void reservationAdd(ReservationItem reservation) {
+            int reservIdToInsert = -1;
+            foreach (string row in File.ReadAllLines(RESERVATION_FILE_PATH)) {
+                string[] values = row.Split(',');
+                reservIdToInsert = Int32.Parse(values[RESERVATION_ID]);
+            }
+            reservIdToInsert += 1;
+
+            var str = reservIdToInsert.ToString();
+            str += "," + reservation.startDate.ToString("yyyy-MM-dd");
+            str += "," + reservation.endDate.ToString("yyyy-MM-dd");
+            str += "," + reservation.startClass;
+            str += "," + reservation.endClass;
+            str += "," + reservation.classroom;
+            str += "," + reservation.userName;
+            str += "," + reservation.contact;
+            str += "," + reservation.content;
+            str += "," + reservation.password;
+            str += Environment.NewLine;
+            File.AppendAllText(RESERVATION_FILE_PATH, str);
+
+            int statusIdToInsert = -1;
+            foreach (string row in File.ReadAllLines(STATUS_FILE_PATH)) {
+                string[] values = row.Split(',');
+                statusIdToInsert = Int32.Parse(values[STATUS_ID]);
+            }
+            statusIdToInsert += 1;
+
+            DateTime date = reservation.startDate;
+            for (; date.Date <= reservation.endDate.Date; date = date.AddDays(1)) {
+                for (int time = reservation.startClass; time <= reservation.endClass; time++) {
+                    str = statusIdToInsert.ToString();
+                    str += "," + reservIdToInsert.ToString();
+                    str += "," + 1;
+                    str += "," + date.ToString("yyyy-MM-dd");
+                    str += "," + time.ToString();
+                    str += "," + reservation.classroom;
+                    str += "," + reservation.userName;
+                    str += "," + reservation.contact;
+                    str += "," + reservation.content;
+                    str += Environment.NewLine;
+                    File.AppendAllText(STATUS_FILE_PATH, str);
+                }
+            }
+            /*
             try {
                 string url = serverDomain + reservationAddUrl;
 
@@ -106,9 +214,37 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
         
         public bool reservationDeleteOne(int reservID, string password, bool isUserMode) {
+            string[] rows = File.ReadAllLines(RESERVATION_FILE_PATH);
+
+            foreach (string row in rows) {
+                string[] values = row.Split(',');
+
+                if (reservID == Int32.Parse(values[RESERVATION_ID])) {
+                    if (!isUserMode || !password.Equals(values[RESERVATION_PASSWORD])) {
+                        return false;
+                    }
+
+                    File.WriteAllText(RESERVATION_FILE_PATH, File.ReadAllText(RESERVATION_FILE_PATH).Replace(row + Environment.NewLine, ""));
+                    break;
+                }
+            }
+            
+            rows = File.ReadAllLines(STATUS_FILE_PATH);
+
+            foreach (string row in rows) {
+                string[] values = row.Split(',');
+
+                if (reservID == Int32.Parse(values[STATUS_RESERV_ID])) {
+                    File.WriteAllText(STATUS_FILE_PATH, File.ReadAllText(STATUS_FILE_PATH).Replace(row + Environment.NewLine, ""));
+                    break;
+                }
+            }
+
+            /*
             try {
                 string url = serverDomain + reservationDeleteOneUrl;
                 string dataStr = 
@@ -122,9 +258,13 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
+
+            return true;
         }
 
         public void reservationDeletePeriod(DateTime startDate, DateTime endDate, bool deleteLecture) {
+            /*
             try {
                 string url = serverDomain + reservationDeletePeriodUrl;
                 string dataStr = 
@@ -136,9 +276,11 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public bool reservationModify(int reservID, string password, string userName, string contact, string content, bool isUserMode) {
+            /*
             try {
                 string url = serverDomain + reservationModifyUrl;
                 string dataStr =
@@ -155,6 +297,9 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
+
+            return true;
         }
 
         public bool[] checkClassroomStatusByClasstime(DateTime startDate, DateTime endDate, int startTime, int endTime) {
@@ -189,6 +334,7 @@ namespace ClassroomReservation.Server {
 
 
         public void lectureAdd(LectureItem lecture, DateTime semesterStartDate) {
+            /*
             try {
                 string url = serverDomain + lectureAddUrl;
 
@@ -211,9 +357,11 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public void lectureDelete(int lectureID) {
+            /*
             try {
                 string url = serverDomain + lectureDeleteUrl;
 
@@ -223,10 +371,12 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
 
         public void reloadClassroomList() {
+            /*
             try {
                 classroomList = new List<string>();
 
@@ -241,9 +391,26 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
+
+            classroomList = new List<string>();
+            classroomList.Add("과도관:611호");
+            classroomList.Add("과도관:614A호");
+            classroomList.Add("과도관:615호");
+            classroomList.Add("이학별관:107호");
+            classroomList.Add("정보관:201호");
+            classroomList.Add("정보관:202호");
+            classroomList.Add("정보관:205호");
+            classroomList.Add("정보관:206호");
+            classroomList.Add("정보관:208호");
+            classroomList.Add("정보관:B102호");
+            classroomList.Add("정보관:B103호");
+            classroomList.Add("정보관:B104호");
+            classroomList.Sort();
         }
 
         public void classroomAdd(string classroom) {
+            /*
             try {
                 string url = serverDomain + classroomAddUrl;
 
@@ -253,9 +420,11 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public void classroomDelete(string classroom) {
+            /*
             try {
                 string url = serverDomain + classroomDeleteUrl;
 
@@ -265,6 +434,7 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public int GetRowByClassroom(string classroom) {
@@ -280,6 +450,7 @@ namespace ClassroomReservation.Server {
 
 
         public void reloadClasstimeList() {
+            /*
             try {
                 classTimeTable = new Hashtable();
 
@@ -292,9 +463,23 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
+
+            classTimeTable = new Hashtable();
+            classTimeTable.Add(1, "09:00AM ~ 10:15AM");
+            classTimeTable.Add(2, "10:30AM ~ 11:45AM");
+            classTimeTable.Add(3, "12:00PM ~ 12:50PM");
+            classTimeTable.Add(4, "01:00PM ~ 01:50PM");
+            classTimeTable.Add(5, "02:00PM ~ 03:15PM");
+            classTimeTable.Add(6, "03:30PM ~ 04:45PM");
+            classTimeTable.Add(7, "05:00PM ~ 05:50PM");
+            classTimeTable.Add(8, "06:00PM ~ 06:50PM");
+            classTimeTable.Add(9, "07:00PM ~ 07:50PM");
+            classTimeTable.Add(10, "08:00PM ~ 08:50PM");
         }
 
         public void classtimeAdd(string classtime) {
+            /*
             try {
                 string url = serverDomain + classtimeAddUrl;
 
@@ -304,9 +489,11 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public void classtimeModify(int time, string detail) {
+            /*
             try {
                 string url = serverDomain + classtimeModifyUrl;
 
@@ -318,9 +505,11 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
 
         public void classtimeDelete() {
+            /*
             try {
                 string url = serverDomain + classtimeDeleteUrl;
 
@@ -328,6 +517,7 @@ namespace ClassroomReservation.Server {
             } catch (ServerResult e) {
                 throw e;
             }
+            */
         }
         
 

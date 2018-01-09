@@ -423,7 +423,13 @@ namespace ClassroomReservation.Main
             DateTime start = new DateTime(1970, 1, 1, 9, 0, 0);
             DateTime end = new DateTime(1970, 1, 1, 17, 30, 0);
 
-            if (!isUserMode || (start.TimeOfDay <= DateTime.Now.TimeOfDay && DateTime.Now.TimeOfDay <= end.TimeOfDay)) {
+#if DEBUG
+            var isDebug = true;
+#else
+            var isDebug = false;
+#endif
+
+            if (isDebug || !isUserMode || (start.TimeOfDay <= DateTime.Now.TimeOfDay && DateTime.Now.TimeOfDay <= end.TimeOfDay)) {
                 if (ReservationStatusPerDay.IsSelectedAlreadyOccupied()) {
                     MessageBox.Show("이미 예약 되어 있습니다", "예약 불가", MessageBoxButton.OK, MessageBoxImage.Warning);
                 } else {
