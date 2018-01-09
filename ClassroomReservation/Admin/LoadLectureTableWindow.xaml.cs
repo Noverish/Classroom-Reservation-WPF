@@ -40,6 +40,10 @@ namespace ClassroomReservation.Main {
         private void processExcel(object sender, RoutedEventArgs e) {
             ExcelReadClient.onFileSelected = (fileName) => excelFileNameText.Text = fileName;
             items = ExcelReadClient.readExcel();
+
+            if (items == null) {
+                Close();
+            }
         }
 
         private void MakeLecture(object sender, RoutedEventArgs e) {

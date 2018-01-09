@@ -30,7 +30,7 @@ namespace ClassroomReservation.Server {
 
                 string resultStr = readerPost.ReadToEnd();
             } catch (Exception e) {
-                Console.WriteLine(e.StackTrace);
+
             }
         }
 

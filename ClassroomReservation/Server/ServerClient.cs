@@ -67,6 +67,17 @@ namespace ClassroomReservation.Server {
         private const int STATUS_CONTACT = 7;
         private const int STATUS_CONTENT = 8;
 
+        private const int LECTURE_ID = 0;
+        private const int LECTURE_YEAR = 1;
+        private const int LECTURE_SEMESTER = 2;
+        private const int LECTURE_DAYOFWEEK = 3;
+        private const int LECTURE_CLASSTIME = 4;
+        private const int LECTURE_CLASSROOM = 5;
+        private const int LECTURE_PROFESSOR = 6;
+        private const int LECTURE_CONTACT = 7;
+        private const int LECTURE_CODE = 8;
+        private const int LECTURE_NAME = 9;
+
         public Hashtable classTimeTable { get; private set; }
         public List<string> classroomList { get; private set; }
         private List<StatusItem> status;
@@ -152,14 +163,13 @@ namespace ClassroomReservation.Server {
         }
 
         public void reservationAdd(ReservationItem reservation) {
-            int reservIdToInsert = -1;
+            int reservLastId = -1;
             foreach (string row in File.ReadAllLines(RESERVATION_FILE_PATH)) {
                 string[] values = row.Split(',');
-                reservIdToInsert = Int32.Parse(values[RESERVATION_ID]);
+                reservLastId = Int32.Parse(values[RESERVATION_ID]);
             }
-            reservIdToInsert += 1;
-
-            var str = reservIdToInsert.ToString();
+            
+            var str = (++reservLastId).ToString();
             str += "," + reservation.startDate.ToString("yyyy-MM-dd");
             str += "," + reservation.endDate.ToString("yyyy-MM-dd");
             str += "," + reservation.startClass;
@@ -172,18 +182,17 @@ namespace ClassroomReservation.Server {
             str += Environment.NewLine;
             File.AppendAllText(RESERVATION_FILE_PATH, str);
 
-            int statusIdToInsert = -1;
+            int statusLastId = -1;
             foreach (string row in File.ReadAllLines(STATUS_FILE_PATH)) {
                 string[] values = row.Split(',');
-                statusIdToInsert = Int32.Parse(values[STATUS_ID]);
+                statusLastId = Int32.Parse(values[STATUS_ID]);
             }
-            statusIdToInsert += 1;
 
             DateTime date = reservation.startDate;
             for (; date.Date <= reservation.endDate.Date; date = date.AddDays(1)) {
                 for (int time = reservation.startClass; time <= reservation.endClass; time++) {
-                    str = statusIdToInsert.ToString();
-                    str += "," + reservIdToInsert.ToString();
+                    str = (++statusLastId).ToString();
+                    str += "," + reservLastId;
                     str += "," + 1;
                     str += "," + date.ToString("yyyy-MM-dd");
                     str += "," + time.ToString();
@@ -224,7 +233,7 @@ namespace ClassroomReservation.Server {
                 string[] values = row.Split(',');
 
                 if (reservID == Int32.Parse(values[RESERVATION_ID])) {
-                    if (!isUserMode || !password.Equals(values[RESERVATION_PASSWORD])) {
+                    if (isUserMode && !password.Equals(values[RESERVATION_PASSWORD])) {
                         return false;
                     }
 
@@ -240,7 +249,6 @@ namespace ClassroomReservation.Server {
 
                 if (reservID == Int32.Parse(values[STATUS_RESERV_ID])) {
                     File.WriteAllText(STATUS_FILE_PATH, File.ReadAllText(STATUS_FILE_PATH).Replace(row + Environment.NewLine, ""));
-                    break;
                 }
             }
 
@@ -334,6 +342,96 @@ namespace ClassroomReservation.Server {
 
 
         public void lectureAdd(LectureItem lecture, DateTime semesterStartDate) {
+            DateTime semesterEndDate = semesterStartDate.AddDays((7 * 16) - 1);
+
+            int lectureLastId = -1;
+            foreach (string row in File.ReadAllLines(RESERVATION_FILE_PATH)) {
+                Console.WriteLine(row);
+                string[] values = row.Split(',');
+                Console.WriteLine(values[RESERVATION_ID]);
+                try {
+                    lectureLastId = Int32.Parse(values[RESERVATION_ID]);
+                } catch (Exception ex) {
+                    Console.WriteLine("1234");
+                }
+            }
+
+            var str = (++lectureLastId).ToString();
+            str += "," + lecture.year;
+            str += "," + lecture.semester;
+            str += "," + lecture.dayOfWeek;
+            str += "," + lecture.classtime;
+            str += "," + lecture.classroom;
+            str += "," + lecture.professor;
+            str += "," + lecture.contact;
+            str += "," + lecture.code;
+            str += "," + lecture.name;
+            str += Environment.NewLine;
+            File.AppendAllText(RESERVATION_FILE_PATH, str);
+
+            int statusLastId = -1;
+            foreach (string row in File.ReadAllLines(STATUS_FILE_PATH)) {
+                string[] values = row.Split(',');
+                statusLastId = Int32.Parse(values[STATUS_ID]);
+            }
+
+            string[] inputDays = lecture.dayOfWeek.Split(';');
+            string[] inputClasstimes = lecture.classtime.Split(';');
+            string[] inputClassrooms = lecture.classroom.Split(';');
+
+            /*
+            if(!(count($input_days) == count($input_classtimes) &&
+            count($input_days) == count($input_classrooms))) {
+              echo("{\"res\":\"0\", \"msg\":\"input error\", \"query\":\"$sql\"}");
+              die();
+            }
+            */
+
+            int dayNum = inputDays.Length;
+            var days = new Dictionary<DayOfWeek, string> {
+                {DayOfWeek.Sunday, "일"},
+                {DayOfWeek.Monday, "월"},
+                {DayOfWeek.Tuesday, "화"},
+                {DayOfWeek.Wednesday, "수"},
+                {DayOfWeek.Thursday, "목"},
+                {DayOfWeek.Friday, "금"},
+                {DayOfWeek.Saturday, "토"},
+            };
+            int reservId = lectureLastId;
+            int type = 0;
+            string content = lecture.code + " - " + lecture.name;
+
+            for (int i = 0; i < dayNum; i++) {
+                string nowDay = inputDays[i];
+                int startClass = Int32.Parse(inputClasstimes[i].Split('-')[0]);
+                int endClass = Int32.Parse(inputClasstimes[i].Split('-')[1]);
+                string nowClassroom = inputClassrooms[i];
+
+                DateTime now = semesterStartDate;
+                DateTime end = semesterEndDate;
+
+                for (; now.Date <= end.Date; now = now.AddDays(1)) {
+                    DayOfWeek dw = now.DayOfWeek;
+
+                    if (nowDay.Equals(days[dw])) {
+                        for (int time = startClass; time <= endClass; time++) {
+                            string nowStr = now.ToString("yyyy-MM-dd");
+
+                            str = (++statusLastId).ToString();
+                            str += "," + lectureLastId;
+                            str += "," + type;
+                            str += "," + nowStr;
+                            str += "," + time;
+                            str += "," + nowClassroom;
+                            str += "," + lecture.professor;
+                            str += "," + lecture.contact;
+                            str += "," + content;
+                            str += Environment.NewLine;
+                            File.AppendAllText(STATUS_FILE_PATH, str);
+                        }
+                    }
+                }
+            }
             /*
             try {
                 string url = serverDomain + lectureAddUrl;
