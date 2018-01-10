@@ -151,14 +151,15 @@ namespace ClassroomReservation.Main
                     view.rearrangeGrid();
                     foreach (StatusItem item in items) {
                         if (view.date.Day == item.date.Day) {
-                            view.putData(ServerClient.getInstance().GetRowByClassroom(item.classroom) + 2, item.classtime - 1, item);
+                            int row = Int32.Parse(item.classroom);
+                            view.putData(row + 2, item.classtime - 1, item);
                         }
                     }
                 }
 
                 endDateLable.Content = " ~ " + Essential.dateTimeToString(displayDate.AddDays(6));
             } catch (Exception ex) {
-                MessageBox.Show("알 수 없는 오류로 새로고침에 실패 했습니다.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message + "\n" + ex.StackTrace, "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

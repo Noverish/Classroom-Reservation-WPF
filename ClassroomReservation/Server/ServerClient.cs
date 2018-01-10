@@ -45,6 +45,8 @@ namespace ClassroomReservation.Server {
         private string RESERVATION_FILE_PATH = "reservation.csv";
         private string STATUS_FILE_PATH = "status.csv";
         private string LECTURE_FILE_PATH = "lecture.csv";
+        private string CLASSTIME_FILE_PATH = "classtime.txt";
+        private string CLASSROOM_FILE_PATH = "classroom.txt";
 
         private const int RESERVATION_ID = 0;
         private const int RESERVATION_START_DATE = 1;
@@ -85,18 +87,18 @@ namespace ClassroomReservation.Server {
         private ServerClient() {
             reloadClassroomList();
             reloadClasstimeList();
+
             RESERVATION_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), RESERVATION_FILE_PATH);
             STATUS_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), STATUS_FILE_PATH);
             LECTURE_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), LECTURE_FILE_PATH);
-            createCSVFileIfNotExist(RESERVATION_FILE_PATH);
-            createCSVFileIfNotExist(STATUS_FILE_PATH);
-            createCSVFileIfNotExist(LECTURE_FILE_PATH);
-        }
+            CLASSROOM_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), CLASSROOM_FILE_PATH);
+            CLASSTIME_FILE_PATH = Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), CLASSTIME_FILE_PATH);
 
-        private void createCSVFileIfNotExist(string filePath) {
-            if (!File.Exists(filePath)) {
-                File.Create(filePath);
-            }
+            createFileIfNotExist(RESERVATION_FILE_PATH);
+            createFileIfNotExist(STATUS_FILE_PATH);
+            createFileIfNotExist(LECTURE_FILE_PATH);
+            createFileIfNotExist(CLASSROOM_FILE_PATH);
+            createFileIfNotExist(CLASSTIME_FILE_PATH);
         }
 
         public List<StatusItem> reservationListWeek(DateTime datePara) {
@@ -126,40 +128,6 @@ namespace ClassroomReservation.Server {
 
             status = items;
             return items;
-            /*
-            try {
-                List<StatusItem> items = new List<StatusItem>();
-                string url = serverDomain + reservationListWeekUrl;
-
-                string dataStr =
-                    "date=" + datePara.ToString("yyyy-MM-dd");
-
-                ServerResult result = connect(url, dataStr);
-                
-                List<dynamic> array = result.data;
-                
-                for (int i = 0; i < array.Count; i++) {
-                    int reservID = Int32.Parse(array[i].ReservID);
-                    int type = Int32.Parse(array[i].Type);
-                    DateTime date = Convert.ToDateTime(array[i].Date);
-                    int classtime = Int32.Parse(array[i].Classtime);
-                    string classroom = array[i].Classroom;
-                    string userName = array[i].UserName;
-                    string contact = array[i].Contact;
-                    string content = array[i].Content;
-
-                    StatusItem item = new StatusItem(reservID, type, date, classtime, classroom, userName, contact, content);
-
-                    items.Add(item);
-                }
-
-                status = items;
-
-                return items;
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public void reservationAdd(ReservationItem reservation) {
@@ -204,26 +172,6 @@ namespace ClassroomReservation.Server {
                     File.AppendAllText(STATUS_FILE_PATH, str);
                 }
             }
-            /*
-            try {
-                string url = serverDomain + reservationAddUrl;
-
-                string dataStr =
-                    "startDate=" + reservation.startDate.ToString("yyyy-MM-dd") +
-                    "&endDate=" + reservation.endDate.ToString("yyyy-MM-dd") +
-                    "&startClass=" + reservation.startClass +
-                    "&endClass=" + reservation.endClass +
-                    "&classroom=" + reservation.classroom +
-                    "&userName=" + reservation.userName +
-                    "&contact=" + reservation.contact +
-                    "&content=" + reservation.content +
-                    "&password=" + reservation.password;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
         
         public bool reservationDeleteOne(int reservID, string password, bool isUserMode) {
@@ -252,61 +200,14 @@ namespace ClassroomReservation.Server {
                 }
             }
 
-            /*
-            try {
-                string url = serverDomain + reservationDeleteOneUrl;
-                string dataStr = 
-                    "reservID=" + reservID + 
-                    "&password=" + password + 
-                    "&isUserMode=" + (isUserMode ? 1 : 0);
-
-                ServerResult result = connect(url, dataStr);
-
-                return result.res == 1;
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
-
             return true;
         }
 
         public void reservationDeletePeriod(DateTime startDate, DateTime endDate, bool deleteLecture) {
-            /*
-            try {
-                string url = serverDomain + reservationDeletePeriodUrl;
-                string dataStr = 
-                    "startDate=" + startDate.ToString("yyyy-MM-dd") + 
-                    "&endDate=" + endDate.ToString("yyyy-MM-dd") +
-                    "&deleteLecture=" + ((deleteLecture) ? 1 : 0);
 
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public bool reservationModify(int reservID, string password, string userName, string contact, string content, bool isUserMode) {
-            /*
-            try {
-                string url = serverDomain + reservationModifyUrl;
-                string dataStr =
-                    "reservID=" + reservID +
-                    "&password=" + password +
-                    "&userName=" + userName +
-                    "&contact=" + contact +
-                    "&content=" + content + 
-                    "&isUserMode=" + (isUserMode ? 1 : 0);
-
-                ServerResult result = connect(url, dataStr);
-
-                return result.res == 1;
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
-
             return true;
         }
 
@@ -432,107 +333,31 @@ namespace ClassroomReservation.Server {
                     }
                 }
             }
-            /*
-            try {
-                string url = serverDomain + lectureAddUrl;
-
-                DateTime semesterEndDate = semesterStartDate.AddDays((7 * 16) - 1);
-
-                string dataStr =
-                    "year=" + lecture.year +
-                    "&semester=" + lecture.semester +
-                    "&dayOfWeek=" + lecture.dayOfWeek +
-                    "&classtime=" + lecture.classtime +
-                    "&classroom=" + lecture.classroom +
-                    "&professor=" + lecture.professor +
-                    "&contact=" + lecture.contact +
-                    "&code=" + lecture.code +
-                    "&name=" + lecture.name +
-                    "&startDate=" + semesterStartDate.ToString("yyyy-MM-dd") +
-                    "&endDate=" + semesterEndDate.ToString("yyyy-MM-dd");
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public void lectureDelete(int lectureID) {
-            /*
-            try {
-                string url = serverDomain + lectureDeleteUrl;
 
-                string dataStr = "lectureID=" + lectureID;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
 
         public void reloadClassroomList() {
-            /*
-            try {
-                classroomList = new List<string>();
-
-                ServerResult result = connect(serverDomain + classroomListUrl, "");
-
-                List<dynamic> data = result.data;
-
-                for (int i = 0; i < data.Count; i++)
-                    classroomList.Add(data[i].Classroom);
-
-                classroomList.Sort();
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
-
             classroomList = new List<string>();
-            classroomList.Add("과도관:611호");
-            classroomList.Add("과도관:614A호");
-            classroomList.Add("과도관:615호");
-            classroomList.Add("이학별관:107호");
-            classroomList.Add("정보관:201호");
-            classroomList.Add("정보관:202호");
-            classroomList.Add("정보관:205호");
-            classroomList.Add("정보관:206호");
-            classroomList.Add("정보관:208호");
-            classroomList.Add("정보관:B102호");
-            classroomList.Add("정보관:B103호");
-            classroomList.Add("정보관:B104호");
+
+            foreach (string row in File.ReadAllLines(CLASSROOM_FILE_PATH, Encoding.GetEncoding("euc-kr"))) {
+                if (!row.Trim().Equals("")) {
+                    classroomList.Add(row.Trim());
+                }
+            }
+
             classroomList.Sort();
         }
 
         public void classroomAdd(string classroom) {
-            /*
-            try {
-                string url = serverDomain + classroomAddUrl;
 
-                string dataStr = "classroom=" + classroom;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public void classroomDelete(string classroom) {
-            /*
-            try {
-                string url = serverDomain + classroomDeleteUrl;
 
-                string dataStr = "classroom=" + classroom;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public int GetRowByClassroom(string classroom) {
@@ -548,144 +373,32 @@ namespace ClassroomReservation.Server {
 
 
         public void reloadClasstimeList() {
-            /*
-            try {
-                classTimeTable = new Hashtable();
-
-                ServerResult result = connect(serverDomain + classtimeListUrl, "");
-
-                List<dynamic> data = result.data;
-
-                for (int i = 0; i < data.Count; i++)
-                    classTimeTable.Add(i + 1, data[i].Detail);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
-
             classTimeTable = new Hashtable();
-            classTimeTable.Add(1, "09:00AM ~ 10:15AM");
-            classTimeTable.Add(2, "10:30AM ~ 11:45AM");
-            classTimeTable.Add(3, "12:00PM ~ 12:50PM");
-            classTimeTable.Add(4, "01:00PM ~ 01:50PM");
-            classTimeTable.Add(5, "02:00PM ~ 03:15PM");
-            classTimeTable.Add(6, "03:30PM ~ 04:45PM");
-            classTimeTable.Add(7, "05:00PM ~ 05:50PM");
-            classTimeTable.Add(8, "06:00PM ~ 06:50PM");
-            classTimeTable.Add(9, "07:00PM ~ 07:50PM");
-            classTimeTable.Add(10, "08:00PM ~ 08:50PM");
+            int time = 1;
+
+            foreach (string row in File.ReadAllLines(CLASSTIME_FILE_PATH, Encoding.GetEncoding("euc-kr"))) {
+                if (!row.Trim().Equals("")) {
+                    classTimeTable.Add(time++, row.Trim());
+                }
+            }
         }
 
         public void classtimeAdd(string classtime) {
-            /*
-            try {
-                string url = serverDomain + classtimeAddUrl;
 
-                string dataStr = "classtime=" + classtime;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public void classtimeModify(int time, string detail) {
-            /*
-            try {
-                string url = serverDomain + classtimeModifyUrl;
 
-                string dataStr =
-                    "time=" + time +
-                    "&detail=" + detail;
-
-                connect(url, dataStr);
-            } catch (ServerResult e) {
-                throw e;
-            }
-            */
         }
 
         public void classtimeDelete() {
-            /*
-            try {
-                string url = serverDomain + classtimeDeleteUrl;
 
-                connect(url, "");
-            } catch (ServerResult e) {
-                throw e;
+        }
+
+        private void createFileIfNotExist(string filePath) {
+            if (!File.Exists(filePath)) {
+                File.Create(filePath);
             }
-            */
-        }
-        
-
-        public ServerResult connect(string url, string dataStr) {
-            try {
-                if (!url.Contains("list")) {
-                    string log = url + "?" + dataStr;
-                    Logger.log(log.Replace(serverDomain, ""));
-                }
-
-                byte[] data = UTF8Encoding.UTF8.GetBytes(dataStr);
-
-                HttpWebRequest httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
-
-                httpWebRequest.ContentType = "application/x-www-form-urlencoded; charset=UTF-8";
-                httpWebRequest.Method = "POST";
-                httpWebRequest.ContentLength = data.Length;
-                httpWebRequest.Timeout = 3000;
-
-                Stream requestStream = httpWebRequest.GetRequestStream();
-                requestStream.Write(data, 0, data.Length);
-                requestStream.Close();
-
-                HttpWebResponse httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-
-                Stream respPostStream = httpResponse.GetResponseStream();
-                StreamReader readerPost = new StreamReader(respPostStream, Encoding.GetEncoding("UTF-8"), true);
-
-                string resultStr = readerPost.ReadToEnd();
-
-                //Console.WriteLine("result : " + resultStr);
-
-                ServerResult result = new ServerResult(resultStr);
-
-                if (result.res == 0)
-                    throw result;
-                else
-                    return result;
-            } catch (Exception e) {
-                throw new ServerResult(e);
-            }
-        }
-    }
-
-    public class ServerResult : Exception {
-        public int res { get; private set; }
-        public string msg { get; private set; }
-        public string query { get; private set; }
-        public Exception exception { get; private set; }
-        public List<dynamic> data { get; private set; }
-
-        public ServerResult() { }
-
-        public ServerResult(string result) {
-            dynamic json = JsonConvert.DeserializeObject<ExpandoObject>(result, new ExpandoObjectConverter());
-
-            this.res = Int32.Parse(json.res);
-            this.msg = json.msg;
-            this.query = json.query;
-            this.data = json.data;
-        }
-
-        public ServerResult(Exception ex) {
-            this.exception = ex;
-        }
-
-        public ServerResult(int res, string msg, string query) {
-            this.res = res;
-            this.msg = msg;
-            this.query = query;
         }
     }
 }
